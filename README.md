@@ -25,6 +25,8 @@ Some extremely basic sketches:
 
 ![](doc/menupage.png) ![](doc/readpage.png)
 
+![](doc/settingspage.png) ![](doc/statspage.png)
+
 Required data sets and data sources:
 * Source is the epub file (supplied by the user). Dataset could be one very large string?
 * Alternative is lots of strings, one for each paragraphs ("text block"). In htm book files
