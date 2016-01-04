@@ -5,7 +5,6 @@ The goal of this project is to create an app that can do something.
 two ideas;
 
 epub reader--
-
 * read epub files
 * quick load
 * big scrolling view, save position in the scrollpane
