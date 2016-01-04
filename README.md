@@ -20,7 +20,7 @@ learn:
 solves:
 -reading on mobile. mostly slow apps exist right now
 
-![](mainpage.png) ![](readpage.png)
+![](doc/mainpage.png) ![](doc/readpage.png)
 
 dataset and datasource:
 * source is epub file. dataset would be one very large string?
