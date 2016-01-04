@@ -18,3 +18,6 @@ platform maker--
 -place collision boxes in some editor
 -save creations
 -load creations and try them out
+
+
+![](doc/test.png)
