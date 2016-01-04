@@ -56,6 +56,9 @@ similar apps:
 
 
 
+
+
+
 	
 platform maker--
 -simple platformer mechanics
@@ -66,6 +69,3 @@ platform maker--
 learn:
 -collision detection
 -touch movement or with touch buttons
-
-
-![](doc/test.png)
