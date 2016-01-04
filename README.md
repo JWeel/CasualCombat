@@ -23,9 +23,9 @@ seen in other eRead apps.
 
 Some extremely basic sketches:
 
-![](doc/menupage.png) ![](doc/readpage.png)
+![](doc/menu.png) ![](doc/read.png)
 
-![](doc/settingspage.png) ![](doc/statspage.png)
+![](doc/settings.png) ![](doc/stats.png)
 
 Required data sets and data sources:
 * Source is the epub file (supplied by the user). Dataset could be one very large string?
