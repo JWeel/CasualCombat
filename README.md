@@ -1,5 +1,7 @@
 # Programmeer Project
 
+<sub>Joseph Weel, 10321624, Universiteit van Amsterdam</sub>
+
 The goal of this project is to create an app that can read and display epub files.
 
 *App still needs a name.*
