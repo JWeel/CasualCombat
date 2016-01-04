@@ -18,8 +18,9 @@ learn:
 * replace font to new file or temporary in memory
 
 solves:
--reading on mobile. mostly slow apps exist right now
+* reading on mobile. mostly slow apps exist right now
 
+sketches:
 ![](doc/menupage.png) ![](doc/readpage.png)
 
 dataset and datasource:
