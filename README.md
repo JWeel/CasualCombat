@@ -20,10 +20,15 @@ learn:
 solves:
 -reading on mobile. mostly slow apps exist right now
 
---sketch
+![](mainpage.png) ![](readpage.png)
 
 dataset and datasource:
 * source is epub file. dataset would be one very large string?
+* alternative is lots of strings - paragraphs. in htm book files there is paragraphs
+	so might be with epubs just like this. this really depends on how epub works
+* reading time if used can be stored locally with the android things (look up name)
+* progress through book, perhaps using position of scrollview / total scrollview length?
+* maybe rate books 10/10
 
 decomposition:
 * menu (choose epub file, maybe options)
@@ -33,10 +38,13 @@ decomposition:
 platform:
 * scrolling is nice
 * some way of making it fast load may be necessary
+* idea is reading on mobile so platform mobile is exactly what it is for
+* but android studio language may have issue with large book files ?
 
 problems:
 * have to find out how epub works
 * if fast load is easy why is it not everywhere. probably not easy
+* if scrollview of entire book, then working with very large data.
 
 similar apps:
 * s2reader - simple menu that shows percentage progress into books in some folder.
