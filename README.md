@@ -6,10 +6,10 @@ The goal of this project is to create an app for a turn based combat game.
 
 *App still needs a name.*
 
-This will be a game app. Inspired by old school RPG games in which a protagonist
-often has to fight foes in order to progress a story, the turn based combat of these
-games can as a standalone game be a great way to entertain. A user would use this app
-to quickly pass time.
+This will be a game app. Inspired by old school RPG games where a protagonist
+has to fight foes in order to progress their story, the turn based combat of these
+games can be a standalone game, and hopefully a very entertaining one. A user would use
+this app to quickly pass time when they are bored.
 Here is a list of potential features:
 * Different skills that depend on certain skill values
 * Enemies are controlled by the computer
@@ -27,6 +27,7 @@ Required data sets and data sources:
 * A character with skill values, stored in some character object
 * Enemies with their own skill values
 * Storage of the character for save/load
+* A possible class for items
 
 Decomposition:
 * Menu, from which a new game can be started or an existing one loaded
@@ -36,12 +37,12 @@ Decomposition:
 * Shop page, between fights a character can restock here
 
 Platform and components:
-* Buttons can be used to pick attacks and traverse a menu
+* Touch support for buttons that can be used to pick attacks and traverse menus
 * This app is meant as a quick and easy way to pass time, and that works great on
 	mobile devices because it can then be done anywhere.
 
 Problems, or some things I will have to learn before being able to implement all features:
-* 
+* How to deal with different spells and allowing access to only some
 
 A similar app:
-* 
+* Any emulator that runs old school rpg games?

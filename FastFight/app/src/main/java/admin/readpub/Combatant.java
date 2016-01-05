@@ -11,6 +11,7 @@ public class Combatant {
     private int speed;
 
     int level;
+    int money;
 
     Item weapon;
     Item armor;
@@ -22,6 +23,7 @@ public class Combatant {
 
     Combatant(byte type){
         this.level = 0;
+        this.money = 0;
 
         switch(type){
             case BRAWLER:
