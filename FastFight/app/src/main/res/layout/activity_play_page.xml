@@ -21,15 +21,6 @@
         android:padding="4dip"
         android:id="@+id/foeLayout"
         >
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#345678"
-            android:gravity="center"
-            android:text="Foe1"
-            android:id="@+id/foe1"
-            android:layout_weight="1"
-            />
 
     </LinearLayout>
     <Space

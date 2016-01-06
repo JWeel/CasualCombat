@@ -1,10 +1,14 @@
 package admin.fastfight;
 
+import android.app.ActionBar;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +17,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class PlayPage extends AppCompatActivity {
+
+    // TODO
+    // click spell button brings up scrollable list over item and defend
+    // click item does same but over attack and spell
+    // once attack selected (or spell/item chosen), other three become greyed out, choose enemy
+    // 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,7 @@ public class PlayPage extends AppCompatActivity {
         // todo get pc and foe
         PlayerCharacter playerCharacter = new PlayerCharacter(PlayerCharacter.BRAWLER);
         ArrayList<Foe> foes = new ArrayList<>();
+        foes.add(new Foe(Foe.GOBLIN));
         foes.add(new Foe(Foe.GOBLIN));
 
         displayPlayer(playerCharacter);
@@ -75,10 +86,19 @@ public class PlayPage extends AppCompatActivity {
     //
     private void displayFoes(ArrayList<Foe> foes){
         LinearLayout layout = (LinearLayout)findViewById(R.id.foeLayout);
-        float weight = layout.getWeightSum() / foes.size();
-        System.err.println("" + weight);
+        float equalWeight = layout.getWeightSum() / foes.size();
 
-        // TODO continue here
+        for (int i = 0; i < foes.size(); i++){
+            TextView foeTextView = new TextView(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(2,0,2,0);
+            params.weight = equalWeight;
+            foeTextView.setLayoutParams(params);
+            foeTextView.setText(foes.get(i).getName());
+            foeTextView.setBackgroundColor(Color.parseColor("#345678"));
+            foeTextView.setGravity(Gravity.CENTER);
+            layout.addView(foeTextView);
+        }
     }
 
     //
