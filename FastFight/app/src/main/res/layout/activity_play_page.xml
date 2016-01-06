@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="admin.readpub.PlayPage"
+    tools:context="admin.fastfight.PlayPage"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -19,6 +19,7 @@
         android:weightSum="5"
         android:orientation="horizontal"
         android:padding="4dip"
+        android:id="@+id/foeLayout"
         >
         <TextView
             android:layout_width="fill_parent"
@@ -27,42 +28,6 @@
             android:gravity="center"
             android:text="Foe1"
             android:id="@+id/foe1"
-            android:layout_weight="1"
-            />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#345678"
-            android:gravity="center"
-            android:text="Foe2"
-            android:id="@+id/foe2"
-            android:layout_weight="1"
-            />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#345678"
-            android:gravity="center"
-            android:text="Foe3"
-            android:id="@+id/fo3"
-            android:layout_weight="1"
-            />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#345678"
-            android:gravity="center"
-            android:text="Foe4"
-            android:id="@+id/fo4"
-            android:layout_weight="1"
-            />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#345678"
-            android:gravity="center"
-            android:text="Foe5"
-            android:id="@+id/foe5"
             android:layout_weight="1"
             />
 
@@ -176,41 +141,42 @@
             />
 
         <Button
-            android:layout_width="75dip"
+            android:layout_width="0dip"
             android:layout_height="75dip"
-            android:text="New Button"
+            android:text="attack"
             android:id="@+id/attackButton"
             android:layout_alignParentBottom="true"
+            android:onClick="attackClick"
             />
-
         <Button
-            android:layout_width="75dip"
+            android:layout_width="0dip"
             android:layout_height="75dip"
-            android:text="New Button"
+            android:text="spell"
             android:id="@+id/spellButton"
             android:layout_toRightOf="@id/attackButton"
             android:layout_toEndOf="@id/attackButton"
             android:layout_alignParentBottom="true"
+            android:onClick="spellClick"
             />
-
         <Button
-            android:layout_width="75dip"
+            android:layout_width="0dip"
             android:layout_height="75dip"
-            android:text="New Button"
+            android:text="item"
             android:id="@+id/itemButton"
             android:layout_toRightOf="@id/spellButton"
             android:layout_toEndOf="@id/spellButton"
             android:layout_alignParentBottom="true"
+            android:onClick="itemClick"
             />
-
         <Button
-            android:layout_width="75dip"
+            android:layout_width="0dip"
             android:layout_height="75dip"
-            android:text="New Button"
+            android:text="defend"
             android:id="@+id/defendButton"
             android:layout_toRightOf="@id/itemButton"
             android:layout_toEndOf="@id/itemButton"
             android:layout_alignParentBottom="true"
+            android:onClick="defendClick"
             />
 
 
@@ -229,6 +195,9 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:typeface="monospace"
+            android:onClick="logClick"
+            android:id="@+id/logText"
             android:text="LOREM IPSUM"
             />
 

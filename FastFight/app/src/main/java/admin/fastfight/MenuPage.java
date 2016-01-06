@@ -1,24 +1,37 @@
-package admin.readpub;
+package admin.fastfight;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-public class PlayPage extends AppCompatActivity {
+public class MenuPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_page);
+        setContentView(R.layout.activity_menu_page);
 
+
+
+        SharedPreferences prefs = getSharedPreferences("PREFS", MODE_PRIVATE);
 
     }
+
+    //
+    public void startClick(View startButton){
+            Intent newPage = new Intent(this, PlayPage.class);
+            startActivity(newPage);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_play_page, menu);
+        getMenuInflater().inflate(R.menu.menu_menu_page, menu);
         return true;
     }
 

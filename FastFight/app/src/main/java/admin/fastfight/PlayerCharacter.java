@@ -1,8 +1,9 @@
-package admin.readpub;
+package admin.fastfight;
 
-public class Combatant {
-    int maxHealth;
-    int maxMagic;
+public class PlayerCharacter extends Combatant {
+
+    private int maxHealth;
+    private int maxMagic;
     private int currentHealth;
     private int currentMagic;
 
@@ -10,8 +11,10 @@ public class Combatant {
     private int defense;
     private int speed;
 
-    int level;
-    int money;
+    private int level;
+    private int money;
+
+    String name;
 
     Item weapon;
     Item armor;
@@ -21,7 +24,7 @@ public class Combatant {
     public static final byte ARCHER = 1;
     public static final byte MAGE = 2;
 
-    Combatant(byte type){
+    PlayerCharacter(byte type){
         this.level = 0;
         this.money = 0;
 
@@ -34,6 +37,7 @@ public class Combatant {
                 this.strength = 5;
                 this.defense = 3;
                 this.speed = 2;
+                this.name = "BRAWLER";
                 break;
             case ARCHER:
                 this.maxHealth = 8;
@@ -43,6 +47,7 @@ public class Combatant {
                 this.strength = 4;
                 this.defense = 2;
                 this.speed = 4;
+                this.name = "ARCHER";
                 break;
             case MAGE:
                 this.maxHealth = 6;
@@ -52,6 +57,7 @@ public class Combatant {
                 this.strength = 2;
                 this.defense = 1;
                 this.speed = 3;
+                this.name = "MAGE";
                 break;
             default:
                 this.maxHealth = 0;
@@ -61,22 +67,43 @@ public class Combatant {
                 this.strength = 0;
                 this.defense = 0;
                 this.speed = 0;
+                this.name = "";
         }
     }
 
+
+    @Override
+    void setHealth(int damage){
+        this.currentHealth -= damage;
+        if (currentHealth < 0) currentHealth = 0;
+    }
+    @Override
+    void setMagic(int cost){
+        this.currentMagic -= cost;
+        if (currentMagic < 0) currentMagic = 0;
+    }
+
+    @Override
+    int getMaxHealth() { return this.maxHealth; }
+    @Override
+    int getMaxMagic() { return this.maxMagic; }
+    @Override
     int getHealth(){
         return this.currentHealth;
     }
+    @Override
     int getMagic(){
         return this.currentMagic;
     }
-    int getAttack(){
+    @Override
+    int getStrength(){
         int weaponBonus = 0;
         if (this.weapon != null){
 
         }
         return this.strength + weaponBonus;
     }
+    @Override
     int getDefense(){
         int armorBonus = 0;
         if (this.armor != null){
@@ -84,6 +111,7 @@ public class Combatant {
         }
         return this.defense + armorBonus;
     }
+    @Override
     int getSpeed(){
         int speedBonus = 0;
         if (this.boots != null){
@@ -91,4 +119,10 @@ public class Combatant {
         }
         return this.speed + speedBonus;
     }
+    @Override
+    int getLevel(){ return this.level; }
+    @Override
+    int getMoney(){ return this.money; }
+    @Override
+    String getName(){ return this.name; }
 }

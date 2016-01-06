@@ -1,4 +1,4 @@
-package admin.readpub;
+package admin.fastfight;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

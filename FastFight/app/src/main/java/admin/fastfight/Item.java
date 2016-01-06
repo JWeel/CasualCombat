@@ -1,4 +1,4 @@
-package admin.readpub;
+package admin.fastfight;
 
 public class Item {
     public static final int WEAPON_WOODEN_SWORD = 0;
