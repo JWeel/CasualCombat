@@ -2,7 +2,7 @@
 
 <sub>Joseph Weel, 10321624, Universiteit van Amsterdam</sub>
 
-CasualCombat is an app for a game of turn-based combat.
+Casual Combat is an app for a game of turn-based combat.
 
 *Minimum viable product*
 
@@ -28,7 +28,8 @@ these games, including:
 The CasualCombat app should handle all of the first seven points, but may seem somewhat stale
 until it also handles the four additional points. However, the app will not have reached
 its design goal unless it also features quick combat, which means that
-* Individual fights should not have to take long
+* Individual fights should not have to take very long
+* After one fight, hopping to the next is just one button press away
 
 
 *Framework*
