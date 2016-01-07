@@ -2,7 +2,7 @@
 
 <sub>Joseph Weel, 10321624, Universiteit van Amsterdam</sub>
 
-CozyCombat is an app for a game of turn-based combat.
+CasualCombat is an app for a game of turn-based combat.
 
 *Minimum viable product*
 
@@ -25,7 +25,7 @@ these games, including:
 * Items and gear can be bought in shops in-between fights
 * There are different types of player characters and opponent characters, each with different strengths and weaknesses
 
-The CozyCombat app should handle all of the first seven points, but may seem somewhat stale
+The CasualCombat app should handle all of the first seven points, but may seem somewhat stale
 until it also handles the four additional points. However, the app will not have reached
 its design goal unless it also features quick combat, which means that
 * Individual fights should not have to take long
@@ -54,6 +54,46 @@ Apart from these activities, there are other classes :
 * Move - this is an action that a Combatant uses. It affects the skill values of other Combatants (usually the "health points")
 * Item - this is either a usable item in combat (which means it is linked to a certain Move), or an item which increases the skill values of a PlayerCharacter for as long as they have equipped it in-between fights.
 * Game - this class handles the state of the game. It keeps track of the "health points" of all combatants, and handles their actions one by one (turn-based).
+
+
+The app works by having a user choose a character and then clicking a Play button. This takes
+them to the PlayPage where a Game object is created that creates a PlayerCharacter object for the user
+and Foe objects for the opponents. It then waits for input from the user (who can press buttons that 
+correspond to various actions at this time), and then handles what happens to the foes and the player character
+as a result of these actions. For example, if there is an action where a PlayerCharacter attacks a Foe, it will check
+the skill values of both, and the Item objects that are linked to the PlayerCharacter, and calculates how much "damage"
+is dealt to the Foe (how many health points can be subtracted). It sends a report of what happens to the Log, which is a TextView at the bottom of the PlayPage,
+which must be touched in order to head to further messages. Once there are no more new messages, the user
+can press one of the buttons again, assuming their character has not died (health points == 0). If the player character or all foes
+have died, then, once all messages in the log have been traversed, the Game prepares the next Activity.
+
+On the RestPage a user can click on buttons to restore their health at the cost of "money", which they earn at the
+end of combat (should they win). They can also buy items or gear with other buttons. There is also a button where a user
+can save their progress, which sends data to the SharedPreferences. They can then start a new fight, which sends the user to
+another PlayPage with a new Game object, or exit, returning to the MenuPage.
+
+Alternatively, should the player character have been defeated, the user is shown a screen of their defeat, and they can try again,
+which recreates the Game object and PlayPage, or return to the MenuPage.
+
+Actions that Combatants can perform are Move objects that are stored in ArrayLists. Combatants
+can choose from their ArrayList what Move to use, but if they require "magic points" and they do not have
+enough, then they cannot use that Move. The user will have a scrollable ListView with every item corresponding
+to a usable Move. The user gets a similar ListView for their usable items.
+
+Templates for Foe instances can be saved as constant int arrays, with each index of the array
+corresponding to a certain skill value. The ArrayList of Moves can be added using an easily
+modifiable switch case in some initialization method. The default templates of PlayerCharacters
+will work similarly.
+
+When a user wants to start a new game with a new player character, then they will get a popup window
+where they can enter a name. Perhaps a user can use an image on their phone as an icon in
+a ImageView next to the player character.
+
+Another look at the separation of interface and data provider in PlayPage activity:
+* Game gets Moves from user input and computer choice (pseudo-random or basic AI), and calculates
+the effects on characters. It affects a linked PlayerCharacter object and Foe objects, and sends
+messages to an object that keeps track of strings which is linked to the PlayPage (perhaps an ArrayList).
+The TextView in the ArrayList then updates text based on that log whenever a user presses a button.
 
 
 ![](doc/designMenu.png)
