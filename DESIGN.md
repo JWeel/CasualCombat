@@ -56,4 +56,4 @@ Apart from these activities, there are other classes :
 * Game - this class handles the state of the game. It keeps track of the "health points" of all combatants, and handles their actions one by one (turn-based).
 
 
-![](doc/menu.png) ![](doc/play.png)
+![](doc/designMenu.png)
