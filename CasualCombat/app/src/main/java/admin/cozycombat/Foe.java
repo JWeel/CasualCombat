@@ -17,6 +17,8 @@ public class Foe extends Combatant {
     private int money;
     private String name;
 
+    private Move move;
+
     private ArrayList<Integer> spells;
 
     public static final int GOBLIN = 0;
@@ -31,7 +33,7 @@ public class Foe extends Combatant {
                 this.currentMagic = maxMagic;
                 this.strength = 2;
                 this.defense = 2;
-                this.speed = 2;
+                this.speed = 6;
                 this.name = "GOBLIN";
                 this.level = 0;
                 this.money = 0;
@@ -53,12 +55,24 @@ public class Foe extends Combatant {
     }
 
     @Override
-    void setHealth(int damage){
+    Move getMove(){
+        return this.move;
+    }
+    @Override
+    void setMove(Move m){
+        this.move = m;
+    }
+
+    @Override
+    boolean isFoe(){ return true; }
+
+    @Override
+    void lowerHealth(int damage){
         this.currentHealth -= damage;
         if (currentHealth < 0) currentHealth = 0;
     }
     @Override
-    void setMagic(int cost){
+    void lowerMagic(int cost){
         this.currentMagic -= cost;
         if (currentMagic < 0) currentMagic = 0;
     }

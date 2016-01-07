@@ -53,7 +53,7 @@ Apart from these activities, there are other classes :
 * PlayerCharacter - extends Combatant. This is the character that is controlled by the user. Like the Foe, it will have a collection of usable actions, but it will also have usable items and gear. There may also be templates for various PlayerCharacters.
 * Move - this is an action that a Combatant uses. It affects the skill values of other Combatants (usually the "health points")
 * Item - this is either a usable item in combat (which means it is linked to a certain Move), or an item which increases the skill values of a PlayerCharacter for as long as they have equipped it in-between fights.
-* Game - this class handles the state of the game. It keeps track of the "health points" of all combatants, and handles their actions one by one (turn-based).
+* Game - this class handles the state of the game. It keeps track of the "health points" of all combatants, and handles their actions one by one (turn-based). It also contains a LinkedList<String> which is a Log of events that happened during combat. These are accessed by the interface in PlayPage and displayed.
 
 
 The app works by having a user choose a character and then clicking a Play button. This takes
@@ -90,10 +90,16 @@ where they can enter a name. Perhaps a user can use an image on their phone as a
 a ImageView next to the player character.
 
 Another look at the separation of interface and data provider in PlayPage activity:
-* Game gets Moves from user input and computer choice (pseudo-random or basic AI), and calculates
-the effects on characters. It affects a linked PlayerCharacter object and Foe objects, and sends
-messages to an object that keeps track of strings which is linked to the PlayPage (perhaps an ArrayList).
-The TextView in the ArrayList then updates text based on that log whenever a user presses a button.
+* Once a user has picked a move for their player character, the game will generate moves for all
+Foe objects (pseudo-random or basic AI). It will then put all Combatants into a list that is sorted
+by their "speed" values, and will then handle each Combatant's move, with the Combatants with
+higher speed going first. The target of an action is stored in the Move object, as well as what
+values of the target are affected (usually health). At this point a message is sent to a Log, which
+can be picked up by the PlayPage interface. The Game object continues and checks if the Combatant has
+been defeated (zero health points left), which can prompt another message to the Log. After this check the
+remaining Combatants' Moves are handled. Once all Combatants have had a Move, a "turn" ends, and the
+user can select a new action (if they haven't died). Getting new information on the display in the PlayPage
+interface (by "popping" it from the Game LinkedList log) as well as picking actions are done via touching various Views.
 
 A look at the interface (arbitrary background colours):
 

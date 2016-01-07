@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class PlayPage extends AppCompatActivity {
 
@@ -26,7 +27,11 @@ public class PlayPage extends AppCompatActivity {
 
     private boolean selectingFoe = false;
     private boolean selectingMove = false;
-    private Move currentMove = null;
+
+    private LinkedList<String> log;
+    private ArrayList<TextView> foeTextViews;
+
+    Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +41,15 @@ public class PlayPage extends AppCompatActivity {
         resizeButtons();
         prepareLists();
 
-        // todo get pc and foe
+        // todo get pc from something
         PlayerCharacter playerCharacter = new PlayerCharacter(PlayerCharacter.BRAWLER);
-        ArrayList<Foe> foes = new ArrayList<>();
-        foes.add(new Foe(Foe.GOBLIN));
-        foes.add(new Foe(Foe.GOBLIN));
 
-        displayPlayer(playerCharacter);
-        displayFoes(foes);
+        game = new Game(playerCharacter);
+
+        displayPlayer(game.getPlayerCharacter());
+        displayFoes(game.getFoes());
+
+        log = new LinkedList<>();
     }
 
     //
@@ -86,6 +92,9 @@ public class PlayPage extends AppCompatActivity {
         itemParams.setMargins(24, topMargin, 24, 0);
         itemParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         itemListView.setLayoutParams(itemParams);
+
+        spellListView.setVisibility(View.INVISIBLE);
+        itemListView.setVisibility(View.INVISIBLE);
     }
 
     //
@@ -115,6 +124,7 @@ public class PlayPage extends AppCompatActivity {
     private void displayFoes(ArrayList<Foe> foes){
         LinearLayout layout = (LinearLayout)findViewById(R.id.foeLayout);
         float equalWeight = layout.getWeightSum() / foes.size();
+        foeTextViews = new ArrayList<>();
 
         for (int i = 0; i < foes.size(); i++){
             TextView foeTextView = new TextView(this);
@@ -122,10 +132,27 @@ public class PlayPage extends AppCompatActivity {
             params.setMargins(2,0,2,0);
             params.weight = equalWeight;
             foeTextView.setLayoutParams(params);
-            foeTextView.setText(foes.get(i).getName());
+            foeTextView.setText(foes.get(i).getName() + "\n" + foes.get(i).getHealth());
             foeTextView.setBackgroundColor(Color.parseColor("#345678"));
             foeTextView.setGravity(Gravity.CENTER);
+
+            final int targetId = i;
+            foeTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (selectingFoe) {
+                        if (game.getFoes().get(targetId).isDead()) {
+                            // TODO tell player can't target dead? or just ignore
+                        } else {
+                            game.getPlayerCharacter().getMove().setTarget(targetId);
+                            selectingFoe = false;
+                        }
+                    }
+                }
+            });
+
             layout.addView(foeTextView);
+            foeTextViews.add(foeTextView);
         }
     }
 
@@ -133,7 +160,7 @@ public class PlayPage extends AppCompatActivity {
     public void attackClick(View attackButton){
         // set that now enemy can be selected
         selectingFoe = true;
-        currentMove = new Move(Move.BASIC_ATTACK);
+        game.getPlayerCharacter().setMove(new Move(Move.BASIC_ATTACK));
         //
         // set views of other moves to disable (greyed out)
         // also requires a cancel button...............................
@@ -148,21 +175,65 @@ public class PlayPage extends AppCompatActivity {
 
     //
     public void itemClick(View itemButton){
+        // select item
         selectingMove = true;
     }
 
     //
     public void defendClick(View defendButton){
-        currentMove = new Move(Move.BASIC_DEFEND);
+        game.getPlayerCharacter().setMove(new Move(Move.BASIC_DEFEND));
         // prepare log?
     }
 
     //
-    public void logClick(View logText){
+    public void logClick(View logTextView) {
         // handle move
 
         // write string
 
+        // maybe check if clickable. final click when isEmpty should only be once per turn
+        if (pickingMove()){
+
+        } else {
+            String newLogMessage = game.pop();
+            if (newLogMessage.isEmpty()) {
+                findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
+                // TODO advance game
+
+                game.advance();
+
+                updateFoeViews();
+
+            } else {
+                log.add(newLogMessage);
+                if (log.size() > 8) log.removeFirst();
+                String logText = "";
+                for (int i = 0; i < log.size(); i++) {
+                    logText += log.get(i) + "\n";
+                }
+                ((TextView) logTextView).setText(logText + " " + log.size());
+                System.out.println(logText);
+            }
+        }
+    }
+
+    //
+    private void updateFoeViews(){
+        // TODO consider an alternative:
+        // reset the foetextview array list and call the displayfoes again
+        // this redoes all the listeners and stuff and basically removes a targetable foe
+        //ArrayList<TextView> newFoeTextViews = new ArrayList<>();
+
+        for (int i = 0; i < foeTextViews.size(); i++){
+            foeTextViews.get(i).setText(game.getFoes().get(i).getName() + "\n" + game.getFoes().get(i).getHealth());
+            if (game.getFoes().get(i).isDead()) foeTextViews.get(i).setBackgroundColor(Color.parseColor("#332222"));
+        }
+    }
+
+    //
+    private boolean pickingMove(){
+        return false;
+        //return (game.getPlayerCharacter().getMove() == null);
     }
 
     //
@@ -171,7 +242,7 @@ public class PlayPage extends AppCompatActivity {
         if (selectingFoe) {
             // TODO maybe also allow this action by pressing the button again
             selectingFoe = false;
-            currentMove = null;
+            game.getPlayerCharacter().setMove(null);
             // enable other buttons again
         } else if (selectingMove) {
             // TODO maybe also allow this action by pressing the button again

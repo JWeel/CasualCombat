@@ -18,6 +18,8 @@ public class PlayerCharacter extends Combatant {
 
     String name;
 
+    private Move move;
+
     private ArrayList<Integer> spells;
     private ArrayList<Integer> items;
 
@@ -85,14 +87,25 @@ public class PlayerCharacter extends Combatant {
         }
     }
 
+    @Override
+    Move getMove(){
+        return this.move;
+    }
+    @Override
+    void setMove(Move m){
+        this.move = m;
+    }
 
     @Override
-    void setHealth(int damage){
+    boolean isFoe(){ return false; }
+
+    @Override
+    void lowerHealth(int damage){
         this.currentHealth -= damage;
         if (currentHealth < 0) currentHealth = 0;
     }
     @Override
-    void setMagic(int cost){
+    void lowerMagic(int cost){
         this.currentMagic -= cost;
         if (currentMagic < 0) currentMagic = 0;
     }

@@ -10,6 +10,8 @@ public class Move {
     private int speed;
     private int range;
 
+    private int target;
+
     // structure is id, damage, cost, strength, defense, speed, range
     static final int[] BASIC_ATTACK     = {0, 1, 0, 0, 0, 0, 1};
     static final int[] BASIC_DEFEND     = {1, 0, 0, 0, 1, 0, 0};
@@ -25,6 +27,9 @@ public class Move {
         this.speed = moveArray[5];
         this.range = moveArray[6];
     }
+
+    void setTarget(int t) { this.target = t; }
+    int getTarget() { return this.target; }
 
     int getId() {
         return this.id;
