@@ -1,5 +1,7 @@
 package admin.fastfight;
 
+import java.util.ArrayList;
+
 public class PlayerCharacter extends Combatant {
 
     private int maxHealth;
@@ -15,6 +17,9 @@ public class PlayerCharacter extends Combatant {
     private int money;
 
     String name;
+
+    private ArrayList<Integer> spells;
+    private ArrayList<Integer> items;
 
     Item weapon;
     Item armor;
@@ -38,6 +43,9 @@ public class PlayerCharacter extends Combatant {
                 this.defense = 3;
                 this.speed = 2;
                 this.name = "BRAWLER";
+                this.spells = new ArrayList<Integer>();
+                this.spells.add(2);
+                this.items = new ArrayList<Integer>();
                 break;
             case ARCHER:
                 this.maxHealth = 8;
@@ -48,6 +56,9 @@ public class PlayerCharacter extends Combatant {
                 this.defense = 2;
                 this.speed = 4;
                 this.name = "ARCHER";
+                this.spells = new ArrayList<Integer>();
+                this.spells.add(2);
+                this.items = new ArrayList<Integer>();
                 break;
             case MAGE:
                 this.maxHealth = 6;
@@ -58,6 +69,9 @@ public class PlayerCharacter extends Combatant {
                 this.defense = 1;
                 this.speed = 3;
                 this.name = "MAGE";
+                this.spells = new ArrayList<Integer>();
+                this.spells.add(2);
+                this.items = new ArrayList<Integer>();
                 break;
             default:
                 this.maxHealth = 0;
@@ -125,4 +139,7 @@ public class PlayerCharacter extends Combatant {
     int getMoney(){ return this.money; }
     @Override
     String getName(){ return this.name; }
+    @Override
+    ArrayList<Integer> getSpells() { return this.spells; }
+    ArrayList<Integer> getItems() { return this.items; }
 }

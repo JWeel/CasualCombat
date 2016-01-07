@@ -1,5 +1,7 @@
 package admin.fastfight;
 
+import java.util.ArrayList;
+
 public class Foe extends Combatant {
 
     private int maxHealth;
@@ -15,6 +17,7 @@ public class Foe extends Combatant {
     private int money;
     private String name;
 
+    private ArrayList<Integer> spells;
 
     public static final int GOBLIN = 0;
 
@@ -32,6 +35,7 @@ public class Foe extends Combatant {
                 this.name = "GOBLIN";
                 this.level = 0;
                 this.money = 0;
+                this.spells = new ArrayList<Integer>();
                 break;
             default:
                 this.level = 0;
@@ -44,6 +48,7 @@ public class Foe extends Combatant {
                 this.defense = 0;
                 this.speed = 0;
                 this.name = "";
+                this.spells = new ArrayList<Integer>();
         }
     }
 
@@ -78,4 +83,6 @@ public class Foe extends Combatant {
     int getMoney() { return this.money; }
     @Override
     String getName() { return this.name; }
+    @Override
+    ArrayList<Integer> getSpells() { return this.spells; }
 }

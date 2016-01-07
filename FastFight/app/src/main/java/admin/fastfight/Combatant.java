@@ -1,5 +1,7 @@
 package admin.fastfight;
 
+import java.util.ArrayList;
+
 public abstract class Combatant {
     abstract int getMaxHealth();
     abstract int getMaxMagic();
@@ -14,4 +16,6 @@ public abstract class Combatant {
 
     abstract void setHealth(int damage);
     abstract void setMagic(int cost);
+
+    abstract ArrayList<Integer> getSpells();
 }
