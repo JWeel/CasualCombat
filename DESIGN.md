@@ -95,5 +95,6 @@ the effects on characters. It affects a linked PlayerCharacter object and Foe ob
 messages to an object that keeps track of strings which is linked to the PlayPage (perhaps an ArrayList).
 The TextView in the ArrayList then updates text based on that log whenever a user presses a button.
 
+A look at the interface (arbitrary background colours):
 
 ![](doc/designMenu.png)
