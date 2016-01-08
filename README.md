@@ -4,7 +4,7 @@
 
 The goal of this project is to create an app for a turn based combat game.
 
-*App still needs a name.*
+Casual Combat
 
 This will be a game app. Inspired by old school RPG games where a protagonist
 has to fight foes in order to progress their story, the turn based combat of these
@@ -15,6 +15,9 @@ Here is a list of potential features:
 * Enemies are controlled by the computer
 * Individual fights can be short
 * Save progress in-between fights
+
+The design goal of this app is for everything to be quick and simple (hence "Casual").
+Combat should not have to take very long, and can be gotten into very easily and quickly.
 
 I have not seen an app with standalone turn based rpg combat, so this will be a new
 experience for users.
