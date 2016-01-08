@@ -4,7 +4,7 @@
 
 Temporary file to show pictures of emulation because no access to VGA cable
 
-![](doc/presentation1.png)
-![](doc/presentation2.png)
-![](doc/presentation3.png)
-![](doc/presentation4.png)
+![](presentation1.png)
+![](presentation2.png)
+![](presentation3.png)
+![](presentation4.png)
