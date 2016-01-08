@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -105,7 +106,8 @@ public class PlayPage extends AppCompatActivity {
         TextView charName = (TextView) findViewById(R.id.charName);
         charName.setText(playerCharacter.getName());
 
-        ImageView charHealth = (ImageView) findViewById(R.id.charHealth);
+        ProgressBar charHealth = (ProgressBar) findViewById(R.id.charHealth);
+        charHealth.setMax(game.getPlayerCharacter().getMaxHealth());
         ImageView charMagic = (ImageView) findViewById(R.id.charMagic);
 
         TextView charLevel = (TextView) findViewById(R.id.charLevel);
@@ -136,6 +138,7 @@ public class PlayPage extends AppCompatActivity {
             foeTextView.setText(foes.get(i).getName() + "\n" + foes.get(i).getHealth());
             foeTextView.setBackgroundColor(Color.parseColor("#345678"));
             foeTextView.setGravity(Gravity.CENTER);
+            foeTextView.setTextColor(Color.parseColor("#FFFFFF"));
 
             final int targetId = i;
             foeTextView.setOnClickListener(new View.OnClickListener() {
@@ -241,6 +244,10 @@ public class PlayPage extends AppCompatActivity {
             foeTextViews.get(i).setText(game.getFoes().get(i).getName() + "\n" + game.getFoes().get(i).getHealth());
             if (game.getFoes().get(i).isDead()) foeTextViews.get(i).setBackgroundColor(Color.parseColor("#332222"));
         }
+
+        // TODO temp
+        ProgressBar charHealth = (ProgressBar) findViewById(R.id.charHealth);
+        charHealth.setProgress(game.getPlayerCharacter().getHealth());
     }
 
     //

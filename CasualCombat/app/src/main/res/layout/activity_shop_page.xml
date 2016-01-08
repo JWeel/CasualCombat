@@ -1,16 +1,121 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".ShopPage">
+    android:paddingLeft="8dip"
+    android:paddingRight="8dip"
+    android:paddingTop="8dip"
+    android:paddingBottom="8dip"
+    tools:context=".ShopPage"
+    android:orientation="vertical"
+    android:weightSum="5"
+    android:background="#EEEEEE"
+    >
 
-    <TextView android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:padding="8dip"
+        >
+        <TextView
+            android:text="Save Progress"
+            android:layout_width="160dip"
+            android:layout_height="50dip"
+            android:background="#459785"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/saveButton"
+            />
+        <TextView
+            android:text="Next Battle"
+            android:layout_width="160dip"
+            android:layout_height="50dip"
+            android:background="#459785"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/newButton"
+            />
+        <Space
+            android:layout_width="2dip"
+            android:layout_height="50dip"
+            android:layout_above="@id/saveButton"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/gearMiddle"
+            />
+        <ImageView
+            android:layout_width="90dip"
+            android:layout_height="50dip"
+            android:layout_above="@id/saveButton"
+            android:layout_toLeftOf="@id/gearMiddle"
+            android:layout_toStartOf="@id/gearMiddle"
+            android:background="#AAAAAA"
+            android:id="@+id/armorIcon"
+            />
+        <TextView
+            android:layout_width="60dip"
+            android:layout_height="50dip"
+            android:typeface="monospace"
+            android:layout_above="@id/saveButton"
+            android:layout_toLeftOf="@id/armorIcon"
+            android:layout_toStartOf="@id/armorIcon"
+            android:background="#AAAAAA"
+            android:id="@+id/weaponText"
+            />
+        <ImageView
+            android:layout_width="90dip"
+            android:layout_height="50dip"
+            android:layout_above="@id/saveButton"
+            android:layout_toLeftOf="@id/weaponText"
+            android:layout_toStartOf="@id/weaponText"
+            android:background="#AAAAAA"
+            android:id="@+id/weaponIcon"
+            />
+        <TextView
+            android:layout_width="60dip"
+            android:layout_height="50dip"
+            android:typeface="monospace"
+            android:layout_above="@id/saveButton"
+            android:layout_toRightOf="@id/gearMiddle"
+            android:layout_toEndOf="@id/gearMiddle"
+            android:background="#AAAAAA"
+            android:id="@+id/armorText"
+            />
+        <ImageView
+            android:layout_width="90dip"
+            android:layout_height="50dip"
+            android:layout_above="@id/saveButton"
+            android:layout_toRightOf="@id/armorText"
+            android:layout_toEndOf="@id/armorText"
+            android:background="#AAAAAA"
+            android:id="@+id/bootsIcon"
+            />
+        <TextView
+            android:layout_width="60dip"
+            android:layout_height="50dip"
+            android:typeface="monospace"
+            android:layout_above="@id/saveButton"
+            android:layout_toRightOf="@id/bootsIcon"
+            android:layout_toEndOf="@id/bootsIcon"
+            android:background="#AAAAAA"
+            android:id="@+id/bootsText"
+            />
 
-</RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="3"
+        android:padding="8dip"
+        android:background="#888888"
+        >
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -23,6 +23,7 @@ public class Game {
         foes = new ArrayList<>();
         foes.add(new Foe(Foe.GOBLIN));
         foes.add(new Foe(Foe.GOBLIN));
+        //foes.add(new Foe(Foe.GOBLIN));
 
         log = new LinkedList<>();
     }
