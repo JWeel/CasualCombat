@@ -22,11 +22,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="admin.readpub.ShopPage"
+            android:name=".ShopPage"
             android:label="@string/title_activity_shop_page" >
         </activity>
         <activity
-            android:name="admin.readpub.LeaderboardPage"
+            android:name="LeaderboardPage"
             android:label="@string/title_activity_leaderboard_page" >
         </activity>
     </application>

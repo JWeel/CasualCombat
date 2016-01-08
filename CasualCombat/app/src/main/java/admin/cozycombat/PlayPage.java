@@ -1,5 +1,6 @@
 package admin.cozycombat;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -187,32 +188,44 @@ public class PlayPage extends AppCompatActivity {
 
     //
     public void logClick(View logTextView) {
-        // handle move
 
-        // write string
+        //
+        if (game.gameOver()){
 
-        // maybe check if clickable. final click when isEmpty should only be once per turn
-        if (pickingMove()){
+            // should print some more messages first
+            // who died (pc or some foe)
+            // if pc wins, 2 messages (1 for money and 1 for level up)
+            // really this method should just get a message from Game and handle the textview
+            // so gameOver() should be when pc or foe are dead AND no more log
+
+            Intent newPage = new Intent(this, ShopPage.class);
+            startActivity(newPage);
 
         } else {
-            String newLogMessage = game.pop();
-            if (newLogMessage.isEmpty()) {
-                findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
-                // TODO advance game
 
-                game.advance();
-
-                updateFoeViews();
+            // maybe check if clickable. final click when isEmpty should only be once per turn
+            if (pickingMove()) {
 
             } else {
-                log.add(newLogMessage);
-                if (log.size() > 8) log.removeFirst();
-                String logText = "";
-                for (int i = 0; i < log.size(); i++) {
-                    logText += log.get(i) + "\n";
+                String newLogMessage = game.pop();
+                if (newLogMessage.isEmpty()) {
+                    findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
+                    // TODO advance game
+
+                    game.advance();
+
+                    updateFoeViews();
+
+                } else {
+                    log.add(newLogMessage);
+                    if (log.size() > 8) log.removeFirst();
+                    String logText = "";
+                    for (int i = 0; i < log.size(); i++) {
+                        logText += log.get(i) + "\n";
+                    }
+                    ((TextView) logTextView).setText(logText + " " + log.size());
+                    System.out.println(logText);
                 }
-                ((TextView) logTextView).setText(logText + " " + log.size());
-                System.out.println(logText);
             }
         }
     }

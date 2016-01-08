@@ -28,10 +28,36 @@ public class Game {
     }
 
     //
+    // log PlayPage log Game
+    //  a            a uses m on b
+    //  b            m does x damage
+    //  c            b dies!
+    //  d            c uses m on a
+    //
+    //
+    // maybe in log keep track of turn and event
+    // so 1.1 a does b! is turn 1 event 1
+    // 3.6 c dies! would be turn 3 event 6
+    // two ints,
+    // could also do it with timestamps
+    // either using current time or by keep track of how long battle takes, and printing that
+    //
+    // whatever the way, the log in game should not be popped unless size is over some X (8?)
+    // PlayPage pops also whenever it is over 8
+    // but PlayPage should be pressable whenever, removing former messages.
+    //
+    // perhaps have Game have just one message always
+    // using logClick gets that message (if any, if not it just lowers all messages, or hides
+    // the press to continue textview) and adds it to linkedlist
+
+
+
+
+    //
     // TODO alternative:
     // advance checks how game currently is and then proceeds based on that
     // so if there is a combatants list, then it does ONE move for the first combatant in the list
-    // it removes a combatant conce they have done their move
+    // it removes a combatant once they have done their move
     // if there is no combatants list, but the playercharacter has a move,
     // then it creates the combatants, sorts, and does the first move
     // another alternative is that before the "hits for x damage", a log that says
@@ -52,7 +78,9 @@ public class Game {
         // sort combatants by speed
         ArrayList<Combatant> combatants = new ArrayList<>();
         combatants.add(playerCharacter);
-        for (Foe foe : foes) combatants.add(foe);
+        for (Foe foe : foes) {
+            if (!foe.isDead()) combatants.add(foe);
+        }
         System.out.println(combatants);
         Collections.sort(combatants);
         System.out.println(combatants);
@@ -90,6 +118,16 @@ public class Game {
 
     void handleMove(){
 
+    }
+
+    //
+    boolean gameOver(){
+        // TODO also requires no messages left to toggle from log
+        if (playerCharacter.isDead()) return true;
+        for (Foe foe : foes) {
+            if (!foe.isDead()) return false;
+        }
+        return true;
     }
 
     //

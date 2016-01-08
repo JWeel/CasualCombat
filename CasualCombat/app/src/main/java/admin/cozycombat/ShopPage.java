@@ -1,4 +1,4 @@
-package admin.readpub;
+package admin.cozycombat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class ShopPage extends AppCompatActivity {
+
+    // TODO
+    // save button greys out (and disabled) after being pressed.
+    // maybe too expensive buttons also greyed out.
+    // after new purchase save button is enabled again.
+    // never show weaker gear, since gear is replaced by what is bought
+
+    // maybe the three columns of buyable things corresponds to spells/items/gear
+    // so for each 2 are buyable after each fight
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

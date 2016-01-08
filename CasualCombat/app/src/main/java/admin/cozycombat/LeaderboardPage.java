@@ -1,4 +1,4 @@
-package admin.readpub;
+package admin.cozycombat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

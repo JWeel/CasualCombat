@@ -8,9 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import admin.readpub.LeaderboardPage;
-
 public class MenuPage extends AppCompatActivity {
+
+    // TODO
+    // alternative startup would be having a set amount of points that can be distributed
+    // over various skills
+    // this also then on ShopPage
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
