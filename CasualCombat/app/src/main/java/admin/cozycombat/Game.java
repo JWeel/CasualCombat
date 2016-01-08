@@ -28,6 +28,15 @@ public class Game {
     }
 
     //
+    // TODO alternative:
+    // advance checks how game currently is and then proceeds based on that
+    // so if there is a combatants list, then it does ONE move for the first combatant in the list
+    // it removes a combatant conce they have done their move
+    // if there is no combatants list, but the playercharacter has a move,
+    // then it creates the combatants, sorts, and does the first move
+    // another alternative is that before the "hits for x damage", a log that says
+    // a attacks b! or a uses y on b! , then the next log sees the damage be dealt and the textview updated
+    // so then also a check before combatants move to see if combatant dies, in which case log it and remove from list
     void advance(){
 
         // TODO make way of checking if can advance prettier

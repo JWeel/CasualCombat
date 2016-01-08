@@ -375,6 +375,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:text="LEADERBOARD"
+        android:onClick="leaderboardClick"
         android:id="@+id/leaderButton"
         />
 
