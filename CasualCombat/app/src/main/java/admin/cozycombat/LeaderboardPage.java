@@ -8,6 +8,7 @@ import android.view.MenuItem;
 public class LeaderboardPage extends AppCompatActivity {
 
     // TODO possibility for login online to share scores
+    // maybe local and global
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

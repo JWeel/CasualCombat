@@ -12,6 +12,8 @@ public abstract class Combatant implements Comparable<Combatant> {
     abstract int getStrength();
     abstract int getDefense();
     abstract int getSpeed();
+    abstract int getWillpower();
+    abstract int getResistance();
     abstract int getLevel();
     abstract int getMoney();
     abstract String getName();

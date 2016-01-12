@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 public class MenuPage extends AppCompatActivity {
 
@@ -14,6 +15,8 @@ public class MenuPage extends AppCompatActivity {
     // alternative startup would be having a set amount of points that can be distributed
     // over various skills
     // this also then on ShopPage
+
+    PlayerCharacter playerCharacter;
 
 
     @Override
@@ -25,12 +28,79 @@ public class MenuPage extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("PREFS", MODE_PRIVATE);
 
+        ((Button) findViewById(R.id.readyButton)).setText("NEW");
+
+
+
+
+
+
     }
 
     //
-    public void startClick(View startButton){
-        Intent newPage = new Intent(this, PlayPage.class);
-        startActivity(newPage);
+    public void readyClick(View readyButton){
+
+        if (playerCharacter != null && playerCharacter.finishedLevelUp()) {
+
+            // check if hero name already exists in database
+
+            Intent newPage = new Intent(this, PlayPage.class);
+            startActivity(newPage);
+        } else {
+
+            ((Button) readyButton).setText("Start");
+            readyButton.setEnabled(false);
+
+
+            // prepare creatable character
+            playerCharacter = new PlayerCharacter();
+
+
+
+        }
+    }
+
+    //
+    public void addHealthClick(View addHealthButton){
+        playerCharacter.subtractLevelPoint();
+        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
+        // hide level up buttons TODO
+    }
+
+    //
+    public void addMagicClick(View addMagicButton){
+        playerCharacter.subtractLevelPoint();
+        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
+    }
+
+    //
+    public void addStrengthClick(View addStrengthButton){
+        playerCharacter.subtractLevelPoint();
+        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
+    }
+
+    //
+    public void addWillpowerClick(View addWillpowerButton){
+        playerCharacter.subtractLevelPoint();
+        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
+    }
+
+    //
+    public void addDefenseClick(View addDefenseButton){
+        playerCharacter.subtractLevelPoint();
+        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
+    }
+
+    //
+    public void addResistanceClick(View addResistanceButton){
+        playerCharacter.subtractLevelPoint();
+        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
+    }
+
+    //
+    public void addSpeedClick(View addSpeedButton){
+        playerCharacter.subtractLevelPoint();
+        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
     }
 
     //

@@ -10,15 +10,19 @@ public class PlayerCharacter extends Combatant {
     private int currentMagic;
 
     private int strength;
+    private int willpower;
     private int defense;
+    private int resistance;
     private int speed;
 
     private int level;
     private int money;
 
-    String name;
+    private String name;
 
     private Move move;
+
+    private int levelPoints;
 
     private ArrayList<Integer> spells;
     private ArrayList<Integer> items;
@@ -27,64 +31,43 @@ public class PlayerCharacter extends Combatant {
     Item armor;
     Item boots;
 
-    public static final byte BRAWLER = 0;
-    public static final byte ARCHER = 1;
-    public static final byte MAGE = 2;
+    static final int NO_TARGET = -2;
+    static final int TARGET_SELF = -1;
 
-    PlayerCharacter(byte type){
+    PlayerCharacter(){
         this.level = 0;
         this.money = 0;
+        this.levelPoints = 10;
+        this.maxHealth = 6;
+        this.currentHealth = maxHealth;
+        this.maxMagic = 3;
+        this.currentMagic = maxMagic;
+        this.strength = 1;
+        this.defense = 1;
+        this.speed = 1;
+        this.willpower = 1;
+        this.resistance = 1;
+        this.name = "Monsieur";
+        this.spells = new ArrayList<Integer>();
+        this.spells.add(2);
+        this.items = new ArrayList<Integer>();
+    }
 
-        switch(type){
-            case BRAWLER:
-                this.maxHealth = 10;
-                this.currentHealth = maxHealth;
-                this.maxMagic = 3;
-                this.currentMagic = maxMagic;
-                this.strength = 5;
-                this.defense = 3;
-                this.speed = 2;
-                this.name = "BRAWLER";
-                this.spells = new ArrayList<Integer>();
-                this.spells.add(2);
-                this.items = new ArrayList<Integer>();
-                break;
-            case ARCHER:
-                this.maxHealth = 8;
-                this.currentHealth = maxHealth;
-                this.maxMagic = 5;
-                this.currentMagic = maxMagic;
-                this.strength = 4;
-                this.defense = 2;
-                this.speed = 4;
-                this.name = "ARCHER";
-                this.spells = new ArrayList<Integer>();
-                this.spells.add(2);
-                this.items = new ArrayList<Integer>();
-                break;
-            case MAGE:
-                this.maxHealth = 6;
-                this.currentHealth = maxHealth;
-                this.maxMagic = 10;
-                this.currentMagic = maxMagic;
-                this.strength = 2;
-                this.defense = 1;
-                this.speed = 3;
-                this.name = "MAGE";
-                this.spells = new ArrayList<Integer>();
-                this.spells.add(2);
-                this.items = new ArrayList<Integer>();
-                break;
-            default:
-                this.maxHealth = 0;
-                this.currentHealth = 0;
-                this.maxMagic = 0;
-                this.currentMagic = 0;
-                this.strength = 0;
-                this.defense = 0;
-                this.speed = 0;
-                this.name = "";
-        }
+    // returns true if a player character has both a move and a target
+    boolean isReady(){
+        if (this.move == null) return false;
+        if (this.move.getId() == Move.BASIC_DEFEND[Move.INDEX_ID]) return true;
+        return this.move.getTarget() != NO_TARGET;
+    }
+
+    void subtractLevelPoint(){
+        this.levelPoints--;
+    }
+    int getLevelPoints(){
+        return this.levelPoints;
+    }
+    boolean finishedLevelUp(){
+        return this.levelPoints == 0;
     }
 
     @Override
@@ -131,12 +114,28 @@ public class PlayerCharacter extends Combatant {
         return this.strength + weaponBonus;
     }
     @Override
+    int getWillpower() {
+        int weaponBonus = 0;
+        if (this.weapon != null) {
+
+        }
+        return this.willpower + weaponBonus;
+    }
+    @Override
     int getDefense(){
         int armorBonus = 0;
         if (this.armor != null){
 
         }
         return this.defense + armorBonus;
+    }
+    @Override
+    int getResistance() {
+        int armorBonus = 0;
+        if (this.armor != null){
+
+        }
+        return this.resistance + armorBonus;
     }
     @Override
     int getSpeed(){

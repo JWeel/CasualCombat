@@ -2,6 +2,7 @@ package admin.cozycombat;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -24,8 +25,14 @@ public class PlayPage extends AppCompatActivity {
     // TODO
     // click spell button brings up scrollable list over item and defend
     // click item does same but over attack and spell
-    // once attack selected (or spell/item chosen), other three become greyed out, choose enemy
     //
+    // when pressing a button it should highlight, but stop highlight when no longer pressed
+
+    private static final int BUTTON_INDEX_ALL = 0;
+    private static final int BUTTON_INDEX_ATTACK = 1;
+    private static final int BUTTON_INDEX_SPELL = 2;
+    private static final int BUTTON_INDEX_ITEM = 3;
+    private static final int BUTTON_INDEX_DEFEND = 4;
 
     private boolean selectingFoe = false;
     private boolean selectingMove = false;
@@ -33,7 +40,7 @@ public class PlayPage extends AppCompatActivity {
     private LinkedList<String> log;
     private ArrayList<TextView> foeTextViews;
 
-    Game game;
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +51,7 @@ public class PlayPage extends AppCompatActivity {
         prepareLists();
 
         // todo get pc from something
-        PlayerCharacter playerCharacter = new PlayerCharacter(PlayerCharacter.BRAWLER);
+        PlayerCharacter playerCharacter = new PlayerCharacter();
 
         game = new Game(playerCharacter);
 
@@ -52,12 +59,15 @@ public class PlayPage extends AppCompatActivity {
         displayFoes(game.getFoes());
 
         log = new LinkedList<>();
+
+        findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
+
     }
 
     //
     private void resizeButtons(){
         final float scale = getResources().getDisplayMetrics().density;
-        int pixels = (int) (40 * scale + 0.5f);
+        int pixels = (int) (43 * scale + 0.5f);
         int quarterScreenWidth = (int) ((getResources().getDisplayMetrics().widthPixels - pixels) / 4.0);
 
         Button attackButton = (Button) findViewById(R.id.attackButton);
@@ -108,7 +118,10 @@ public class PlayPage extends AppCompatActivity {
 
         ProgressBar charHealth = (ProgressBar) findViewById(R.id.charHealth);
         charHealth.setMax(game.getPlayerCharacter().getMaxHealth());
-        ImageView charMagic = (ImageView) findViewById(R.id.charMagic);
+        charHealth.getProgressDrawable().setColorFilter(Color.parseColor("#00AA00"), PorterDuff.Mode.SRC_IN);
+        ProgressBar charMagic = (ProgressBar) findViewById(R.id.charMagic);
+        charMagic.setMax(game.getPlayerCharacter().getMaxMagic());
+        charMagic.getProgressDrawable().setColorFilter(Color.parseColor("#0055DD"), PorterDuff.Mode.SRC_IN);
 
         TextView charLevel = (TextView) findViewById(R.id.charLevel);
         charLevel.setText("LEVEL " + playerCharacter.getLevel());
@@ -150,6 +163,8 @@ public class PlayPage extends AppCompatActivity {
                         } else {
                             game.getPlayerCharacter().getMove().setTarget(targetId);
                             selectingFoe = false;
+                            findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
+                            disableMoveButons(BUTTON_INDEX_ALL);
                         }
                     }
                 }
@@ -162,35 +177,117 @@ public class PlayPage extends AppCompatActivity {
 
     //
     public void attackClick(View attackButton){
-        // set that now enemy can be selected
-        selectingFoe = true;
-        game.getPlayerCharacter().setMove(new Move(Move.BASIC_ATTACK));
-        //
-        // set views of other moves to disable (greyed out)
-        // also requires a cancel button...............................
-        // although can use the back button for that maybe
+        if (selectingFoe){
+            game.getPlayerCharacter().setMove(null);
+            // restore buttons
+            enableMoveButtons();
+        } else {
+            // set default attack move to player character
+            game.getPlayerCharacter().setMove(new Move(Move.BASIC_ATTACK));
+
+            // set views of other moves to disable (greyed out)
+            disableMoveButons(BUTTON_INDEX_ATTACK);
+        }
+        selectingFoe = !selectingFoe;
     }
 
     //
     public void spellClick(View spellButton){
-        // select spell
-        selectingMove = true;
+        if (selectingMove){
+            game.getPlayerCharacter().setMove(null);
+            // restore buttons
+            enableMoveButtons();
+        } else {
+            // listview
+
+            // set views of other moves to disable (greyed out)
+            disableMoveButons(BUTTON_INDEX_SPELL);
+        }
+        selectingMove = !selectingMove;
     }
 
     //
     public void itemClick(View itemButton){
-        // select item
-        selectingMove = true;
+        if (selectingMove){
+            game.getPlayerCharacter().setMove(null);
+            // restore buttons
+            enableMoveButtons();
+        } else {
+            // listview
+
+            // set views of other moves to disable (greyed out)
+            disableMoveButons(BUTTON_INDEX_ITEM);
+        }
+        selectingMove = !selectingMove;
     }
 
     //
     public void defendClick(View defendButton){
         game.getPlayerCharacter().setMove(new Move(Move.BASIC_DEFEND));
-        // prepare log?
+        game.getPlayerCharacter().getMove().setTarget(PlayerCharacter.TARGET_SELF);
+
+        // set views of other moves to disable (greyed out)
+        disableMoveButons(BUTTON_INDEX_ALL);
+        findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
+    }
+
+    // TODO maybe dont change color, enable does maybe enough
+    // enables all move buttons and restores their background color
+    private void enableMoveButtons(){
+        findViewById(R.id.attackButton).setEnabled(true);
+        findViewById(R.id.attackButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        findViewById(R.id.spellButton).setEnabled(true);
+        findViewById(R.id.spellButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        findViewById(R.id.itemButton).setEnabled(true);
+        findViewById(R.id.itemButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        findViewById(R.id.defendButton).setEnabled(true);
+        findViewById(R.id.defendButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
+    }
+
+    // disables move buttons and greys them out. can ignore a button based on passed int
+    private void disableMoveButons(int ignoreIndex){
+        if (ignoreIndex != BUTTON_INDEX_ATTACK) {
+            findViewById(R.id.attackButton).setEnabled(false);
+            findViewById(R.id.attackButton).setBackgroundColor(Color.parseColor("#999999"));
+        }
+        if (ignoreIndex != BUTTON_INDEX_SPELL) {
+            findViewById(R.id.spellButton).setEnabled(false);
+            findViewById(R.id.spellButton).setBackgroundColor(Color.parseColor("#999999"));
+        }
+        if (ignoreIndex != BUTTON_INDEX_ITEM) {
+            findViewById(R.id.itemButton).setEnabled(false);
+            findViewById(R.id.itemButton).setBackgroundColor(Color.parseColor("#999999"));
+        }
+        if (ignoreIndex != BUTTON_INDEX_DEFEND) {
+            findViewById(R.id.defendButton).setEnabled(false);
+            findViewById(R.id.defendButton).setBackgroundColor(Color.parseColor("#999999"));
+        }
     }
 
     //
     public void logClick(View logTextView) {
+
+        game.advance();
+        String poppedMessage = game.pop();
+
+        if (!poppedMessage.isEmpty()) {
+            log.add(poppedMessage);
+            if (log.size() > 8) log.removeFirst();
+
+            String logText = "";
+            for (int i = 0; i < log.size(); i++) {
+                logText += log.get(i) + "\n";
+            }
+            ((TextView) logTextView).setText(logText);
+
+            updateFoeViews();
+        }
+
+        if (!game.roundInProgress()) {
+            findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
+
+            if (!selectingFoe && !selectingMove) enableMoveButtons();
+        }
 
         //
         if (game.gameOver()){
@@ -198,38 +295,10 @@ public class PlayPage extends AppCompatActivity {
             // should print some more messages first
             // who died (pc or some foe)
             // if pc wins, 2 messages (1 for money and 1 for level up)
-            // really this method should just get a message from Game and handle the textview
-            // so gameOver() should be when pc or foe are dead AND no more log
 
             Intent newPage = new Intent(this, ShopPage.class);
             startActivity(newPage);
 
-        } else {
-
-            // maybe check if clickable. final click when isEmpty should only be once per turn
-            if (pickingMove()) {
-
-            } else {
-                String newLogMessage = game.pop();
-                if (newLogMessage.isEmpty()) {
-                    findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
-                    // TODO advance game
-
-                    game.advance();
-
-                    updateFoeViews();
-
-                } else {
-                    log.add(newLogMessage);
-                    if (log.size() > 8) log.removeFirst();
-                    String logText = "";
-                    for (int i = 0; i < log.size(); i++) {
-                        logText += log.get(i) + "\n";
-                    }
-                    ((TextView) logTextView).setText(logText + " " + log.size());
-                    System.out.println(logText);
-                }
-            }
         }
     }
 
@@ -260,14 +329,13 @@ public class PlayPage extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         if (selectingFoe) {
-            // TODO maybe also allow this action by pressing the button again
             selectingFoe = false;
             game.getPlayerCharacter().setMove(null);
-            // enable other buttons again
+            enableMoveButtons();
         } else if (selectingMove) {
-            // TODO maybe also allow this action by pressing the button again
             selectingMove = false;
-            // remove list, enable buttons
+            // TODO hide lists
+            enableMoveButtons();
         } else {
             finish();
         }

@@ -19,15 +19,19 @@
         <activity
             android:name=".PlayPage"
             android:label="@string/title_activity_play_page"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name=".ShopPage"
-            android:label="@string/title_activity_shop_page" >
+            android:label="@string/title_activity_shop_page"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name="LeaderboardPage"
-            android:label="@string/title_activity_leaderboard_page" >
+            android:label="@string/title_activity_leaderboard_page"
+            >
         </activity>
     </application>
 

@@ -2,7 +2,6 @@ package admin.cozycombat;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 
 public class Game {
 
@@ -10,9 +9,11 @@ public class Game {
 
     private PlayerCharacter playerCharacter;
     private ArrayList<Foe> foes;
-    private LinkedList<String> log;
 
-    private int playerTarget;
+    private String currentMessage;
+
+    private int roundCount;
+
     private Move currentMove;
 
     Game(PlayerCharacter pc){
@@ -22,10 +23,11 @@ public class Game {
         // TODO base foes on pc level
         foes = new ArrayList<>();
         foes.add(new Foe(Foe.GOBLIN));
-        foes.add(new Foe(Foe.GOBLIN));
         //foes.add(new Foe(Foe.GOBLIN));
+        //foes.add(new Foe(Foe.GOBLIN));
+        currentMessage = "";
 
-        log = new LinkedList<>();
+        roundCount = 0;
     }
 
     //
@@ -43,9 +45,6 @@ public class Game {
     // could also do it with timestamps
     // either using current time or by keep track of how long battle takes, and printing that
     //
-    // whatever the way, the log in game should not be popped unless size is over some X (8?)
-    // PlayPage pops also whenever it is over 8
-    // but PlayPage should be pressable whenever, removing former messages.
     //
     // perhaps have Game have just one message always
     // using logClick gets that message (if any, if not it just lowers all messages, or hides
@@ -61,60 +60,83 @@ public class Game {
     // it removes a combatant once they have done their move
     // if there is no combatants list, but the playercharacter has a move,
     // then it creates the combatants, sorts, and does the first move
-    // another alternative is that before the "hits for x damage", a log that says
+    // another alternative is that before the "hits for x damage", a log that says <<<<<  tho that is cool, it requires an extra boolean to be made. easier to do it immediatley
     // a attacks b! or a uses y on b! , then the next log sees the damage be dealt and the textview updated
     // so then also a check before combatants move to see if combatant dies, in which case log it and remove from list
     void advance(){
+        // if combatants list is made then round has started
+        if (roundInProgress()) {
 
-        // TODO make way of checking if can advance prettier
-        if (playerCharacter.getMove() == null) return;
-
-        // get moves for all foes
-        for (int i = 0; i < foes.size(); i++){
-            if (foes.get(i).isDead()) continue;
-            // TODO get move from ai
-            foes.get(i).setMove(new Move(Move.BASIC_ATTACK));
-            foes.get(i).getMove().setTarget(-1);
-        }
-        // sort combatants by speed
-        ArrayList<Combatant> combatants = new ArrayList<>();
-        combatants.add(playerCharacter);
-        for (Foe foe : foes) {
-            if (!foe.isDead()) combatants.add(foe);
-        }
-        System.out.println(combatants);
-        Collections.sort(combatants);
-        System.out.println(combatants);
-
-        // performs moves
-        for (int i = 0; i < combatants.size(); i++){
-
-            // TODO if already dead cancel
-            if (combatants.get(i).isDead()) continue;
-
-            Move move = combatants.get(i).getMove();
-            if (combatants.get(i).isFoe()) {
-                if (move.getDamage() > 0){
-                    playerCharacter.lowerHealth(move.getDamage());
-                    log.add("" + combatants.get(i).getName() + " hits " + playerCharacter.getName() + " for " + move.getDamage() + "!");
+            // check for death
+            boolean someoneDied = false;
+            int i;
+            for (i = 0; i < combatants.size(); i++){
+                if (combatants.get(i).isDead()){
+                    log("" + combatants.get(i).getName() + " is defeated!");
+                    someoneDied = true;
+                    break;
                 }
             }
-            if (!combatants.get(i).isFoe()) {
+            if (someoneDied) {
+                combatants.remove(i);
+                return;
+            }
+
+            // list is sorted by speed. first in list is up next
+            Combatant c = combatants.get(0);
+            Move move = c.getMove();
+            if (c.isFoe()) {
+                if (move.getDamage() > 0){
+                    playerCharacter.lowerHealth(move.getDamage());
+                    log("" + c.getName() + " hits " + playerCharacter.getName() + " for " + move.getDamage() + "!");
+                }
+            }
+            if (!c.isFoe()) {
                 if (move.getDamage() > 0){
                     // TODO if range == 0 then self
                     // TODO if range > 1 then multiple targets
                     Combatant target = foes.get(move.getTarget());
                     target.lowerHealth(move.getDamage());
-                    log.add("" + combatants.get(i).getName() + " hits " + target.getName() + " for " + move.getDamage() + "!");
+                    log("" + c.getName() + " hits " + target.getName() + " for " + move.getDamage() + "!");
 
                     if (target.isDead()){
-                        log.add("" + target.getName() + " is defeated!");
+                        log("" + target.getName() + " is defeated!");
                     }
                 }
             }
+            c.setMove(null);
+            combatants.remove(0);
+            if (combatants.isEmpty()) combatants = null;
 
-            combatants.get(i).setMove(null);
+        } // otherwise check if round can be started by checking if player has a move
+        else if (playerCharacter.isReady()){
+
+            // get moves for all foes
+            for (int i = 0; i < foes.size(); i++){
+                if (foes.get(i).isDead()) continue;
+                // TODO get move from ai
+                foes.get(i).setMove(new Move(Move.BASIC_ATTACK));
+                foes.get(i).getMove().setTarget(-1);
+            }
+            // sort combatants by speed
+            combatants = new ArrayList<>();
+            combatants.add(playerCharacter);
+            for (Foe foe : foes) {
+                if (!foe.isDead()) combatants.add(foe);
+            }
+            Collections.sort(combatants);
+            roundCount++;
+            log("Round " + roundCount + " begins.");
         }
+    }
+
+    private void log(String s){
+        currentMessage = s;
+    }
+
+    // a round has started if the combatants list is made
+    boolean roundInProgress(){
+        return combatants != null;
     }
 
     void handleMove(){
@@ -123,7 +145,6 @@ public class Game {
 
     //
     boolean gameOver(){
-        // TODO also requires no messages left to toggle from log
         if (playerCharacter.isDead()) return true;
         for (Foe foe : foes) {
             if (!foe.isDead()) return false;
@@ -131,18 +152,11 @@ public class Game {
         return true;
     }
 
-    //
+    // pops the current log message
     String pop() {
-        System.err.println(log);
-        if (!log.isEmpty()) {
-            return log.removeFirst();
-        } else return "";
-    }
-
-    //
-    void setPlayerTarget(int target){
-        playerTarget = target;
-        log.add("target " + playerTarget);
+        String poppedMessage = currentMessage;
+        currentMessage = "";
+        return poppedMessage;
     }
 
     //

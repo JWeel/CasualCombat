@@ -10,7 +10,9 @@ public class Foe extends Combatant {
     private int currentMagic;
 
     private int strength;
+    private int willpower;
     private int defense;
+    private int resistance;
     private int speed;
 
     private int level;
@@ -32,7 +34,9 @@ public class Foe extends Combatant {
                 this.maxMagic = 0;
                 this.currentMagic = maxMagic;
                 this.strength = 2;
+                this.willpower = 0;
                 this.defense = 2;
+                this.resistance = 0;
                 this.speed = 6;
                 this.name = "GOBLIN";
                 this.level = 0;
@@ -47,7 +51,9 @@ public class Foe extends Combatant {
                 this.maxMagic = 0;
                 this.currentMagic = 0;
                 this.strength = 0;
+                this.willpower = 0;
                 this.defense = 0;
+                this.resistance = 0;
                 this.speed = 0;
                 this.name = "";
                 this.spells = new ArrayList<Integer>();
@@ -88,7 +94,11 @@ public class Foe extends Combatant {
     @Override
     int getStrength() { return this.strength; }
     @Override
+    int getWillpower() { return this.willpower; }
+    @Override
     int getDefense() { return this.defense; }
+    @Override
+    int getResistance() { return this.resistance; }
     @Override
     int getSpeed() { return this.speed; }
     @Override

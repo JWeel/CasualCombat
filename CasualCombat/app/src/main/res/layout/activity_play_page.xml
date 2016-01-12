@@ -74,7 +74,8 @@
                 android:progress="100"
                 android:id="@+id/charHealth"
                 />
-            <ImageView
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="80dip"
                 android:layout_height="8dip"
                 android:layout_toRightOf="@id/charIcon"
@@ -83,7 +84,6 @@
                 android:layout_marginTop="2dip"
                 android:layout_marginLeft="4dip"
                 android:layout_marginStart="4dip"
-                android:background="#0000FF"
                 android:id="@+id/charMagic"
                 />
             <TextView
@@ -141,6 +141,9 @@
                 android:layout_height="75dip"
                 android:text="attack"
                 android:id="@+id/attackButton"
+                android:background="#FFFFFF"
+                android:layout_marginRight="2dip"
+                android:layout_marginLeft="1dip"
                 android:layout_alignParentBottom="true"
                 android:onClick="attackClick"
                 />
@@ -149,6 +152,8 @@
                 android:layout_height="75dip"
                 android:text="spell"
                 android:id="@+id/spellButton"
+                android:background="#FFFFFF"
+                android:layout_marginRight="2dip"
                 android:layout_toRightOf="@id/attackButton"
                 android:layout_toEndOf="@id/attackButton"
                 android:layout_alignParentBottom="true"
@@ -159,6 +164,8 @@
                 android:layout_height="75dip"
                 android:text="item"
                 android:id="@+id/itemButton"
+                android:background="#FFFFFF"
+                android:layout_marginRight="2dip"
                 android:layout_toRightOf="@id/spellButton"
                 android:layout_toEndOf="@id/spellButton"
                 android:layout_alignParentBottom="true"
@@ -169,6 +176,7 @@
                 android:layout_height="75dip"
                 android:text="defend"
                 android:id="@+id/defendButton"
+                android:background="#FFFFFF"
                 android:layout_toRightOf="@id/itemButton"
                 android:layout_toEndOf="@id/itemButton"
                 android:layout_alignParentBottom="true"
@@ -194,7 +202,6 @@
                 android:onClick="logClick"
                 android:clickable="true"
                 android:id="@+id/logText"
-                android:text="LOREM IPSUM"
                 android:typeface="monospace"
                 android:textColor="#FFFFFF"
                 />
