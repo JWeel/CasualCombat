@@ -45,7 +45,6 @@ public class Move {
         this.target = PlayerCharacter.NO_TARGET;
     }
 
-
     void setTarget(int t) { this.target = t; }
     int getTarget() { return this.target; }
 

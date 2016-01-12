@@ -123,7 +123,7 @@
                 android:layout_marginStart="4dip"
                 android:textColor="#FFFFFF"
                 android:background="#CC8822"
-                android:onClick="addHealthClick"
+                android:onClick="addClick"
                 android:id="@+id/menuCharHealthAdd"
                 />
             <ProgressBar
@@ -169,7 +169,7 @@
                 android:layout_marginStart="4dip"
                 android:textColor="#FFFFFF"
                 android:background="#CC8822"
-                android:onClick="addMagicClick"
+                android:onClick="addClick"
                 android:id="@+id/menuCharMagicAdd"
                 />
             <TextView
@@ -293,7 +293,7 @@
                 android:layout_marginEnd="4dip"
                 android:textColor="#FFFFFF"
                 android:background="#CC8822"
-                android:onClick="addStrengthClick"
+                android:onClick="addClick"
                 android:id="@+id/menuCharStrengthAdd"
                 />
             <Button
@@ -310,7 +310,7 @@
                 android:layout_marginEnd="4dip"
                 android:textColor="#FFFFFF"
                 android:background="#CC8822"
-                android:onClick="addWillpowerClick"
+                android:onClick="addClick"
                 android:id="@+id/menuCharWillpowerAdd"
                 />
             <Button
@@ -327,7 +327,7 @@
                 android:layout_marginEnd="4dip"
                 android:textColor="#FFFFFF"
                 android:background="#CC8822"
-                android:onClick="addDefenseClick"
+                android:onClick="addClick"
                 android:id="@+id/menuCharDefenseAdd"
                 />
             <Button
@@ -344,7 +344,7 @@
                 android:layout_marginEnd="4dip"
                 android:textColor="#FFFFFF"
                 android:background="#CC8822"
-                android:onClick="addResistanceClick"
+                android:onClick="addClick"
                 android:id="@+id/menuCharResistanceAdd"
                 />
             <Button
@@ -361,7 +361,7 @@
                 android:layout_marginEnd="4dip"
                 android:textColor="#FFFFFF"
                 android:background="#CC8822"
-                android:onClick="addSpeedClick"
+                android:onClick="addClick"
                 android:id="@+id/menuCharSpeedAdd"
                 />
         </RelativeLayout>

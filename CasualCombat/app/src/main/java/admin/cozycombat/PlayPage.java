@@ -195,10 +195,14 @@ public class PlayPage extends AppCompatActivity {
     public void spellClick(View spellButton){
         if (selectingMove){
             game.getPlayerCharacter().setMove(null);
+
+            findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
+
             // restore buttons
             enableMoveButtons();
         } else {
             // listview
+            findViewById(R.id.listSpells).setVisibility(View.VISIBLE);
 
             // set views of other moves to disable (greyed out)
             disableMoveButons(BUTTON_INDEX_SPELL);
@@ -210,10 +214,14 @@ public class PlayPage extends AppCompatActivity {
     public void itemClick(View itemButton){
         if (selectingMove){
             game.getPlayerCharacter().setMove(null);
+
+            findViewById(R.id.listItems).setVisibility(View.INVISIBLE);
+
             // restore buttons
             enableMoveButtons();
         } else {
             // listview
+            findViewById(R.id.listItems).setVisibility(View.VISIBLE);
 
             // set views of other moves to disable (greyed out)
             disableMoveButons(BUTTON_INDEX_ITEM);

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MenuPage extends AppCompatActivity {
 
@@ -30,11 +31,23 @@ public class MenuPage extends AppCompatActivity {
 
         ((Button) findViewById(R.id.readyButton)).setText("NEW");
 
+        setPlayerVisibility(View.INVISIBLE);
+        setLevelUpButtonsVisibility(View.INVISIBLE);
 
+    }
 
-
-
-
+    //
+    private void setPlayerVisibility(int visibility){
+        findViewById(R.id.menuCharIcon).setVisibility(visibility);
+        findViewById(R.id.menuCharName).setVisibility(visibility);
+        findViewById(R.id.menuCharHealth).setVisibility(visibility);
+        findViewById(R.id.menuCharMagic).setVisibility(visibility);
+        findViewById(R.id.menuCharLevel).setVisibility(visibility);
+        findViewById(R.id.menuCharStrength).setVisibility(visibility);
+        findViewById(R.id.menuCharWillpower).setVisibility(visibility);
+        findViewById(R.id.menuCharDefense).setVisibility(visibility);
+        findViewById(R.id.menuCharResistance).setVisibility(visibility);
+        findViewById(R.id.menuCharSpeed).setVisibility(visibility);
     }
 
     //
@@ -51,56 +64,63 @@ public class MenuPage extends AppCompatActivity {
             ((Button) readyButton).setText("Start");
             readyButton.setEnabled(false);
 
-
             // prepare creatable character
             playerCharacter = new PlayerCharacter();
 
-
+            setPlayerVisibility(View.VISIBLE);
+            setLevelUpButtonsVisibility(View.VISIBLE);
 
         }
     }
 
     //
-    public void addHealthClick(View addHealthButton){
+    public void addClick(View addSpeedButton){
+
+        switch(addSpeedButton.getId()){
+            case R.id.menuCharHealthAdd:
+                playerCharacter.addHealth();
+                break;
+            case R.id.menuCharMagicAdd:
+                playerCharacter.addMagic();
+                break;
+            case R.id.menuCharStrengthAdd:
+                playerCharacter.addStrength();
+                break;
+            case R.id.menuCharWillpowerAdd:
+                playerCharacter.addWillpower();
+                break;
+            case R.id.menuCharDefenseAdd:
+                playerCharacter.addDefense();
+                break;
+            case R.id.menuCharResistanceAdd:
+                playerCharacter.addResistance();
+                break;
+            case R.id.menuCharSpeedAdd:
+                playerCharacter.addSpeed();
+                break;
+        }
+
         playerCharacter.subtractLevelPoint();
-        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
-        // hide level up buttons TODO
+        ((TextView) findViewById(R.id.menuCharPoints)).setText("Points left to spend: " + playerCharacter.getLevelPoints());
+        if (playerCharacter.finishedLevelUp()) {
+            findViewById(R.id.readyButton).setEnabled(true);
+            setLevelUpButtonsVisibility(View.INVISIBLE);
+        }
     }
 
     //
-    public void addMagicClick(View addMagicButton){
-        playerCharacter.subtractLevelPoint();
-        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
-    }
-
-    //
-    public void addStrengthClick(View addStrengthButton){
-        playerCharacter.subtractLevelPoint();
-        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
-    }
-
-    //
-    public void addWillpowerClick(View addWillpowerButton){
-        playerCharacter.subtractLevelPoint();
-        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
-    }
-
-    //
-    public void addDefenseClick(View addDefenseButton){
-        playerCharacter.subtractLevelPoint();
-        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
-    }
-
-    //
-    public void addResistanceClick(View addResistanceButton){
-        playerCharacter.subtractLevelPoint();
-        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
-    }
-
-    //
-    public void addSpeedClick(View addSpeedButton){
-        playerCharacter.subtractLevelPoint();
-        if (playerCharacter.finishedLevelUp()) findViewById(R.id.readyButton).setEnabled(true);
+    private void setLevelUpButtonsVisibility(int visibility){
+        findViewById(R.id.menuCharNameEdit).setVisibility(visibility);
+        findViewById(R.id.menuCharHealthAdd).setVisibility(visibility);
+        findViewById(R.id.menuCharHealthText).setVisibility(visibility);
+        findViewById(R.id.menuCharMagicAdd).setVisibility(visibility);
+        findViewById(R.id.menuCharMagicText).setVisibility(visibility);
+        findViewById(R.id.menuCharStrengthAdd).setVisibility(visibility);
+        findViewById(R.id.menuCharWillpowerAdd).setVisibility(visibility);
+        findViewById(R.id.menuCharDefenseAdd).setVisibility(visibility);
+        findViewById(R.id.menuCharResistanceAdd).setVisibility(visibility);
+        findViewById(R.id.menuCharSpeedAdd).setVisibility(visibility);
+        findViewById(R.id.menuCharPoints).setVisibility(visibility);
     }
 
     //

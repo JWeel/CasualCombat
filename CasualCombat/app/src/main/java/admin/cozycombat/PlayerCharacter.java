@@ -70,6 +70,30 @@ public class PlayerCharacter extends Combatant {
         return this.levelPoints == 0;
     }
 
+    void addHealth(){
+        this.maxHealth++;
+        this.currentHealth++;
+    }
+    void addMagic(){
+        this.maxMagic++;
+        this.currentMagic++;
+    }
+    void addStrength(){
+        this.strength++;
+    }
+    void addWillpower(){
+        this.willpower++;
+    }
+    void addDefense(){
+        this.defense++;
+    }
+    void addResistance(){
+        this.resistance++;
+    }
+    void addSpeed(){
+        this.speed++;
+    }
+
     @Override
     Move getMove(){
         return this.move;
