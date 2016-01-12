@@ -67,7 +67,7 @@ public class PlayPage extends AppCompatActivity {
     //
     private void resizeButtons(){
         final float scale = getResources().getDisplayMetrics().density;
-        int pixels = (int) (43 * scale + 0.5f);
+        int pixels = (int) (40 * scale + 0.5f);
         int quarterScreenWidth = (int) ((getResources().getDisplayMetrics().widthPixels - pixels) / 4.0);
 
         Button attackButton = (Button) findViewById(R.id.attackButton);
@@ -235,32 +235,32 @@ public class PlayPage extends AppCompatActivity {
     // enables all move buttons and restores their background color
     private void enableMoveButtons(){
         findViewById(R.id.attackButton).setEnabled(true);
-        findViewById(R.id.attackButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//        findViewById(R.id.attackButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
         findViewById(R.id.spellButton).setEnabled(true);
-        findViewById(R.id.spellButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//        findViewById(R.id.spellButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
         findViewById(R.id.itemButton).setEnabled(true);
-        findViewById(R.id.itemButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//        findViewById(R.id.itemButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
         findViewById(R.id.defendButton).setEnabled(true);
-        findViewById(R.id.defendButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//        findViewById(R.id.defendButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
     // disables move buttons and greys them out. can ignore a button based on passed int
     private void disableMoveButons(int ignoreIndex){
         if (ignoreIndex != BUTTON_INDEX_ATTACK) {
             findViewById(R.id.attackButton).setEnabled(false);
-            findViewById(R.id.attackButton).setBackgroundColor(Color.parseColor("#999999"));
+//            findViewById(R.id.attackButton).setBackgroundColor(Color.parseColor("#999999"));
         }
         if (ignoreIndex != BUTTON_INDEX_SPELL) {
             findViewById(R.id.spellButton).setEnabled(false);
-            findViewById(R.id.spellButton).setBackgroundColor(Color.parseColor("#999999"));
+//            findViewById(R.id.spellButton).setBackgroundColor(Color.parseColor("#999999"));
         }
         if (ignoreIndex != BUTTON_INDEX_ITEM) {
             findViewById(R.id.itemButton).setEnabled(false);
-            findViewById(R.id.itemButton).setBackgroundColor(Color.parseColor("#999999"));
+//            findViewById(R.id.itemButton).setBackgroundColor(Color.parseColor("#999999"));
         }
         if (ignoreIndex != BUTTON_INDEX_DEFEND) {
             findViewById(R.id.defendButton).setEnabled(false);
-            findViewById(R.id.defendButton).setBackgroundColor(Color.parseColor("#999999"));
+//            findViewById(R.id.defendButton).setBackgroundColor(Color.parseColor("#999999"));
         }
     }
 
