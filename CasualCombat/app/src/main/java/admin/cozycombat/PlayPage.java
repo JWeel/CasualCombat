@@ -323,15 +323,9 @@ public class PlayPage extends AppCompatActivity {
             if (game.getFoes().get(i).isDead()) foeTextViews.get(i).setBackgroundColor(Color.parseColor("#332222"));
         }
 
-        // TODO temp
+        // TODO temp , or rename this method and keep this here, since it is also called after foe attack pc
         ProgressBar charHealth = (ProgressBar) findViewById(R.id.charHealth);
         charHealth.setProgress(game.getPlayerCharacter().getHealth());
-    }
-
-    //
-    private boolean pickingMove(){
-        return false;
-        //return (game.getPlayerCharacter().getMove() == null);
     }
 
     //

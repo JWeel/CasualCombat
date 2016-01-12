@@ -1,15 +1,25 @@
 package admin.cozycombat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MenuPage extends AppCompatActivity {
 
@@ -18,37 +28,53 @@ public class MenuPage extends AppCompatActivity {
     // over various skills
     // this also then on ShopPage
 
+    ArrayList<PlayerCharacter> storedPlayerCharacters;
     PlayerCharacter playerCharacter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_page);
 
-
-
+        storedPlayerCharacters = new ArrayList<>();
         SharedPreferences prefs = getSharedPreferences("PREFS", MODE_PRIVATE);
 
         ((Button) findViewById(R.id.readyButton)).setText("NEW");
+        ((ProgressBar) findViewById(R.id.menuCharHealth)).getProgressDrawable().setColorFilter(Color.parseColor("#00CC00"), PorterDuff.Mode.SRC_IN);
+        ((ProgressBar) findViewById(R.id.menuCharMagic)).getProgressDrawable().setColorFilter(Color.parseColor("#0088EE"), PorterDuff.Mode.SRC_IN);
 
+        prepareLoadedPlayerList();
+
+        setLoadedPlayerListVisibility(View.INVISIBLE);
         setPlayerVisibility(View.INVISIBLE);
         setLevelUpButtonsVisibility(View.INVISIBLE);
+    }
+
+    //
+    private void prepareLoadedPlayerList(){
 
     }
 
     //
+    private void setLoadedPlayerListVisibility(int visibility){
+        findViewById(R.id.menuPlayerList).setVisibility(visibility);
+    }
+
+    //
     private void setPlayerVisibility(int visibility){
-        findViewById(R.id.menuCharIcon).setVisibility(visibility);
-        findViewById(R.id.menuCharName).setVisibility(visibility);
-        findViewById(R.id.menuCharHealth).setVisibility(visibility);
-        findViewById(R.id.menuCharMagic).setVisibility(visibility);
-        findViewById(R.id.menuCharLevel).setVisibility(visibility);
-        findViewById(R.id.menuCharStrength).setVisibility(visibility);
-        findViewById(R.id.menuCharWillpower).setVisibility(visibility);
-        findViewById(R.id.menuCharDefense).setVisibility(visibility);
-        findViewById(R.id.menuCharResistance).setVisibility(visibility);
-        findViewById(R.id.menuCharSpeed).setVisibility(visibility);
+
+        findViewById(R.id.menuLayoutCharacters).setVisibility(visibility);
+
+//        findViewById(R.id.menuCharIcon).setVisibility(visibility);
+//        findViewById(R.id.menuCharName).setVisibility(visibility);
+//        findViewById(R.id.menuCharHealth).setVisibility(visibility);
+//        findViewById(R.id.menuCharMagic).setVisibility(visibility);
+//        findViewById(R.id.menuCharLevel).setVisibility(visibility);
+//        findViewById(R.id.menuCharStrength).setVisibility(visibility);
+//        findViewById(R.id.menuCharWillpower).setVisibility(visibility);
+//        findViewById(R.id.menuCharDefense).setVisibility(visibility);
+//        findViewById(R.id.menuCharResistance).setVisibility(visibility);
+//        findViewById(R.id.menuCharSpeed).setVisibility(visibility);
     }
 
     //
@@ -56,11 +82,11 @@ public class MenuPage extends AppCompatActivity {
 
         if (playerCharacter != null && playerCharacter.finishedLevelUp()) {
 
-            String name = ((EditText) findViewById(R.id.menuCharNameEdit)).getText().toString();
-            // check if hero name already exists in database
-            // TODO
-            // else
-            playerCharacter.setName(name);
+            if (!exists(playerCharacter)) {
+                SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                //editor.put????
+                editor.apply();
+            }
 
             Intent newPage = new Intent(this, PlayPage.class);
             newPage.putExtra("player", playerCharacter); // TODO key
@@ -73,11 +99,80 @@ public class MenuPage extends AppCompatActivity {
 
             // prepare creatable character
             playerCharacter = new PlayerCharacter();
+            nameChangeClick(null);
 
+            updatePlayerSkillViews();
             setPlayerVisibility(View.VISIBLE);
             setLevelUpButtonsVisibility(View.VISIBLE);
 
         }
+    }
+
+    //
+    private boolean exists(PlayerCharacter playerCharacter){
+        for (PlayerCharacter pc : storedPlayerCharacters){
+            if (pc.getName().equals(playerCharacter.getName())) return true;
+        }
+        return false;
+    }
+
+    //
+    public void nameChangeClick(View nameButton){
+
+        // http://stackoverflow.com/questions/10903754/input-text-dialog-android
+        // http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+        // http://stackoverflow.com/questions/3285412/limit-text-length-of-edittext-in-android
+
+        final EditText dialogEditText = new EditText(this);
+        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogEditText.setMaxLines(1);
+        dialogEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter character name:");
+        builder.setView(dialogEditText);
+        builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing
+            }
+        });
+
+        final AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String newName = dialogEditText.getText().toString();
+                if (!newName.isEmpty()) { // TODO and name does not exist (unless name is equal to already entered name)
+                    renamePlayerCharacter(newName);
+                    dialog.dismiss();
+                }
+            }
+        });
+
+//        dialogEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+//                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+    }
+
+    //
+    private void renamePlayerCharacter(String newName){
+        // check if exists
+        // TODO then call nameChangeClick(null);
+        // else
+        playerCharacter.setName(newName);
+        ((TextView) findViewById(R.id.menuCharName)).setText(playerCharacter.getName());
     }
 
     //
@@ -107,6 +202,8 @@ public class MenuPage extends AppCompatActivity {
                 break;
         }
 
+        updatePlayerSkillViews();
+
         playerCharacter.subtractLevelPoint();
         ((TextView) findViewById(R.id.menuCharPoints)).setText("Points left to spend: " + playerCharacter.getLevelPoints());
         if (playerCharacter.finishedLevelUp()) {
@@ -116,8 +213,26 @@ public class MenuPage extends AppCompatActivity {
     }
 
     //
+    private void updatePlayerSkillViews(){
+        ((ProgressBar) findViewById(R.id.menuCharHealth)).setMax(playerCharacter.getMaxHealth());
+        ((ProgressBar) findViewById(R.id.menuCharHealth)).setMax(playerCharacter.getMaxHealth());
+        ((ProgressBar) findViewById(R.id.menuCharMagic)).setProgress(playerCharacter.getHealth());
+        ((ProgressBar) findViewById(R.id.menuCharMagic)).setProgress(playerCharacter.getMagic());
+
+        ((TextView) findViewById(R.id.menuCharLevel)).setText("LEVEL " + playerCharacter.getLevel());
+
+        ((TextView) findViewById(R.id.menuCharHealthText)).setText("" + playerCharacter.getMaxHealth());
+        ((TextView) findViewById(R.id.menuCharMagicText)).setText("" + playerCharacter.getMaxMagic());
+        ((TextView) findViewById(R.id.menuCharStrength)).setText("STR " + playerCharacter.getStrength());
+        ((TextView) findViewById(R.id.menuCharWillpower)).setText("WIL " + playerCharacter.getWillpower());
+        ((TextView) findViewById(R.id.menuCharDefense)).setText("DEF " + playerCharacter.getDefense());
+        ((TextView) findViewById(R.id.menuCharResistance)).setText("RES " + playerCharacter.getResistance());
+        ((TextView) findViewById(R.id.menuCharSpeed)).setText("SPD " + playerCharacter.getSpeed());
+    }
+
+    //
     private void setLevelUpButtonsVisibility(int visibility){
-        findViewById(R.id.menuCharNameEdit).setVisibility(visibility);
+        findViewById(R.id.menuCharNameChangeButton).setVisibility(visibility);
         findViewById(R.id.menuCharHealthAdd).setVisibility(visibility);
         findViewById(R.id.menuCharHealthText).setVisibility(visibility);
         findViewById(R.id.menuCharMagicAdd).setVisibility(visibility);
@@ -131,11 +246,19 @@ public class MenuPage extends AppCompatActivity {
     }
 
     //
+    public void loadClick(View loadButton){
+        setPlayerVisibility(View.INVISIBLE);
+        setLoadedPlayerListVisibility(View.VISIBLE);
+
+        findViewById(R.id.readyButton).setEnabled(false);
+
+    }
+
+    //
     public void leaderboardClick(View leaderButton){
         Intent newPage = new Intent(this, LeaderboardPage.class);
         startActivity(newPage);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -38,6 +38,9 @@ Day 7:
 * Design problem: How to handle "database" of Moves, Foes, Items, etc.
 * Design choice: ??
 * Implemented Parcelable for PlayerCharacter, added new creation mechanics to main page
+* Creation now persists to new activity, added dialog to name player character
+* Design problem: How to store player character (SharedPreferences) ?
+* Design choice: Bundle or serializable?
 
 Day 8:
 
