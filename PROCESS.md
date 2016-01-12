@@ -36,6 +36,8 @@ Day 6:
 
 Day 7:
 * Design problem: How to handle "database" of Moves, Foes, Items, etc.
+* Design choice: ??
+* Implemented Parcelable for PlayerCharacter, added new creation mechanics to main page
 
 Day 8:
 
