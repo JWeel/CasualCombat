@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,6 +40,10 @@ public class MenuPage extends AppCompatActivity {
         storedPlayerCharacters = new ArrayList<>();
         SharedPreferences prefs = getSharedPreferences("PREFS", MODE_PRIVATE);
 
+        // TODO temp
+        storedPlayerCharacters.add(new PlayerCharacter());
+
+
         ((Button) findViewById(R.id.readyButton)).setText("NEW");
         ((ProgressBar) findViewById(R.id.menuCharHealth)).getProgressDrawable().setColorFilter(Color.parseColor("#00CC00"), PorterDuff.Mode.SRC_IN);
         ((ProgressBar) findViewById(R.id.menuCharMagic)).getProgressDrawable().setColorFilter(Color.parseColor("#0088EE"), PorterDuff.Mode.SRC_IN);
@@ -52,7 +57,8 @@ public class MenuPage extends AppCompatActivity {
 
     //
     private void prepareLoadedPlayerList(){
-
+        PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.menuPlayerList, storedPlayerCharacters);
+        ((ListView) findViewById(R.id.menuPlayerList)).setAdapter(adapter);
     }
 
     //
