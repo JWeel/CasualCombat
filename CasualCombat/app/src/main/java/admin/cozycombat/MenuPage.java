@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MenuPage extends AppCompatActivity {
@@ -55,9 +56,15 @@ public class MenuPage extends AppCompatActivity {
 
         if (playerCharacter != null && playerCharacter.finishedLevelUp()) {
 
+            String name = ((EditText) findViewById(R.id.menuCharNameEdit)).getText().toString();
             // check if hero name already exists in database
+            // TODO
+            // else
+            playerCharacter.setName(name);
 
             Intent newPage = new Intent(this, PlayPage.class);
+            newPage.putExtra("player", playerCharacter); // TODO key
+
             startActivity(newPage);
         } else {
 

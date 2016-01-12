@@ -51,7 +51,8 @@ public class PlayPage extends AppCompatActivity {
         prepareLists();
 
         // todo get pc from something
-        PlayerCharacter playerCharacter = new PlayerCharacter();
+        Intent previousPage = getIntent();
+        PlayerCharacter playerCharacter = previousPage.getParcelableExtra("player");
 
         game = new Game(playerCharacter);
 

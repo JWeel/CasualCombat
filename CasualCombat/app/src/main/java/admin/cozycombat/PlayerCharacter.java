@@ -1,8 +1,11 @@
 package admin.cozycombat;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class PlayerCharacter extends Combatant {
+public class PlayerCharacter extends Combatant implements Parcelable {
 
     private int maxHealth;
     private int maxMagic;
@@ -94,6 +97,10 @@ public class PlayerCharacter extends Combatant {
         this.speed++;
     }
 
+    void setName(String s){
+        this.name = s;
+    }
+
     @Override
     Move getMove(){
         return this.move;
@@ -178,4 +185,67 @@ public class PlayerCharacter extends Combatant {
     @Override
     ArrayList<Integer> getSpells() { return this.spells; }
     ArrayList<Integer> getItems() { return this.items; }
+
+
+
+    // Parcelable required to pass PlayerCharacter between Android activities
+    PlayerCharacter (Parcel in){
+        String[] contents = new String[12];
+        in.readStringArray(contents);
+        name = contents[0];
+        level = Integer.parseInt(contents[1]);
+        money = Integer.parseInt(contents[2]);
+
+        maxHealth = Integer.parseInt(contents[3]);
+        maxMagic = Integer.parseInt(contents[4]);
+        currentHealth = Integer.parseInt(contents[5]);
+        currentMagic = Integer.parseInt(contents[6]);
+
+        strength = Integer.parseInt(contents[7]);
+        willpower = Integer.parseInt(contents[8]);
+        defense = Integer.parseInt(contents[9]);
+        resistance = Integer.parseInt(contents[10]);
+        speed = Integer.parseInt(contents[11]);
+
+        spells = new ArrayList<>();
+        in.readList(spells, null);
+        items = new ArrayList<>();
+        in.readList(items, null);
+    }
+
+    // standard Parcelable methods
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{
+                name,
+                String.valueOf(level),
+                String.valueOf(money),
+                String.valueOf(maxHealth),
+                String.valueOf(maxMagic),
+                String.valueOf(currentHealth),
+                String.valueOf(currentMagic),
+                String.valueOf(strength),
+                String.valueOf(willpower),
+                String.valueOf(defense),
+                String.valueOf(resistance),
+                String.valueOf(speed)
+        });
+        dest.writeList(spells);
+        dest.writeList(items);
+    }
+    public static final Parcelable.Creator<PlayerCharacter> CREATOR = new Parcelable.Creator<PlayerCharacter>() {
+        @Override
+        public PlayerCharacter createFromParcel(Parcel source) {
+            return new PlayerCharacter(source);
+        }
+
+        @Override
+        public PlayerCharacter[] newArray(int size) {
+            return new PlayerCharacter[size];
+        }
+    };
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 }

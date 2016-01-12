@@ -68,8 +68,6 @@
                 android:typeface="monospace"
                 android:gravity="center"
                 android:maxLength="9"
-                android:clickable="false"
-                android:focusable="false"
                 android:layout_toRightOf="@id/menuCharName"
                 android:layout_toEndOf="@id/menuCharName"
                 android:layout_alignParentTop="true"
