@@ -50,7 +50,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.speed = 1;
         this.willpower = 1;
         this.resistance = 1;
-        this.name = "";
+        this.name = "temp";
         this.spells = new ArrayList<Integer>();
         this.spells.add(2);
         this.items = new ArrayList<Integer>();
@@ -59,7 +59,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     // returns true if a player character has both a move and a target
     boolean isReady(){
         if (this.move == null) return false;
-        if (this.move.getId() == Move.BASIC_DEFEND[Move.INDEX_ID]) return true;
+//        if (this.move.getId() == Move.BASIC_DEFEND[Move.INDEX_ID]) return true;
         return this.move.getTarget() != NO_TARGET;
     }
 

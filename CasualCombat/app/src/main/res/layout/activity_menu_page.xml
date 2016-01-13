@@ -365,13 +365,26 @@
         android:layout_above="@id/menuLayoutCharacters"
         />
     <ListView
-        android:layout_width="200dip"
+        android:layout_width="250dip"
         android:layout_height="400dip"
         android:layout_centerInParent="true"
         android:background="#EE00BB"
         android:id="@+id/menuPlayerList"
         >
     </ListView>
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No player characters stored."
+        android:layout_alignTop="@id/menuPlayerList"
+        android:layout_alignLeft="@id/menuPlayerList"
+        android:layout_alignStart="@id/menuPlayerList"
+        android:layout_marginTop="20dip"
+        android:layout_marginLeft="35dip"
+        android:layout_marginStart="35dip"
+        android:textColor="#FFFFFF"
+        />
 
 
 

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,9 +26,7 @@ import java.util.ArrayList;
 public class MenuPage extends AppCompatActivity {
 
     // TODO
-    // alternative startup would be having a set amount of points that can be distributed
-    // over various skills
-    // this also then on ShopPage
+    // bundle or serializable or database or complex prefs
 
     ArrayList<PlayerCharacter> storedPlayerCharacters;
     PlayerCharacter playerCharacter;
@@ -37,6 +36,20 @@ public class MenuPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_page);
 
+
+
+        ((Button) findViewById(R.id.readyButton)).setText("NEW");
+        ((ProgressBar) findViewById(R.id.menuCharHealth)).getProgressDrawable().setColorFilter(Color.parseColor("#00CC00"), PorterDuff.Mode.SRC_IN);
+        ((ProgressBar) findViewById(R.id.menuCharMagic)).getProgressDrawable().setColorFilter(Color.parseColor("#0088EE"), PorterDuff.Mode.SRC_IN);
+
+        prepareStoredPlayerList();
+
+        setPlayerVisibility(View.INVISIBLE);
+        setLevelUpButtonsVisibility(View.INVISIBLE);
+    }
+
+    //
+    private void prepareStoredPlayerList(){
         storedPlayerCharacters = new ArrayList<>();
         SharedPreferences prefs = getSharedPreferences("PREFS", MODE_PRIVATE);
 
@@ -44,21 +57,18 @@ public class MenuPage extends AppCompatActivity {
         storedPlayerCharacters.add(new PlayerCharacter());
 
 
-        ((Button) findViewById(R.id.readyButton)).setText("NEW");
-        ((ProgressBar) findViewById(R.id.menuCharHealth)).getProgressDrawable().setColorFilter(Color.parseColor("#00CC00"), PorterDuff.Mode.SRC_IN);
-        ((ProgressBar) findViewById(R.id.menuCharMagic)).getProgressDrawable().setColorFilter(Color.parseColor("#0088EE"), PorterDuff.Mode.SRC_IN);
-
-        prepareLoadedPlayerList();
+        PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.listCharName, storedPlayerCharacters);
+        ListView storedPlayerListView = (ListView) findViewById(R.id.menuPlayerList);
+        storedPlayerListView.setAdapter(adapter);
+        storedPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //itemLoadPlayer(parent, position);
+            }
+        });
+        //storedPlayerListView.setEmptyView(findViewById(android.R.id.empty));
 
         setLoadedPlayerListVisibility(View.INVISIBLE);
-        setPlayerVisibility(View.INVISIBLE);
-        setLevelUpButtonsVisibility(View.INVISIBLE);
-    }
-
-    //
-    private void prepareLoadedPlayerList(){
-        PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.menuPlayerList, storedPlayerCharacters);
-        ((ListView) findViewById(R.id.menuPlayerList)).setAdapter(adapter);
     }
 
     //
@@ -174,9 +184,6 @@ public class MenuPage extends AppCompatActivity {
 
     //
     private void renamePlayerCharacter(String newName){
-        // check if exists
-        // TODO then call nameChangeClick(null);
-        // else
         playerCharacter.setName(newName);
         ((TextView) findViewById(R.id.menuCharName)).setText(playerCharacter.getName());
     }
@@ -253,10 +260,25 @@ public class MenuPage extends AppCompatActivity {
 
     //
     public void loadClick(View loadButton){
-        setPlayerVisibility(View.INVISIBLE);
-        setLoadedPlayerListVisibility(View.VISIBLE);
 
-        findViewById(R.id.readyButton).setEnabled(false);
+        if (findViewById(R.id.menuPlayerList).getVisibility() == View.VISIBLE){
+            setPlayerVisibility(View.VISIBLE);
+            setLoadedPlayerListVisibility(View.INVISIBLE);
+
+            findViewById(R.id.readyButton).setEnabled(true);
+
+            findViewById(android.R.id.empty).setVisibility(visibility);
+
+        } else {
+            setPlayerVisibility(View.INVISIBLE);
+            setLoadedPlayerListVisibility(View.VISIBLE);
+
+            findViewById(R.id.readyButton).setEnabled(false);
+            
+            findViewById(android.R.id.empty).setVisibility(visibility);
+
+        }
+
 
     }
 
