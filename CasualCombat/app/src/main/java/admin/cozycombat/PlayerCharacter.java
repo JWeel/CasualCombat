@@ -187,6 +187,34 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     ArrayList<Integer> getItems() { return this.items; }
 
 
+    PlayerCharacter copy(){
+        PlayerCharacter copiedPlayerCharacter = new PlayerCharacter();
+
+        copiedPlayerCharacter.maxHealth = this.maxHealth;
+        copiedPlayerCharacter.maxMagic = this.maxMagic;
+        copiedPlayerCharacter.currentHealth = this.currentHealth;
+        copiedPlayerCharacter.currentMagic = this.currentMagic;
+        copiedPlayerCharacter.strength = this.strength;
+        copiedPlayerCharacter.willpower = this.willpower;
+        copiedPlayerCharacter.defense = this.defense;
+        copiedPlayerCharacter.resistance = this.resistance;
+        copiedPlayerCharacter.speed = this.speed;
+        copiedPlayerCharacter.level = this.level;
+        copiedPlayerCharacter.levelPoints = this.levelPoints;
+        copiedPlayerCharacter.money = this.money;
+        copiedPlayerCharacter.name = this.name;
+        for (int i = 0; i < this.spells.size(); i++) copiedPlayerCharacter.spells.add(this.spells.get(i));
+        for (int i = 0; i < this.items.size(); i++) copiedPlayerCharacter.items.add(this.items.get(i));
+
+        // TODO copy constructor for items
+        //copiedPlayerCharacter.weapon = this.weapon;
+        //copiedPlayerCharacter.armor = this.armor;
+        //copiedPlayerCharacter.boots = this.boots;
+
+        return copiedPlayerCharacter;
+    }
+
+
 
     // Parcelable required to pass PlayerCharacter between Android activities
     PlayerCharacter (Parcel in){

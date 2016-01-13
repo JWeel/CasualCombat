@@ -73,7 +73,7 @@ public class MenuPage extends AppCompatActivity {
         storedPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //itemLoadPlayer(parent, position);
+                loadPlayerCharacter(position);
             }
         });
         //storedPlayerListView.setEmptyView(findViewById(android.R.id.empty));
@@ -85,6 +85,32 @@ public class MenuPage extends AppCompatActivity {
     //
     private void setLoadedPlayerListVisibility(int visibility){
         findViewById(R.id.menuLayoutList).setVisibility(visibility);
+    }
+
+    //
+    private void loadPlayerCharacter(int position){
+        PlayerCharacter loadedCharacter = storedPlayerCharacters.get(position);
+        playerCharacter = loadedCharacter.copy();
+
+        // TODO temp
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+        playerCharacter.subtractLevelPoint();
+
+        updatePlayerSkillViews();
+        setPlayerVisibility(View.VISIBLE);
+        setLevelUpButtonsVisibility(View.INVISIBLE);
+        setLoadedPlayerListVisibility(View.INVISIBLE);
+
+        ((Button) findViewById(R.id.readyButton)).setText("Start");
+        findViewById(R.id.readyButton).setEnabled(true);
     }
 
     //
@@ -162,7 +188,7 @@ public class MenuPage extends AppCompatActivity {
         builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //do nothing
+                //do nothing (this allows the default dismiss function to be overwritten)
             }
         });
 
@@ -244,6 +270,7 @@ public class MenuPage extends AppCompatActivity {
         ((ProgressBar) findViewById(R.id.menuCharMagic)).setProgress(playerCharacter.getHealth());
         ((ProgressBar) findViewById(R.id.menuCharMagic)).setProgress(playerCharacter.getMagic());
 
+        ((TextView) findViewById(R.id.menuCharName)).setText(playerCharacter.getName());
         ((TextView) findViewById(R.id.menuCharLevel)).setText("LEVEL " + playerCharacter.getLevel());
 
         ((TextView) findViewById(R.id.menuCharHealthText)).setText("" + playerCharacter.getMaxHealth());

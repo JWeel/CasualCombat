@@ -345,8 +345,8 @@
             android:layout_above="@id/menuCharStrengthAdd"
             android:layout_alignLeft="@id/menuCharStrengthAdd"
             android:layout_alignStart="@id/menuCharStrengthAdd"
-            android:layout_marginLeft="-15dip"
-            android:layout_marginStart="-15dip"
+            android:layout_marginLeft="-12dip"
+            android:layout_marginStart="-12dip"
             android:layout_marginBottom="4dip"
             android:id="@+id/menuCharStrength"
             />
