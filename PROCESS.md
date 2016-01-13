@@ -47,6 +47,8 @@ Day 8:
 * Implemented loading character from stored characters
 * Resize character creation buttons and views (big layout overhaul as a whole)
 * Add player character leveling layout to shop page
+* Design choice for storing player character: ComplexPreferences
+* Implement ComplexPreferences 
 
 Day 9:
 
