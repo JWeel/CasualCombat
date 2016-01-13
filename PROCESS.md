@@ -44,8 +44,9 @@ Day 7:
 
 Day 8:
 * Implemented adapter
-* Implemented loading character from stored characters (untestable for now)
+* Implemented loading character from stored characters
 * Resize character creation buttons and views (big layout overhaul as a whole)
+* Add player character leveling layout to shop page
 
 Day 9:
 

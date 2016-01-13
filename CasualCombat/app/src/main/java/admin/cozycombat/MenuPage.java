@@ -51,10 +51,16 @@ public class MenuPage extends AppCompatActivity {
     //
     private void prepareStoredPlayerList(){
         storedPlayerCharacters = new ArrayList<>();
-        SharedPreferences prefs = getSharedPreferences("PREFS", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("mypref", MODE_PRIVATE);
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, "mypref", MODE_PRIVATE);
+        PlayerCharacter pc = complexPreferences.getObject("pc", PlayerCharacter.class);
+        if (pc != null) storedPlayerCharacters.add(pc);
+
+        System.out.println(prefs.getAll().toString());
 
         // TODO temp
-        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
 //        storedPlayerCharacters.add(new PlayerCharacter());
 //        storedPlayerCharacters.add(new PlayerCharacter());
 //        storedPlayerCharacters.add(new PlayerCharacter());
@@ -93,16 +99,16 @@ public class MenuPage extends AppCompatActivity {
         playerCharacter = loadedCharacter.copy();
 
         // TODO temp
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
-        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
+//        playerCharacter.subtractLevelPoint();
 
         updatePlayerSkillViews();
         setPlayerVisibility(View.VISIBLE);
@@ -139,6 +145,12 @@ public class MenuPage extends AppCompatActivity {
                 SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
                 //editor.put????
                 editor.apply();
+
+
+                ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, "mypref", MODE_PRIVATE);;
+                complexPreferences.putObject(playerCharacter.getName(), playerCharacter);
+                complexPreferences.commit();
+
             }
 
             Intent newPage = new Intent(this, PlayPage.class);
