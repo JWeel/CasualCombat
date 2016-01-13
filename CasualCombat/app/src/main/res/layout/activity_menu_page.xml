@@ -373,7 +373,7 @@
         >
     </ListView>
     <TextView
-        android:id="@android:id/empty"
+        android:id="@+id/menuPlayerListEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="No player characters stored."

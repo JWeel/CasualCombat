@@ -267,15 +267,17 @@ public class MenuPage extends AppCompatActivity {
 
             findViewById(R.id.readyButton).setEnabled(true);
 
-            findViewById(android.R.id.empty).setVisibility(visibility);
+
+            findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
 
         } else {
             setPlayerVisibility(View.INVISIBLE);
             setLoadedPlayerListVisibility(View.VISIBLE);
 
             findViewById(R.id.readyButton).setEnabled(false);
-            
-            findViewById(android.R.id.empty).setVisibility(visibility);
+
+            if (storedPlayerCharacters.isEmpty()) findViewById(R.id.menuPlayerListEmpty).setVisibility(View.VISIBLE);
+            else findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
 
         }
 
