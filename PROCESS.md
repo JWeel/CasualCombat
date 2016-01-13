@@ -40,9 +40,12 @@ Day 7:
 * Implemented Parcelable for PlayerCharacter, added new creation mechanics to main page
 * Creation now persists to new activity, added dialog to name player character
 * Design problem: How to store player character (SharedPreferences) ?
-* Design choice: Bundle or serializable?
+* Design choice: Bundle or serializable or ComplexPrefs?
 
 Day 8:
+* Implemented adapter
+* Implemented loading character from stored characters (untestable for now)
+* Resize character creation buttons and views (big layout overhaul as a whole)
 
 Day 9:
 

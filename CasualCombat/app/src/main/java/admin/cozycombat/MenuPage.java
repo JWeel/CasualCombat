@@ -27,6 +27,7 @@ public class MenuPage extends AppCompatActivity {
 
     // TODO
     // bundle or serializable or database or complex prefs
+    // possibly improve the player screen buttons margins to be dynamically perfectly sized based on width. (screenWidth - 5 * 30) / 6 ?
 
     ArrayList<PlayerCharacter> storedPlayerCharacters;
     PlayerCharacter playerCharacter;
@@ -37,10 +38,9 @@ public class MenuPage extends AppCompatActivity {
         setContentView(R.layout.activity_menu_page);
 
 
-
         ((Button) findViewById(R.id.readyButton)).setText("NEW");
-        ((ProgressBar) findViewById(R.id.menuCharHealth)).getProgressDrawable().setColorFilter(Color.parseColor("#00CC00"), PorterDuff.Mode.SRC_IN);
-        ((ProgressBar) findViewById(R.id.menuCharMagic)).getProgressDrawable().setColorFilter(Color.parseColor("#0088EE"), PorterDuff.Mode.SRC_IN);
+        ((ProgressBar) findViewById(R.id.menuCharHealth)).getProgressDrawable().setColorFilter(Color.parseColor("#00AA00"), PorterDuff.Mode.SRC_IN);
+        ((ProgressBar) findViewById(R.id.menuCharMagic)).getProgressDrawable().setColorFilter(Color.parseColor("#0055DD"), PorterDuff.Mode.SRC_IN);
 
         prepareStoredPlayerList();
 
@@ -55,6 +55,16 @@ public class MenuPage extends AppCompatActivity {
 
         // TODO temp
         storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
+//        storedPlayerCharacters.add(new PlayerCharacter());
 
 
         PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.listCharName, storedPlayerCharacters);
@@ -69,17 +79,18 @@ public class MenuPage extends AppCompatActivity {
         //storedPlayerListView.setEmptyView(findViewById(android.R.id.empty));
 
         setLoadedPlayerListVisibility(View.INVISIBLE);
+        //findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
     }
 
     //
     private void setLoadedPlayerListVisibility(int visibility){
-        findViewById(R.id.menuPlayerList).setVisibility(visibility);
+        findViewById(R.id.menuLayoutList).setVisibility(visibility);
     }
 
     //
     private void setPlayerVisibility(int visibility){
 
-        findViewById(R.id.menuLayoutCharacters).setVisibility(visibility);
+        findViewById(R.id.menuLayoutCharacter).setVisibility(visibility);
 
 //        findViewById(R.id.menuCharIcon).setVisibility(visibility);
 //        findViewById(R.id.menuCharName).setVisibility(visibility);
@@ -143,6 +154,7 @@ public class MenuPage extends AppCompatActivity {
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
         dialogEditText.setMaxLines(1);
         dialogEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
+        dialogEditText.setText(playerCharacter.getName());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter character name:");
@@ -261,14 +273,18 @@ public class MenuPage extends AppCompatActivity {
     //
     public void loadClick(View loadButton){
 
-        if (findViewById(R.id.menuPlayerList).getVisibility() == View.VISIBLE){
-            setPlayerVisibility(View.VISIBLE);
+        if (findViewById(R.id.menuLayoutList).getVisibility() == View.VISIBLE){
+
+            // only show player if one was being created
+            if (((Button) findViewById(R.id.readyButton)).getText().equals("Start")) setPlayerVisibility(View.VISIBLE);
+
+
             setLoadedPlayerListVisibility(View.INVISIBLE);
 
             findViewById(R.id.readyButton).setEnabled(true);
 
 
-            findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
+            //findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
 
         } else {
             setPlayerVisibility(View.INVISIBLE);
@@ -280,8 +296,6 @@ public class MenuPage extends AppCompatActivity {
             else findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
 
         }
-
-
     }
 
     //

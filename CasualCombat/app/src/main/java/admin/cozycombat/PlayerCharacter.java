@@ -50,7 +50,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.speed = 1;
         this.willpower = 1;
         this.resistance = 1;
-        this.name = "temp";
+        this.name = "";
         this.spells = new ArrayList<Integer>();
         this.spells.add(2);
         this.items = new ArrayList<Integer>();
