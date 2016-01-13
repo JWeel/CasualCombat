@@ -151,7 +151,7 @@ public class MenuPage extends AppCompatActivity {
         // http://stackoverflow.com/questions/3285412/limit-text-length-of-edittext-in-android
 
         final EditText dialogEditText = new EditText(this);
-        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogEditText.setMaxLines(1);
         dialogEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9)});
         dialogEditText.setText(playerCharacter.getName());
@@ -259,9 +259,9 @@ public class MenuPage extends AppCompatActivity {
     private void setLevelUpButtonsVisibility(int visibility){
         findViewById(R.id.menuCharNameChangeButton).setVisibility(visibility);
         findViewById(R.id.menuCharHealthAdd).setVisibility(visibility);
-        findViewById(R.id.menuCharHealthText).setVisibility(visibility);
+        //findViewById(R.id.menuCharHealthText).setVisibility(visibility);
         findViewById(R.id.menuCharMagicAdd).setVisibility(visibility);
-        findViewById(R.id.menuCharMagicText).setVisibility(visibility);
+        //findViewById(R.id.menuCharMagicText).setVisibility(visibility);
         findViewById(R.id.menuCharStrengthAdd).setVisibility(visibility);
         findViewById(R.id.menuCharWillpowerAdd).setVisibility(visibility);
         findViewById(R.id.menuCharDefenseAdd).setVisibility(visibility);
