@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
+// TODO make foe and pc skills non abstract and put them here, then some identical methods can move here too
 public abstract class Combatant implements Comparable<Combatant> {
     abstract int getMaxHealth();
     abstract int getMaxMagic();
@@ -18,10 +19,15 @@ public abstract class Combatant implements Comparable<Combatant> {
     abstract int getMoney();
     abstract String getName();
 
-    abstract void lowerHealth(int damage);
-    abstract void lowerMagic(int cost);
+    abstract void modifyHealth(int damage);
+    abstract void modifyMagic(int cost);
 
     boolean isDead() { return getHealth() == 0; }
+
+    //
+    boolean isDefending(){
+        return getMove().getId() == Move.BASIC_DEFEND[Move.INDEX_ID];
+    }
 
     abstract Move getMove();
     abstract void setMove(Move move);

@@ -60,6 +60,10 @@ public class Foe extends Combatant {
         }
     }
 
+    void setName(String s){
+        this.name = s;
+    }
+
     @Override
     Move getMove(){
         return this.move;
@@ -73,14 +77,16 @@ public class Foe extends Combatant {
     boolean isFoe(){ return true; }
 
     @Override
-    void lowerHealth(int damage){
+    void modifyHealth(int damage){
         this.currentHealth -= damage;
         if (currentHealth < 0) currentHealth = 0;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
     }
     @Override
-    void lowerMagic(int cost){
+    void modifyMagic(int cost){
         this.currentMagic -= cost;
         if (currentMagic < 0) currentMagic = 0;
+        if (currentMagic > maxMagic) currentMagic = maxMagic;
     }
 
     @Override

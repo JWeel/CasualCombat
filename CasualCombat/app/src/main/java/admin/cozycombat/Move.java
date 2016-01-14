@@ -26,11 +26,19 @@ public class Move {
     static final int INDEX_SPEED = 7;
     static final int INDEX_RANGE = 8;
 
+    static final int NO_TARGET = -2;
+    static final int TARGET_SELF = -1;
+
+    static final int RANGE_SELF = 0;
+    static final int RANGE_SINGLE = 1;
+    static final int RANGE_CLOSE = 2;
+    static final int RANGE_FAR = 3;
+
     // structure is id, damage, cost, strength, willpower, defense, resistance, speed, range
-    static final int[] BASIC_ATTACK     = {0, 1, 0, 0, 0, 0, 0, 0, 1};
-    static final int[] BASIC_DEFEND     = {1, 0, 0, 0, 0, 1, 1, 0, 0};
-    static final int[] FIREBALL         = {2, 4, 2, 0, 0, 0, 0, 0, 3};
-    static final int[] HEAL             = {3, -3, 3, 0, 0, 0, 0, 0, 0};
+    static final int[] BASIC_ATTACK     = {0, 1, 0, 0, 0, 0, 0, 0, RANGE_FAR};
+    static final int[] BASIC_DEFEND     = {1, 0, 0, 0, 0, 1, 1, 0, RANGE_SELF};
+    static final int[] FIREBALL         = {2, 4, 2, 0, 0, 0, 0, 0, RANGE_CLOSE};
+    static final int[] HEAL             = {3, -3, 3, 0, 0, 0, 0, 0, RANGE_SELF};
 
     Move(int[] moveArray){
         this.id = moveArray[INDEX_ID];
@@ -42,11 +50,11 @@ public class Move {
         this.resistance = moveArray[INDEX_RESISTANCE];
         this.speed = moveArray[INDEX_SPEED];
         this.range = moveArray[INDEX_RANGE];
-        this.target = PlayerCharacter.NO_TARGET;
+        this.target = NO_TARGET;
     }
 
     boolean isSpell(){
-        return this.id != BASIC_ATTACK[INDEX_ID];
+        return this.id > 1;
     }
 
     void setTarget(int t) { this.target = t; }

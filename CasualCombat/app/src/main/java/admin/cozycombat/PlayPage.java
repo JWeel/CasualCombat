@@ -233,7 +233,7 @@ public class PlayPage extends AppCompatActivity {
     //
     public void defendClick(View defendButton){
         game.getPlayerCharacter().setMove(new Move(Move.BASIC_DEFEND));
-        game.getPlayerCharacter().getMove().setTarget(PlayerCharacter.TARGET_SELF);
+        game.getPlayerCharacter().getMove().setTarget(Move.TARGET_SELF);
 
         // set views of other moves to disable (greyed out)
         disableMoveButons(BUTTON_INDEX_ALL);

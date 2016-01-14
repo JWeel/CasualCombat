@@ -24,6 +24,22 @@ public class Game {
         foes.add(new Foe(Foe.GOBLIN));
         foes.add(new Foe(Foe.GOBLIN));
         foes.add(new Foe(Foe.GOBLIN));
+
+        // auto change names of duplicates
+        ArrayList<Integer> foeNameCounts = new ArrayList<>();
+        ArrayList<String> foeNames = new ArrayList<>();
+        for (int i = 0; i < foes.size(); i++) {
+            if (!foeNames.contains(foes.get(i).getName())) {
+                foeNames.add(foes.get(i).getName());
+                foeNameCounts.add(1);
+            } else {
+                int index = foeNames.indexOf(foes.get(i).getName());
+                foeNameCounts.set(index, foeNameCounts.get(index) + 1);
+                foes.get(i).setName(foes.get(i).getName() + " " + Integer.toString(foeNameCounts.get(index)));
+
+                if (!foes.get(index).getName().endsWith("1")) foes.get(index).setName(foes.get(index).getName() + " 1");
+            }
+        }
         log = new LinkedList<>();
 
         roundCount = 0;
@@ -32,77 +48,70 @@ public class Game {
 
     //
     void advance(){
-
         // check if stuff in log
         if (!log.isEmpty()) return;
 
         // if combatants list is made then round has started
         if (roundInProgress()) {
 
+            // TODO maybe this is unnecessary ?
             // check for death
-            boolean someoneDied = false;
-            int i;
-            for (i = 0; i < combatants.size(); i++){
+            for (int i = 0; i < combatants.size(); i++){
                 if (combatants.get(i).isDead()){
                     log("" + combatants.get(i).getName() + " is defeated!");
-                    someoneDied = true;
-                    break;
+                    combatants.remove(i);
+                    return;
                 }
-            }
-            if (someoneDied) {
-                combatants.remove(i);
-                return;
             }
 
             // list is sorted by speed. first in list is up next
-            Combatant c = combatants.get(0);
-            Move move = c.getMove();
-            if (c.isFoe()) {
-                if (move.getDamage() > 0){
+            Combatant attacker = combatants.get(0);
+            if (attacker.isFoe()) {
+                if (!attacker.isDefending()){
 
-                    int damage = move.getDamage();
-                    if (move.isSpell()) damage += c.getWillpower();
-                    else damage += c.getStrength();
-
-                    int defense;
-                    if (move.isSpell()) defense = playerCharacter.getResistance();
-                    else defense = playerCharacter.getDefense();
-
-                    damage = (damage - defense);
-                    if (damage <= 0) damage = 1;
-
-                    playerCharacter.lowerHealth(damage);
-                    log("" + c.getName() + " hits " + playerCharacter.getName() + " for " + damage + "!");
-                }
-            }
-            if (!c.isFoe()) {
-                if (move.getDamage() > 0){
-                    // TODO if range == 0 then self
-                    // TODO if range > 1 then multiple targets
-                    Combatant target = foes.get(move.getTarget());
-
-                    int damage = move.getDamage();
-                    if (move.isSpell()) damage += c.getWillpower();
-                    else damage += c.getStrength();
-
-                    int defense;
-                    if (move.isSpell()) defense = target.getResistance();
-                    else defense = target.getDefense();
-
-                    damage = (damage - defense);
-                    if (damage <= 0) damage = 1;
-
-                    target.lowerHealth(damage);
-                    log("" + c.getName() + " hits " + target.getName() + " for " + damage + "!");
-
-                    if (target.isDead()){
-                        log("" + target.getName() + " is defeated!");
+                    if (attacker.getMove().getRange() == Move.RANGE_SELF){
+                    } else {
+                        damage(attacker, playerCharacter, 1.0f);
                     }
                 }
             }
-            c.setMove(null);
+            // player characters have different mechanics because they can hit multiple foes
+            if (!attacker.isFoe()) {
+                if (!attacker.isDefending()){
+
+                    // moves can affect: self, 1 target, 3 targets (close), or 5 targets (far)
+                    if (attacker.getMove().getRange() == Move.RANGE_SELF) {
+                        // SELF
+                        attacker.modifyHealth(attacker.getMove().getDamage());
+
+                    } else if (attacker.getMove().getRange() == Move.RANGE_SINGLE || foes.size() == 1) {
+
+                        Combatant target = foes.get(attacker.getMove().getTarget());
+                        damage(attacker, target, 1.0f);
+
+                    // multiple targets
+                    } else {
+
+                        int target = attacker.getMove().getTarget();
+                        damage(attacker, foes.get(target), 1.0f);
+                        if (target > 0){
+                            if (!foes.get(target - 1).isDead()) damage(attacker, foes.get(target-1), 0.75f);
+                            if (attacker.getMove().getRange() == Move.RANGE_FAR && target > 1 && !foes.get(target - 2).isDead()) damage(attacker, foes.get(target-2), 0.5f);
+                        }
+                        if (target < foes.size()-1) {
+                            if (!foes.get(target + 1).isDead()) damage(attacker, foes.get(target+1), 0.75f);
+                            if (attacker.getMove().getRange() == Move.RANGE_FAR && target < foes.size()-2 && !foes.get(target+2).isDead()) damage(attacker, foes.get(target+2), 0.5f);
+                        }
+
+                    }
+                }
+            }
+            if (attacker.getMove().getCost() != 0) attacker.modifyMagic(attacker.getMove().getCost());
             combatants.remove(0);
-            if (combatants.isEmpty()) combatants = null;
+            if (combatants.isEmpty()) {
+                combatants = null;
+                playerCharacter.setMove(null);
+            }
 
         } // otherwise check if round can be started by checking if player has a move
         else if (playerCharacter.isReady()){
@@ -112,7 +121,7 @@ public class Game {
                 if (foes.get(i).isDead()) continue;
                 // TODO get move from ai
                 foes.get(i).setMove(new Move(Move.BASIC_ATTACK));
-                foes.get(i).getMove().setTarget(-1);
+                foes.get(i).getMove().setTarget(0);
             }
             // sort combatants by speed
             combatants = new ArrayList<>();
@@ -126,17 +135,47 @@ public class Game {
         }
     }
 
+    //
+    private void damage(Combatant attacker, Combatant defender, float distanceModifier){
+
+        int damage = attacker.getMove().getDamage();
+        if (attacker.getMove().isSpell()) damage += attacker.getWillpower();
+        else damage += attacker.getStrength();
+
+        // TODO should distance modifier be before or after defense
+        damage = (int) ((float) damage * distanceModifier);
+
+        int defense;
+        if (attacker.getMove().isSpell()) defense = defender.getResistance();
+        else defense = defender.getDefense();
+
+        if (defender.isDefending()) defense *= 2;
+
+        damage = (damage - defense);
+        if (damage <= 0) damage = 1;
+
+        defender.modifyHealth(damage);
+        log("" + attacker.getName() + " hits " + defender.getName() + " for " + damage + "!");
+
+        if (defender.isDead()) {
+            log("" + defender.getName() + " is defeated!");
+            combatants.remove(defender);
+        }
+    }
+
+
     private void log(String s){
         log.add(s);
     }
 
     // a round has started if the combatants list is made
     boolean roundInProgress(){
-        return combatants != null;
+        return combatants != null || !log.isEmpty();
     }
 
     //
     boolean gameOver(){
+        if (!log.isEmpty()) return false;
         if (playerCharacter.isDead()) return true;
         for (Foe foe : foes) {
             if (!foe.isDead()) return false;
@@ -146,6 +185,8 @@ public class Game {
 
     // pops the current log message
     String pop() {
+        if (combatants != null) System.err.println("LOGLOGLOG \n" + log.toString() + "\n " + combatants.toString());
+
         if (log.isEmpty()) return "";
         else return log.removeFirst();
     }

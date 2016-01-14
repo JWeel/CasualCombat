@@ -34,9 +34,6 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     Item armor;
     Item boots;
 
-    static final int NO_TARGET = -2;
-    static final int TARGET_SELF = -1;
-
     PlayerCharacter(){
         this.level = 0;
         this.money = 0;
@@ -59,8 +56,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     // returns true if a player character has both a move and a target
     boolean isReady(){
         if (this.move == null) return false;
-//        if (this.move.getId() == Move.BASIC_DEFEND[Move.INDEX_ID]) return true;
-        return this.move.getTarget() != NO_TARGET;
+        return this.move.getTarget() != Move.NO_TARGET;
     }
 
     void subtractLevelPoint(){
@@ -114,14 +110,16 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     boolean isFoe(){ return false; }
 
     @Override
-    void lowerHealth(int damage){
+    void modifyHealth(int damage){
         this.currentHealth -= damage;
         if (currentHealth < 0) currentHealth = 0;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
     }
     @Override
-    void lowerMagic(int cost){
+    void modifyMagic(int cost){
         this.currentMagic -= cost;
         if (currentMagic < 0) currentMagic = 0;
+        if (currentMagic > maxMagic) currentMagic = maxMagic;
     }
 
     @Override

@@ -51,6 +51,10 @@ Day 8:
 * Implement ComplexPreferences 
 
 Day 9:
+* Add leaderboard list as well as removing from storage
+* Start adding true game mechanics, including stat modifier and distance modifier
+* Better game log (can handle more strings), and PlayPage interaction with it
+* Auto name duplicate foes
 
 Day 10:
 
