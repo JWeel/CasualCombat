@@ -1,6 +1,6 @@
 package admin.cozycombat;
 
-public class Item {
+class Item {
     public static final int WEAPON_WOODEN_SWORD = 0;
     public static final int WEAPON_SIMPLE_BOW = 1;
     public static final int WEAPON_STICK = 2;

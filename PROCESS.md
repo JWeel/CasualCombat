@@ -55,6 +55,7 @@ Day 9:
 * Start adding true game mechanics, including stat modifier and distance modifier
 * Better game log (can handle more strings), and PlayPage interaction with it
 * Auto name duplicate foes
+* Design problem: Once again how to handle database of moves, etc
 
 Day 10:
 

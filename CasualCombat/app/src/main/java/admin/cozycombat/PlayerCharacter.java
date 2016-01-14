@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class PlayerCharacter extends Combatant implements Parcelable {
+class PlayerCharacter extends Combatant implements Parcelable {
 
     private int maxHealth;
     private int maxMagic;

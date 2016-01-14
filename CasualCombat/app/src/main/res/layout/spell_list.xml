@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="160dip"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="#2299AA"
+    >
+
+    <TextView
+        android:layout_width="120dip"
+        android:layout_height="20dip"
+        android:text="123456789012"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:maxLength="12"
+        android:maxLines="1"
+        android:typeface="monospace"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="1dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginStart="4dip"
+        android:id="@+id/listSpellName"
+        />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="30dip"
+        android:text="12345678901234567890121234567890123456789012"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:typeface="monospace"
+        android:gravity="left"
+        android:layout_above="@id/listSpellCost"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="2dip"
+        android:layout_marginStart="2dip"
+        android:id="@+id/listSpellInfo"
+        />
+    <TextView
+        android:layout_width="70dip"
+        android:layout_height="16dip"
+        android:text="Cost 99 MP"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:typeface="monospace"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="1dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginStart="4dip"
+        android:id="@+id/listSpellCost"
+        />
+    <ImageView
+        android:layout_width="16dip"
+        android:layout_height="16dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="1dip"
+        android:layout_marginRight="4dip"
+        android:layout_marginEnd="4dip"
+        android:background="@drawable/range_far"
+        android:id="@+id/listSpellRange"
+        />
+
+</RelativeLayout>

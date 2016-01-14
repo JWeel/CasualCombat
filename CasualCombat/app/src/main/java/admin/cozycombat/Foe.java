@@ -2,7 +2,7 @@ package admin.cozycombat;
 
 import java.util.ArrayList;
 
-public class Foe extends Combatant {
+class Foe extends Combatant {
 
     private int maxHealth;
     private int maxMagic;

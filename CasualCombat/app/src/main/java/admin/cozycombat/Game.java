@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class Game {
+class Game {
 
     ArrayList<Combatant> combatants;
 
@@ -185,8 +185,6 @@ public class Game {
 
     // pops the current log message
     String pop() {
-        if (combatants != null) System.err.println("LOGLOGLOG \n" + log.toString() + "\n " + combatants.toString());
-
         if (log.isEmpty()) return "";
         else return log.removeFirst();
     }

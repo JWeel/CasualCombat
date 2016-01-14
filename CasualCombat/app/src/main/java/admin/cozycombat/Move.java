@@ -1,8 +1,6 @@
 package admin.cozycombat;
 
-import android.text.style.RelativeSizeSpan;
-
-public class Move {
+class Move {
 
     private int id;
     private int damage;
@@ -40,6 +38,8 @@ public class Move {
     static final int[] FIREBALL         = {2, 4, 2, 0, 0, 0, 0, 0, RANGE_CLOSE};
     static final int[] HEAL             = {3, -3, 3, 0, 0, 0, 0, 0, RANGE_SELF};
 
+    static final String FIREBALL_       = "2,4,2,0,0,0,0,0,2";
+
     Move(int[] moveArray){
         this.id = moveArray[INDEX_ID];
         this.damage = moveArray[INDEX_DAMAGE];
@@ -51,6 +51,43 @@ public class Move {
         this.speed = moveArray[INDEX_SPEED];
         this.range = moveArray[INDEX_RANGE];
         this.target = NO_TARGET;
+    }
+
+    Move(int idx, int dmg, int cst, int str, int wil, int def, int res, int spd, int rng, int tar){
+        this.id = idx;
+        this.damage = dmg;
+        this.cost = cst;
+        this.strength = str;
+        this.willpower = wil;
+        this.defense = def;
+        this.resistance = res;
+        this.speed = spd;
+        this.range = rng;
+        this.target = tar;
+    }
+
+    //
+    String getName(){
+        switch(this.id){
+            case 2:
+                return "Fireball";
+            case 3:
+                return "Heal";
+            default:
+                return "";
+        }
+    }
+
+    //
+    String getInfo(){
+        switch(this.id){
+            case 2:
+                return "Conjure up a mighty ball of fire.";
+            case 3:
+                return "Restore some health at the cost of magic.";
+            default:
+                return "";
+        }
     }
 
     boolean isSpell(){

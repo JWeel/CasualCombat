@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -105,6 +106,15 @@ public class PlayPage extends AppCompatActivity {
         itemParams.setMargins(24, topMargin, 24, 0);
         itemParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         itemListView.setLayoutParams(itemParams);
+
+//        MoveAdapter adapter = new MoveAdapter(this, R.layout.spell_list, R.id.listSpellName, game.getPlayerCharacter().getSpells());
+//        storedPlayerListView.setAdapter(adapter);
+//        storedPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                loadPlayerCharacter(position);
+//            }
+//        });
 
         spellListView.setVisibility(View.INVISIBLE);
         itemListView.setVisibility(View.INVISIBLE);
