@@ -2,6 +2,7 @@ package admin.cozycombat;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
 public class Game {
 
@@ -10,7 +11,7 @@ public class Game {
     private PlayerCharacter playerCharacter;
     private ArrayList<Foe> foes;
 
-    private String currentMessage;
+    private LinkedList<String> log;
 
     private int roundCount;
 
@@ -23,7 +24,7 @@ public class Game {
         foes.add(new Foe(Foe.GOBLIN));
         foes.add(new Foe(Foe.GOBLIN));
         foes.add(new Foe(Foe.GOBLIN));
-        currentMessage = "";
+        log = new LinkedList<>();
 
         roundCount = 0;
     }
@@ -31,6 +32,10 @@ public class Game {
 
     //
     void advance(){
+
+        // check if stuff in log
+        if (!log.isEmpty()) return;
+
         // if combatants list is made then round has started
         if (roundInProgress()) {
 
@@ -54,8 +59,20 @@ public class Game {
             Move move = c.getMove();
             if (c.isFoe()) {
                 if (move.getDamage() > 0){
-                    playerCharacter.lowerHealth(move.getDamage());
-                    log("" + c.getName() + " hits " + playerCharacter.getName() + " for " + move.getDamage() + "!");
+
+                    int damage = move.getDamage();
+                    if (move.isSpell()) damage += c.getWillpower();
+                    else damage += c.getStrength();
+
+                    int defense;
+                    if (move.isSpell()) defense = playerCharacter.getResistance();
+                    else defense = playerCharacter.getDefense();
+
+                    damage = (damage - defense);
+                    if (damage <= 0) damage = 1;
+
+                    playerCharacter.lowerHealth(damage);
+                    log("" + c.getName() + " hits " + playerCharacter.getName() + " for " + damage + "!");
                 }
             }
             if (!c.isFoe()) {
@@ -63,8 +80,20 @@ public class Game {
                     // TODO if range == 0 then self
                     // TODO if range > 1 then multiple targets
                     Combatant target = foes.get(move.getTarget());
-                    target.lowerHealth(move.getDamage());
-                    log("" + c.getName() + " hits " + target.getName() + " for " + move.getDamage() + "!");
+
+                    int damage = move.getDamage();
+                    if (move.isSpell()) damage += c.getWillpower();
+                    else damage += c.getStrength();
+
+                    int defense;
+                    if (move.isSpell()) defense = target.getResistance();
+                    else defense = target.getDefense();
+
+                    damage = (damage - defense);
+                    if (damage <= 0) damage = 1;
+
+                    target.lowerHealth(damage);
+                    log("" + c.getName() + " hits " + target.getName() + " for " + damage + "!");
 
                     if (target.isDead()){
                         log("" + target.getName() + " is defeated!");
@@ -98,7 +127,7 @@ public class Game {
     }
 
     private void log(String s){
-        currentMessage = s;
+        log.add(s);
     }
 
     // a round has started if the combatants list is made
@@ -117,9 +146,8 @@ public class Game {
 
     // pops the current log message
     String pop() {
-        String poppedMessage = currentMessage;
-        currentMessage = "";
-        return poppedMessage;
+        if (log.isEmpty()) return "";
+        else return log.removeFirst();
     }
 
     //

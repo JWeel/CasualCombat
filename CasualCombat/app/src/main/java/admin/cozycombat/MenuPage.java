@@ -22,8 +22,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MenuPage extends AppCompatActivity {
+
+    static final String KEY_PREFS = "CASUALCOMBATPREFS";
+    static final String KEY_PLAYER = "CASUALCOMBATPLAYER";
 
     // TODO
     // bundle or serializable or database or complex prefs
@@ -51,27 +55,13 @@ public class MenuPage extends AppCompatActivity {
     //
     private void prepareStoredPlayerList(){
         storedPlayerCharacters = new ArrayList<>();
-        SharedPreferences prefs = getSharedPreferences("mypref", MODE_PRIVATE);
-
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, "mypref", MODE_PRIVATE);
-        PlayerCharacter pc = complexPreferences.getObject("pc", PlayerCharacter.class);
-        if (pc != null) storedPlayerCharacters.add(pc);
-
-        System.out.println(prefs.getAll().toString());
-
-        // TODO temp
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-//        storedPlayerCharacters.add(new PlayerCharacter());
-
+        SharedPreferences prefs = getSharedPreferences(KEY_PREFS, MODE_PRIVATE);
+        Map<String, ?> keys = prefs.getAll();
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, KEY_PREFS, MODE_PRIVATE);
+        for (String key : keys.keySet()) {
+            PlayerCharacter pc = complexPreferences.getObject(key, PlayerCharacter.class);
+            storedPlayerCharacters.add(pc);
+        }
 
         PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.listCharName, storedPlayerCharacters);
         ListView storedPlayerListView = (ListView) findViewById(R.id.menuPlayerList);
@@ -82,10 +72,7 @@ public class MenuPage extends AppCompatActivity {
                 loadPlayerCharacter(position);
             }
         });
-        //storedPlayerListView.setEmptyView(findViewById(android.R.id.empty));
-
         setLoadedPlayerListVisibility(View.INVISIBLE);
-        //findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
     }
 
     //
@@ -142,19 +129,13 @@ public class MenuPage extends AppCompatActivity {
         if (playerCharacter != null && playerCharacter.finishedLevelUp()) {
 
             if (!exists(playerCharacter)) {
-                SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
-                //editor.put????
-                editor.apply();
-
-
-                ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, "mypref", MODE_PRIVATE);;
+                ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, KEY_PREFS, MODE_PRIVATE);;
                 complexPreferences.putObject(playerCharacter.getName(), playerCharacter);
                 complexPreferences.commit();
-
             }
 
             Intent newPage = new Intent(this, PlayPage.class);
-            newPage.putExtra("player", playerCharacter); // TODO key
+            newPage.putExtra(KEY_PLAYER, playerCharacter); // TODO key
 
             startActivity(newPage);
         } else {

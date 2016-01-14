@@ -1,16 +1,67 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".LeaderboardPage">
+    android:paddingLeft="8dip"
+    android:paddingRight="8dip"
+    android:paddingTop="8dip"
+    android:paddingBottom="8dip"
+    tools:context=".LeaderboardPage"
+    android:background="#004455"
+    >
 
-    <TextView android:text="@string/hello_world"
+    <TextView
+        android:text="#CASUALCOMBAT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:id="@+id/leaderboardTitleText"
         />
+    <TextView
+        android:text="Hold down a character to delete them."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/leaderboardTitleText"
+        android:layout_marginTop="10dip"
+        android:id="@+id/leaderboardInfoText"
+        />
+
+    <RelativeLayout
+        android:layout_width="258dip"
+        android:layout_height="400dip"
+        android:background="#557766"
+        android:padding="4dip"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/leaderboardInfoText"
+        android:layout_marginTop="10dip"
+        android:id="@+id/leaderboardLayoutList"
+        >
+        <ListView
+            android:layout_width="250dip"
+            android:layout_height="400dip"
+            android:id="@+id/leaderboardPlayerList"
+            >
+        </ListView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No player characters stored."
+            android:layout_alignTop="@id/leaderboardPlayerList"
+            android:layout_alignLeft="@id/leaderboardPlayerList"
+            android:layout_alignStart="@id/leaderboardPlayerList"
+            android:layout_marginTop="20dip"
+            android:layout_marginLeft="35dip"
+            android:layout_marginStart="35dip"
+            android:textColor="#FFFFFF"
+            android:id="@+id/leaderboardPlayerListEmpty"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>

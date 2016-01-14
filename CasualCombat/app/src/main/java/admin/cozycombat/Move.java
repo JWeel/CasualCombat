@@ -45,6 +45,10 @@ public class Move {
         this.target = PlayerCharacter.NO_TARGET;
     }
 
+    boolean isSpell(){
+        return this.id != BASIC_ATTACK[INDEX_ID];
+    }
+
     void setTarget(int t) { this.target = t; }
     int getTarget() { return this.target; }
 
