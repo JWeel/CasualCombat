@@ -59,7 +59,17 @@ Day 9:
 
 Day 10:
 * Send character from play to shop
+* Move adapter
 * Prepare alpha
+* Overhaul structure of Moves, Foes, etc.
+* Design decision for ^ : everything is classes. Specific moves extend abstract Move
+* Implement using spells
+* Start on layout overhaul for playpage and shoppage
+* Cancel on title page (by the way menupage is now named titlepage)
+* Dynamic progress bar now uses xml layout colors
+* Possibly temporary icon for player character
+* Successful game end now awards player character with points and money
+* Fail game end now brings player character to fail screen
 
 Day 11:
 

@@ -9,6 +9,9 @@ import move.Move;
 
 public class PlayerCharacter extends Combatant implements Parcelable {
 
+    // TODO maybe implement a color and if you click on the avatar the color changes of the helmet
+
+    private int level;
     private int levelPoints;
 
     private ArrayList<Integer> items;
@@ -32,7 +35,8 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.resistance = 1;
         this.name = "";
         this.spells = new ArrayList<Integer>();
-        this.spells.add(2);
+        this.spells.add(Move.FIREBALL);
+        this.spells.add(Move.HEAL);
         this.items = new ArrayList<Integer>();
     }
 
@@ -75,6 +79,12 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     void addSpeed(){
         this.speed++;
     }
+
+    void addMoney(int amount){ this.money += amount; }
+    void addLevel(){ this.level++; }
+    void addLevelPoints(int amount) { this.levelPoints += amount; }
+
+    public int getLevel() { return this.level; }
 
     @Override
     public boolean isFoe(){ return false; }

@@ -1,10 +1,16 @@
 package admin.cozycombat;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class ShopPage extends AppCompatActivity {
 
@@ -26,8 +32,99 @@ public class ShopPage extends AppCompatActivity {
 
 
         Intent previousPage = getIntent();
-        playerCharacter = previousPage.getParcelableExtra(MenuPage.KEY_PLAYER);
+        playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
+        System.err.println("LP = " + playerCharacter.getLevelPoints());
 
+
+        if (playerCharacter.isDead()) {
+            findViewById(R.id.shopLayoutCharacter).setVisibility(View.INVISIBLE);
+            findViewById(R.id.shopLayoutMiddle).setVisibility(View.INVISIBLE);
+            findViewById(R.id.shopLayoutShop).setVisibility(View.INVISIBLE);
+            findViewById(R.id.shopDeathText).setVisibility(View.VISIBLE);
+        } else {
+            updatePlayerSkillViews();
+        }
+    }
+
+    //
+    public void addClick(View addButton){
+
+        switch(addButton.getId()){
+            case R.id.shopCharHealthAdd:
+                playerCharacter.addHealth();
+                break;
+            case R.id.shopCharMagicAdd:
+                playerCharacter.addMagic();
+                break;
+            case R.id.shopCharStrengthAdd:
+                playerCharacter.addStrength();
+                break;
+            case R.id.shopCharWillpowerAdd:
+                playerCharacter.addWillpower();
+                break;
+            case R.id.shopCharDefenseAdd:
+                playerCharacter.addDefense();
+                break;
+            case R.id.shopCharResistanceAdd:
+                playerCharacter.addResistance();
+                break;
+            case R.id.shopCharSpeedAdd:
+                playerCharacter.addSpeed();
+                break;
+        }
+
+        playerCharacter.subtractLevelPoint();
+        updatePlayerSkillViews();
+
+        if (playerCharacter.finishedLevelUp()) {
+            findViewById(R.id.saveButton).setEnabled(true);
+            findViewById(R.id.nextButton).setEnabled(true);
+            setLevelUpButtonsVisibility(View.INVISIBLE);
+        }
+    }
+
+    //
+    private void updatePlayerSkillViews(){
+        ImageView shopCharIcon = (ImageView) findViewById(R.id.shopCharIcon);
+
+        ProgressBar shopCharHealth = (ProgressBar) findViewById(R.id.shopCharHealth);
+        shopCharHealth.setMax(playerCharacter.getMaxHealth());
+        shopCharHealth.setProgress(playerCharacter.getHealth());
+
+        ProgressBar shopCharMagic = (ProgressBar) findViewById(R.id.shopCharMagic);
+        shopCharMagic.setMax(playerCharacter.getMaxMagic());
+        shopCharMagic.setProgress(playerCharacter.getMagic());
+
+        ((TextView) findViewById(R.id.shopCharName)).setText(playerCharacter.getName());
+        ((TextView) findViewById(R.id.shopCharHealthText)).setText("" + playerCharacter.getMaxHealth());
+        ((TextView) findViewById(R.id.shopCharMagicText)).setText("" + playerCharacter.getMaxMagic());
+        ((TextView) findViewById(R.id.shopCharLevel)).setText("LEVEL " + playerCharacter.getLevel());
+        ((TextView) findViewById(R.id.shopCharStrength)).setText("STR " + playerCharacter.getStrength());
+        ((TextView) findViewById(R.id.shopCharWillpower)).setText("WIL " + playerCharacter.getWillpower());
+        ((TextView) findViewById(R.id.shopCharDefense)).setText("DEF " + playerCharacter.getDefense());
+        ((TextView) findViewById(R.id.shopCharResistance)).setText("RES " + playerCharacter.getResistance());
+        ((TextView) findViewById(R.id.shopCharSpeed)).setText("SPD " + playerCharacter.getSpeed());
+
+        ((TextView) findViewById(R.id.shopCharPoints)).setText("Points left to spend: " + playerCharacter.getLevelPoints());
+    }
+
+    //
+    private void setLevelUpButtonsVisibility(int visibility){
+        findViewById(R.id.shopCharNameChangeButton).setVisibility(visibility);
+        findViewById(R.id.shopCharHealthAdd).setVisibility(visibility);
+        findViewById(R.id.shopCharMagicAdd).setVisibility(visibility);
+        findViewById(R.id.shopCharStrengthAdd).setVisibility(visibility);
+        findViewById(R.id.shopCharWillpowerAdd).setVisibility(visibility);
+        findViewById(R.id.shopCharDefenseAdd).setVisibility(visibility);
+        findViewById(R.id.shopCharResistanceAdd).setVisibility(visibility);
+        findViewById(R.id.shopCharSpeedAdd).setVisibility(visibility);
+        findViewById(R.id.shopCharPoints).setVisibility(visibility);
+    }
+
+    //
+    public void titleClick(View deathText){
+        // TODO also finish prev activity
+        finish();
     }
 
     @Override

@@ -5,12 +5,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/avatar"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         >
         <activity
-            android:name=".MenuPage"
+            android:name=".TitlePage"
             android:label="@string/app_name"
             >
             <intent-filter>

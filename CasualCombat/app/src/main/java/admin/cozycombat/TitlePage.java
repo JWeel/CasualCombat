@@ -24,13 +24,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class MenuPage extends AppCompatActivity {
+public class TitlePage extends AppCompatActivity {
 
     static final String KEY_PREFS = "CASUALCOMBATPREFS";
     static final String KEY_PLAYER = "CASUALCOMBATPLAYER";
 
     // TODO
-    // bundle or serializable or database or complex prefs
+    // maybe use camera to take selfie for character icon
+    // an option button on the right side of the upper action bar where you can go to information
     // possibly improve the player screen buttons margins to be dynamically perfectly sized based on width. (screenWidth - 5 * 30) / 6 ?
 
     ArrayList<PlayerCharacter> storedPlayerCharacters;
@@ -39,12 +40,7 @@ public class MenuPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_page);
-
-
-        ((Button) findViewById(R.id.readyButton)).setText("NEW");
-        ((ProgressBar) findViewById(R.id.menuCharHealth)).getProgressDrawable().setColorFilter(Color.parseColor("#00AA00"), PorterDuff.Mode.SRC_IN);
-        ((ProgressBar) findViewById(R.id.menuCharMagic)).getProgressDrawable().setColorFilter(Color.parseColor("#0055DD"), PorterDuff.Mode.SRC_IN);
+        setContentView(R.layout.activity_title_page);
 
         prepareStoredPlayerList();
 
@@ -64,7 +60,7 @@ public class MenuPage extends AppCompatActivity {
         }
 
         PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.listCharName, storedPlayerCharacters);
-        ListView storedPlayerListView = (ListView) findViewById(R.id.menuPlayerList);
+        ListView storedPlayerListView = (ListView) findViewById(R.id.titlePlayerList);
         storedPlayerListView.setAdapter(adapter);
         storedPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,25 +73,13 @@ public class MenuPage extends AppCompatActivity {
 
     //
     private void setLoadedPlayerListVisibility(int visibility){
-        findViewById(R.id.menuLayoutList).setVisibility(visibility);
+        findViewById(R.id.titleLayoutList).setVisibility(visibility);
     }
 
     //
     private void loadPlayerCharacter(int position){
         PlayerCharacter loadedCharacter = storedPlayerCharacters.get(position);
         playerCharacter = loadedCharacter.copy();
-
-        // TODO temp
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
-//        playerCharacter.subtractLevelPoint();
 
         updatePlayerSkillViews();
         setPlayerVisibility(View.VISIBLE);
@@ -108,19 +92,8 @@ public class MenuPage extends AppCompatActivity {
 
     //
     private void setPlayerVisibility(int visibility){
-
-        findViewById(R.id.menuLayoutCharacter).setVisibility(visibility);
-
-//        findViewById(R.id.menuCharIcon).setVisibility(visibility);
-//        findViewById(R.id.menuCharName).setVisibility(visibility);
-//        findViewById(R.id.menuCharHealth).setVisibility(visibility);
-//        findViewById(R.id.menuCharMagic).setVisibility(visibility);
-//        findViewById(R.id.menuCharLevel).setVisibility(visibility);
-//        findViewById(R.id.menuCharStrength).setVisibility(visibility);
-//        findViewById(R.id.menuCharWillpower).setVisibility(visibility);
-//        findViewById(R.id.menuCharDefense).setVisibility(visibility);
-//        findViewById(R.id.menuCharResistance).setVisibility(visibility);
-//        findViewById(R.id.menuCharSpeed).setVisibility(visibility);
+        findViewById(R.id.titleLayoutCharacter).setVisibility(visibility);
+        findViewById(R.id.titleCancelButton).setVisibility(visibility);
     }
 
     //
@@ -216,40 +189,39 @@ public class MenuPage extends AppCompatActivity {
     //
     private void renamePlayerCharacter(String newName){
         playerCharacter.setName(newName);
-        ((TextView) findViewById(R.id.menuCharName)).setText(playerCharacter.getName());
+        ((TextView) findViewById(R.id.titleCharName)).setText(playerCharacter.getName());
     }
 
     //
-    public void addClick(View addSpeedButton){
+    public void addClick(View addButton){
 
-        switch(addSpeedButton.getId()){
-            case R.id.menuCharHealthAdd:
+        switch(addButton.getId()){
+            case R.id.titleCharHealthAdd:
                 playerCharacter.addHealth();
                 break;
-            case R.id.menuCharMagicAdd:
+            case R.id.titleCharMagicAdd:
                 playerCharacter.addMagic();
                 break;
-            case R.id.menuCharStrengthAdd:
+            case R.id.titleCharStrengthAdd:
                 playerCharacter.addStrength();
                 break;
-            case R.id.menuCharWillpowerAdd:
+            case R.id.titleCharWillpowerAdd:
                 playerCharacter.addWillpower();
                 break;
-            case R.id.menuCharDefenseAdd:
+            case R.id.titleCharDefenseAdd:
                 playerCharacter.addDefense();
                 break;
-            case R.id.menuCharResistanceAdd:
+            case R.id.titleCharResistanceAdd:
                 playerCharacter.addResistance();
                 break;
-            case R.id.menuCharSpeedAdd:
+            case R.id.titleCharSpeedAdd:
                 playerCharacter.addSpeed();
                 break;
         }
 
+        playerCharacter.subtractLevelPoint();
         updatePlayerSkillViews();
 
-        playerCharacter.subtractLevelPoint();
-        ((TextView) findViewById(R.id.menuCharPoints)).setText("Points left to spend: " + playerCharacter.getLevelPoints());
         if (playerCharacter.finishedLevelUp()) {
             findViewById(R.id.readyButton).setEnabled(true);
             setLevelUpButtonsVisibility(View.INVISIBLE);
@@ -258,53 +230,48 @@ public class MenuPage extends AppCompatActivity {
 
     //
     private void updatePlayerSkillViews(){
-        ((ProgressBar) findViewById(R.id.menuCharHealth)).setMax(playerCharacter.getMaxHealth());
-        ((ProgressBar) findViewById(R.id.menuCharHealth)).setMax(playerCharacter.getMaxHealth());
-        ((ProgressBar) findViewById(R.id.menuCharMagic)).setProgress(playerCharacter.getHealth());
-        ((ProgressBar) findViewById(R.id.menuCharMagic)).setProgress(playerCharacter.getMagic());
+        ((ProgressBar) findViewById(R.id.titleCharHealth)).setMax(playerCharacter.getMaxHealth());
+        ((ProgressBar) findViewById(R.id.titleCharHealth)).setProgress(playerCharacter.getHealth());
+        ((ProgressBar) findViewById(R.id.titleCharMagic)).setMax(playerCharacter.getMaxMagic());
+        ((ProgressBar) findViewById(R.id.titleCharMagic)).setProgress(playerCharacter.getMagic());
 
-        ((TextView) findViewById(R.id.menuCharName)).setText(playerCharacter.getName());
-        ((TextView) findViewById(R.id.menuCharLevel)).setText("LEVEL " + playerCharacter.getLevel());
+        ((TextView) findViewById(R.id.titleCharName)).setText(playerCharacter.getName());
+        ((TextView) findViewById(R.id.titleCharLevel)).setText("LEVEL " + playerCharacter.getLevel());
 
-        ((TextView) findViewById(R.id.menuCharHealthText)).setText("" + playerCharacter.getMaxHealth());
-        ((TextView) findViewById(R.id.menuCharMagicText)).setText("" + playerCharacter.getMaxMagic());
-        ((TextView) findViewById(R.id.menuCharStrength)).setText("STR " + playerCharacter.getStrength());
-        ((TextView) findViewById(R.id.menuCharWillpower)).setText("WIL " + playerCharacter.getWillpower());
-        ((TextView) findViewById(R.id.menuCharDefense)).setText("DEF " + playerCharacter.getDefense());
-        ((TextView) findViewById(R.id.menuCharResistance)).setText("RES " + playerCharacter.getResistance());
-        ((TextView) findViewById(R.id.menuCharSpeed)).setText("SPD " + playerCharacter.getSpeed());
+        ((TextView) findViewById(R.id.titleCharHealthText)).setText("" + playerCharacter.getMaxHealth());
+        ((TextView) findViewById(R.id.titleCharMagicText)).setText("" + playerCharacter.getMaxMagic());
+        ((TextView) findViewById(R.id.titleCharStrength)).setText("STR " + playerCharacter.getStrength());
+        ((TextView) findViewById(R.id.titleCharWillpower)).setText("WIL " + playerCharacter.getWillpower());
+        ((TextView) findViewById(R.id.titleCharDefense)).setText("DEF " + playerCharacter.getDefense());
+        ((TextView) findViewById(R.id.titleCharResistance)).setText("RES " + playerCharacter.getResistance());
+        ((TextView) findViewById(R.id.titleCharSpeed)).setText("SPD " + playerCharacter.getSpeed());
+
+        ((TextView) findViewById(R.id.titleCharPoints)).setText("Points left to spend: " + playerCharacter.getLevelPoints());
     }
 
     //
     private void setLevelUpButtonsVisibility(int visibility){
-        findViewById(R.id.menuCharNameChangeButton).setVisibility(visibility);
-        findViewById(R.id.menuCharHealthAdd).setVisibility(visibility);
-        //findViewById(R.id.menuCharHealthText).setVisibility(visibility);
-        findViewById(R.id.menuCharMagicAdd).setVisibility(visibility);
-        //findViewById(R.id.menuCharMagicText).setVisibility(visibility);
-        findViewById(R.id.menuCharStrengthAdd).setVisibility(visibility);
-        findViewById(R.id.menuCharWillpowerAdd).setVisibility(visibility);
-        findViewById(R.id.menuCharDefenseAdd).setVisibility(visibility);
-        findViewById(R.id.menuCharResistanceAdd).setVisibility(visibility);
-        findViewById(R.id.menuCharSpeedAdd).setVisibility(visibility);
-        findViewById(R.id.menuCharPoints).setVisibility(visibility);
+        findViewById(R.id.titleCharNameChangeButton).setVisibility(visibility);
+        findViewById(R.id.titleCharHealthAdd).setVisibility(visibility);
+        findViewById(R.id.titleCharMagicAdd).setVisibility(visibility);
+        findViewById(R.id.titleCharStrengthAdd).setVisibility(visibility);
+        findViewById(R.id.titleCharWillpowerAdd).setVisibility(visibility);
+        findViewById(R.id.titleCharDefenseAdd).setVisibility(visibility);
+        findViewById(R.id.titleCharResistanceAdd).setVisibility(visibility);
+        findViewById(R.id.titleCharSpeedAdd).setVisibility(visibility);
+        findViewById(R.id.titleCharPoints).setVisibility(visibility);
     }
 
     //
     public void loadClick(View loadButton){
 
-        if (findViewById(R.id.menuLayoutList).getVisibility() == View.VISIBLE){
+        if (findViewById(R.id.titleLayoutList).getVisibility() == View.VISIBLE){
 
             // only show player if one was being created
             if (((Button) findViewById(R.id.readyButton)).getText().equals("Start")) setPlayerVisibility(View.VISIBLE);
 
-
             setLoadedPlayerListVisibility(View.INVISIBLE);
-
             findViewById(R.id.readyButton).setEnabled(true);
-
-
-            //findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
 
         } else {
             setPlayerVisibility(View.INVISIBLE);
@@ -312,10 +279,20 @@ public class MenuPage extends AppCompatActivity {
 
             findViewById(R.id.readyButton).setEnabled(false);
 
-            if (storedPlayerCharacters.isEmpty()) findViewById(R.id.menuPlayerListEmpty).setVisibility(View.VISIBLE);
-            else findViewById(R.id.menuPlayerListEmpty).setVisibility(View.INVISIBLE);
+            if (storedPlayerCharacters.isEmpty()) findViewById(R.id.titlePlayerListEmpty).setVisibility(View.VISIBLE);
+            else findViewById(R.id.titlePlayerListEmpty).setVisibility(View.INVISIBLE);
 
         }
+    }
+
+    //
+    public void cancelClick(View cancelButton){
+
+        playerCharacter = null;
+        ((Button) findViewById(R.id.readyButton)).setText("New");
+        findViewById(R.id.readyButton).setEnabled(true);
+
+        setPlayerVisibility(View.INVISIBLE);
     }
 
     //
@@ -325,9 +302,9 @@ public class MenuPage extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_menu_page, menu);
+    public boolean onCreateOptionsMenu(Menu title) {
+        // Inflate the title; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_title_page, title);
         return true;
     }
 

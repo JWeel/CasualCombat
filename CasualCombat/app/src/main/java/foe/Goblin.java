@@ -17,10 +17,10 @@ public class Goblin extends Foe {
         this.resistance = 0;
         this.speed = 6;
         this.name = "GOBLIN";
-        this.level = 0;
-        this.money = 0;
+        this.money = 1;
         this.spells = new ArrayList<Integer>();
 
         this.color = "#125634";
+        this.id = Foe.GOBLIN;
     }
 }

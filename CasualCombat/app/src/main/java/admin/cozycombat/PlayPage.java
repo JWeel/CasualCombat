@@ -2,7 +2,6 @@ package admin.cozycombat;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -27,10 +26,9 @@ import move.Move;
 public class PlayPage extends AppCompatActivity {
 
     // TODO
-    // click spell button brings up scrollable list over item and defend
     // click item does same but over attack and spell
     //
-    // when pressing a button it should highlight, but stop highlight when no longer pressed
+    // cant cast spell if not enough magic
 
     private static final int BUTTON_INDEX_ALL = 0;
     private static final int BUTTON_INDEX_ATTACK = 1;
@@ -53,11 +51,11 @@ public class PlayPage extends AppCompatActivity {
 
 
         Intent previousPage = getIntent();
-        PlayerCharacter playerCharacter = previousPage.getParcelableExtra(MenuPage.KEY_PLAYER);
+        PlayerCharacter playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
 
         game = new Game(playerCharacter);
 
-        displayPlayer(game.getPlayerCharacter());
+        updatePlayerValues(game.getPlayerCharacter());
         displayFoes(game.getFoes());
 
         resizeButtons();
@@ -116,12 +114,15 @@ public class PlayPage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 game.pickMove(adapter.getListMove(position));
+
+                // TODO if range == self then dont select foe but continue
+
                 selectingMove = false;
                 selectingFoe = true;
                 // set views of other moves to disable (greyed out)
                 disableMoveButons(BUTTON_INDEX_ATTACK);
                 findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
-                System.err.println(game.getPlayerCharacter().getMove().toString());
+                System.err.println(game.getPlayerCharacter().getSpells().toString());
             }
         });
 
@@ -130,30 +131,24 @@ public class PlayPage extends AppCompatActivity {
     }
 
     //
-    private void displayPlayer(Combatant playerCharacter){
+    private void updatePlayerValues(PlayerCharacter playerCharacter){
         ImageView charIcon = (ImageView) findViewById(R.id.charIcon);
-
-        TextView charName = (TextView) findViewById(R.id.charName);
-        charName.setText(playerCharacter.getName());
 
         ProgressBar charHealth = (ProgressBar) findViewById(R.id.charHealth);
         charHealth.setMax(game.getPlayerCharacter().getMaxHealth());
-        charHealth.getProgressDrawable().setColorFilter(Color.parseColor("#00AA00"), PorterDuff.Mode.SRC_IN);
+        charHealth.setProgress(game.getPlayerCharacter().getHealth());
+
         ProgressBar charMagic = (ProgressBar) findViewById(R.id.charMagic);
         charMagic.setMax(game.getPlayerCharacter().getMaxMagic());
-        charMagic.getProgressDrawable().setColorFilter(Color.parseColor("#0055DD"), PorterDuff.Mode.SRC_IN);
+        charMagic.setProgress(game.getPlayerCharacter().getMagic());
 
-        TextView charLevel = (TextView) findViewById(R.id.charLevel);
-        charLevel.setText("LEVEL " + playerCharacter.getLevel());
-
-        TextView charStrength = (TextView) findViewById(R.id.charStrength);
-        charStrength.setText("STR " + playerCharacter.getStrength());
-
-        TextView charDefense = (TextView) findViewById(R.id.charDefense);
-        charDefense.setText("DEF " + playerCharacter.getDefense());
-
-        TextView charSpeed = (TextView) findViewById(R.id.charSpeed);
-        charSpeed.setText("SPD " + playerCharacter.getSpeed());
+        ((TextView) findViewById(R.id.charName)).setText(playerCharacter.getName());
+        ((TextView) findViewById(R.id.charLevel)).setText("LVL " + playerCharacter.getLevel());
+        ((TextView) findViewById(R.id.charStrength)).setText("STR " + playerCharacter.getStrength());
+        ((TextView) findViewById(R.id.charWillpower)).setText("WIL " + playerCharacter.getStrength());
+        ((TextView) findViewById(R.id.charDefense)).setText("DEF " + playerCharacter.getDefense());
+        ((TextView) findViewById(R.id.charResistance)).setText("RES " + playerCharacter.getDefense());
+        ((TextView) findViewById(R.id.charSpeed)).setText("SPD " + playerCharacter.getSpeed());
     }
 
     //
@@ -183,7 +178,7 @@ public class PlayPage extends AppCompatActivity {
                         } else {
                             System.err.println(game.getPlayerCharacter().getMove().toString());
                             // TODO game method for set target
-                            game.getPlayerCharacter().getMove().setTarget(targetId);
+                            game.pickTarget(targetId);
                             selectingFoe = false;
                             findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
                             disableMoveButons(BUTTON_INDEX_ALL);
@@ -255,7 +250,7 @@ public class PlayPage extends AppCompatActivity {
     //
     public void defendClick(View defendButton){
         game.getPlayerCharacter().setMove(Move.findMoveByID(Move.BASIC_DEFEND));
-        game.getPlayerCharacter().getMove().setTarget(Move.TARGET_SELF);
+        game.pickTarget(Move.TARGET_SELF);
 
         // set views of other moves to disable (greyed out)
         disableMoveButons(BUTTON_INDEX_ALL);
@@ -302,7 +297,7 @@ public class PlayPage extends AppCompatActivity {
             }
             ((TextView) logTextView).setText(logText);
 
-            updateFoeViews();
+            updateHealthMagicDisplays();
         }
 
         if (!game.roundInProgress()) {
@@ -318,8 +313,10 @@ public class PlayPage extends AppCompatActivity {
             // who died (pc or some foe)
             // if pc wins, 2 messages (1 for money and 1 for level up)
 
+            System.err.println("LP = " + game.getPlayerCharacter().getLevelPoints());
+
             Intent newPage = new Intent(this, ShopPage.class);
-            newPage.putExtra(MenuPage.KEY_PLAYER, game.getPlayerCharacter());
+            newPage.putExtra(TitlePage.KEY_PLAYER, game.getPlayerCharacter());
 
             startActivity(newPage);
 
@@ -327,20 +324,15 @@ public class PlayPage extends AppCompatActivity {
     }
 
     //
-    private void updateFoeViews(){
-        // TODO consider an alternative:
-        // reset the foetextview array list and call the displayfoes again
-        // this redoes all the listeners and stuff and basically removes a targetable foe
-        //ArrayList<TextView> newFoeTextViews = new ArrayList<>();
+    private void updateHealthMagicDisplays(){
 
         for (int i = 0; i < foeTextViews.size(); i++){
             foeTextViews.get(i).setText(game.getFoes().get(i).getName() + "\n" + game.getFoes().get(i).getHealth());
             if (game.getFoes().get(i).isDead()) foeTextViews.get(i).setBackgroundColor(Color.parseColor("#332222"));
         }
 
-        // TODO temp , or rename this method and keep this here, since it is also called after foe attack pc
-        ProgressBar charHealth = (ProgressBar) findViewById(R.id.charHealth);
-        charHealth.setProgress(game.getPlayerCharacter().getHealth());
+        ((ProgressBar) findViewById(R.id.charHealth)).setProgress(game.getPlayerCharacter().getHealth());
+        ((ProgressBar) findViewById(R.id.charMagic)).setProgress(game.getPlayerCharacter().getMagic());
     }
 
     //

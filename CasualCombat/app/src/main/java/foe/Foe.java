@@ -8,6 +8,8 @@ public abstract class Foe extends Combatant {
 
     public static final int GOBLIN = 0;
 
+    protected int id;
+
     public static Foe findFoeByID(int id){
         switch(id){
             case GOBLIN: return new Goblin();
@@ -15,6 +17,8 @@ public abstract class Foe extends Combatant {
         }
     }
     public String getColor(){ return this.color; }
+
+    public int getId(){ return this.id; }
 
     @Override
     public boolean isFoe(){ return true; }

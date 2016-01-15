@@ -17,7 +17,6 @@ public abstract class Combatant implements Comparable<Combatant> {
     protected int defense;
     protected int resistance;
     protected int speed;
-    protected int level;
     protected int money;
     protected String name;
     protected Move move;
@@ -32,7 +31,6 @@ public abstract class Combatant implements Comparable<Combatant> {
     public int getDefense() { return this.defense; }
     public int getResistance() { return this.resistance; }
     public int getSpeed() { return this.speed; }
-    public int getLevel() { return this.level; }
     public int getMoney() { return this.money; }
     public String getName() { return this.name; }
     public Move getMove() { return this.move; }

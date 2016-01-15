@@ -1,6 +1,5 @@
 package admin.cozycombat;
 
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,8 +30,8 @@ public class LeaderboardPage extends AppCompatActivity {
     //
     private void prepareStoredPlayerList(){
         storedPlayerCharacters = new ArrayList<>();
-        Map<String, ?> keys = getSharedPreferences(MenuPage.KEY_PREFS, MODE_PRIVATE).getAll();
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, MenuPage.KEY_PREFS, MODE_PRIVATE);
+        Map<String, ?> keys = getSharedPreferences(TitlePage.KEY_PREFS, MODE_PRIVATE).getAll();
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, TitlePage.KEY_PREFS, MODE_PRIVATE);
         for (String key : keys.keySet()) {
             PlayerCharacter pc = complexPreferences.getObject(key, PlayerCharacter.class);
             storedPlayerCharacters.add(pc);
@@ -44,7 +43,7 @@ public class LeaderboardPage extends AppCompatActivity {
         storedPlayerListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                getSharedPreferences(MenuPage.KEY_PREFS, MODE_PRIVATE).edit().remove(storedPlayerCharacters.get(position).getName()).commit();
+                getSharedPreferences(TitlePage.KEY_PREFS, MODE_PRIVATE).edit().remove(storedPlayerCharacters.get(position).getName()).commit();
                 storedPlayerCharacters.remove(position);
                 adapter.notifyDataSetChanged();
                 handleListTextVisibility();

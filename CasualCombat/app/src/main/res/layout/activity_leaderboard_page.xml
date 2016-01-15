@@ -8,7 +8,7 @@
     android:paddingTop="8dip"
     android:paddingBottom="8dip"
     tools:context=".LeaderboardPage"
-    android:background="#004455"
+    android:background="#115566"
     >
 
     <TextView
@@ -36,7 +36,7 @@
     <RelativeLayout
         android:layout_width="258dip"
         android:layout_height="400dip"
-        android:background="#557766"
+        android:background="#448899"
         android:padding="4dip"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/leaderboardInfoText"

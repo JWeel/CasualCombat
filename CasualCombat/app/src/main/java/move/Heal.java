@@ -10,9 +10,9 @@ public class Heal extends Move {
     }
 
     public String getName(){
-        return "Fireball";
+        return "Heal";
     }
     public String getInfo(){
-        return "Conjure up a mighty ball of fire";
+        return "Restore some health at the cost of magic";
     }
 }
