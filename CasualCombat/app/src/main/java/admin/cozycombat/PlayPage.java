@@ -21,6 +21,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import foe.Foe;
 import move.Move;
 
 public class PlayPage extends AppCompatActivity {
@@ -205,7 +206,7 @@ public class PlayPage extends AppCompatActivity {
             enableMoveButtons();
         } else {
             // set default attack move to player character
-            game.pickMove(new Move(Move.BASIC_ATTACK));
+            game.pickMove(Move.findMoveByID(Move.BASIC_ATTACK));
 
             // set views of other moves to disable (greyed out)
             disableMoveButons(BUTTON_INDEX_ATTACK);
@@ -253,7 +254,7 @@ public class PlayPage extends AppCompatActivity {
 
     //
     public void defendClick(View defendButton){
-        game.getPlayerCharacter().setMove(new Move(Move.BASIC_DEFEND));
+        game.getPlayerCharacter().setMove(Move.findMoveByID(Move.BASIC_DEFEND));
         game.getPlayerCharacter().getMove().setTarget(Move.TARGET_SELF);
 
         // set views of other moves to disable (greyed out)

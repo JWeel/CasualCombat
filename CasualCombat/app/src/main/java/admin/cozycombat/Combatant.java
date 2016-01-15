@@ -6,37 +6,58 @@ import java.util.ArrayList;
 
 import move.Move;
 
-// TODO make foe and pc skills non abstract and put them here, then some identical methods can move here too
-abstract class Combatant implements Comparable<Combatant> {
-    abstract int getMaxHealth();
-    abstract int getMaxMagic();
-    abstract int getHealth();
-    abstract int getMagic();
-    abstract int getStrength();
-    abstract int getDefense();
-    abstract int getSpeed();
-    abstract int getWillpower();
-    abstract int getResistance();
-    abstract int getLevel();
-    abstract int getMoney();
-    abstract String getName();
+public abstract class Combatant implements Comparable<Combatant> {
 
-    abstract void modifyHealth(int damage);
-    abstract void modifyMagic(int cost);
+    protected int maxHealth;
+    protected int maxMagic;
+    protected int currentHealth;
+    protected int currentMagic;
+    protected int strength;
+    protected int willpower;
+    protected int defense;
+    protected int resistance;
+    protected int speed;
+    protected int level;
+    protected int money;
+    protected String name;
+    protected Move move;
+    protected ArrayList<Integer> spells;
 
-    boolean isDead() { return getHealth() == 0; }
+    public int getMaxHealth() { return this.maxHealth; }
+    public int getMaxMagic() { return this.maxMagic; }
+    public int getHealth() { return this.currentHealth; }
+    public int getMagic() { return this.currentMagic; }
+    public int getStrength() { return this.strength; }
+    public int getWillpower() { return this.willpower; }
+    public int getDefense() { return this.defense; }
+    public int getResistance() { return this.resistance; }
+    public int getSpeed() { return this.speed; }
+    public int getLevel() { return this.level; }
+    public int getMoney() { return this.money; }
+    public String getName() { return this.name; }
+    public Move getMove() { return this.move; }
+    public ArrayList<Integer> getSpells() { return this.spells; }
 
-    //
-    boolean isDefending(){
-        return getMove().getId() == Move.BASIC_DEFEND[Move.INDEX_ID];
+    public abstract boolean isFoe();
+
+    public void modifyHealth(int damage){
+        this.currentHealth -= damage;
+        if (this.currentHealth < 0) this.currentHealth = 0;
+        if (this.currentHealth > this.maxHealth) this.currentHealth = this.maxHealth;
+    }
+    public void modifyMagic(int cost){
+        this.currentMagic -= cost;
+        if (this.currentMagic < 0) this.currentMagic = 0;
+        if (this.currentMagic > this.maxMagic) this.currentMagic = this.maxMagic;
     }
 
-    abstract Move getMove();
-    abstract void setMove(Move move);
+    public void setName(String s){
+        this.name = s;
+    }
+    public void setMove(Move m){ this.move = m; }
 
-    abstract boolean isFoe();
-
-    abstract ArrayList<Integer> getSpells();
+    public boolean isDead() { return this.currentHealth == 0; }
+    public boolean isDefending(){ return this.move.getId() == Move.BASIC_DEFEND; }
 
     // sort in descending order (highest first)
     @Override

@@ -7,29 +7,10 @@ import java.util.ArrayList;
 
 import move.Move;
 
-class PlayerCharacter extends Combatant implements Parcelable {
-
-    private int maxHealth;
-    private int maxMagic;
-    private int currentHealth;
-    private int currentMagic;
-
-    private int strength;
-    private int willpower;
-    private int defense;
-    private int resistance;
-    private int speed;
-
-    private int level;
-    private int money;
-
-    private String name;
-
-    private Move move;
+public class PlayerCharacter extends Combatant implements Parcelable {
 
     private int levelPoints;
 
-    private ArrayList<Integer> spells;
     private ArrayList<Integer> items;
 
     Item weapon;
@@ -95,49 +76,11 @@ class PlayerCharacter extends Combatant implements Parcelable {
         this.speed++;
     }
 
-    void setName(String s){
-        this.name = s;
-    }
+    @Override
+    public boolean isFoe(){ return false; }
 
     @Override
-    Move getMove(){
-        return this.move;
-    }
-    @Override
-    void setMove(Move m){
-        this.move = m;
-    }
-
-    @Override
-    boolean isFoe(){ return false; }
-
-    @Override
-    void modifyHealth(int damage){
-        this.currentHealth -= damage;
-        if (currentHealth < 0) currentHealth = 0;
-        if (currentHealth > maxHealth) currentHealth = maxHealth;
-    }
-    @Override
-    void modifyMagic(int cost){
-        this.currentMagic -= cost;
-        if (currentMagic < 0) currentMagic = 0;
-        if (currentMagic > maxMagic) currentMagic = maxMagic;
-    }
-
-    @Override
-    int getMaxHealth() { return this.maxHealth; }
-    @Override
-    int getMaxMagic() { return this.maxMagic; }
-    @Override
-    int getHealth(){
-        return this.currentHealth;
-    }
-    @Override
-    int getMagic(){
-        return this.currentMagic;
-    }
-    @Override
-    int getStrength(){
+    public int getStrength(){
         int weaponBonus = 0;
         if (this.weapon != null){
 
@@ -145,7 +88,7 @@ class PlayerCharacter extends Combatant implements Parcelable {
         return this.strength + weaponBonus;
     }
     @Override
-    int getWillpower() {
+    public int getWillpower() {
         int weaponBonus = 0;
         if (this.weapon != null) {
 
@@ -153,7 +96,7 @@ class PlayerCharacter extends Combatant implements Parcelable {
         return this.willpower + weaponBonus;
     }
     @Override
-    int getDefense(){
+    public int getDefense(){
         int armorBonus = 0;
         if (this.armor != null){
 
@@ -161,7 +104,7 @@ class PlayerCharacter extends Combatant implements Parcelable {
         return this.defense + armorBonus;
     }
     @Override
-    int getResistance() {
+    public int getResistance() {
         int armorBonus = 0;
         if (this.armor != null){
 
@@ -169,25 +112,17 @@ class PlayerCharacter extends Combatant implements Parcelable {
         return this.resistance + armorBonus;
     }
     @Override
-    int getSpeed(){
+    public int getSpeed(){
         int speedBonus = 0;
         if (this.boots != null){
 
         }
         return this.speed + speedBonus;
     }
-    @Override
-    int getLevel(){ return this.level; }
-    @Override
-    int getMoney(){ return this.money; }
-    @Override
-    String getName(){ return this.name; }
-    @Override
-    ArrayList<Integer> getSpells() { return this.spells; }
-    ArrayList<Integer> getItems() { return this.items; }
 
+    public ArrayList<Integer> getItems() { return this.items; }
 
-    PlayerCharacter copy(){
+    public PlayerCharacter copy(){
         PlayerCharacter copiedPlayerCharacter = new PlayerCharacter();
 
         copiedPlayerCharacter.maxHealth = this.maxHealth;
@@ -214,10 +149,8 @@ class PlayerCharacter extends Combatant implements Parcelable {
         return copiedPlayerCharacter;
     }
 
-
-
     // Parcelable required to pass PlayerCharacter between Android activities
-    PlayerCharacter (Parcel in){
+    public PlayerCharacter (Parcel in){
         String[] contents = new String[12];
         in.readStringArray(contents);
         name = contents[0];

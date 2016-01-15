@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import foe.Foe;
 import move.Move;
 
 class Game {
@@ -128,7 +129,7 @@ class Game {
             for (int i = 0; i < foes.size(); i++){
                 if (foes.get(i).isDead()) continue;
                 // TODO get move from ai
-                foes.get(i).setMove(new Move(Move.BASIC_ATTACK));
+                foes.get(i).setMove(Move.findMoveByID(Move.BASIC_ATTACK));
                 foes.get(i).getMove().setTarget(0);
             }
             // sort combatants by speed

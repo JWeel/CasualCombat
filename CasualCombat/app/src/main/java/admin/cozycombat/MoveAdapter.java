@@ -19,8 +19,7 @@ class MoveAdapter extends ArrayAdapter<Integer> {
 
         moves = new ArrayList<>();
         for (int i = 0; i < moveIds.size(); i++) {
-            moves.add(new Move(2, 4, 2, 0, 0, 0, 0, 0, 2, 0));
-            //moves.add(new Move(moveIds.get(i)));
+            moves.add(Move.findMoveByID(moveIds.get(i)));
         }
     }
 
