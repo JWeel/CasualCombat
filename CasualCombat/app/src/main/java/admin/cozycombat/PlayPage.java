@@ -169,7 +169,7 @@ public class PlayPage extends AppCompatActivity {
             params.weight = equalWeight;
             foeTextView.setLayoutParams(params);
             foeTextView.setText(foes.get(i).getName() + "\n" + foes.get(i).getHealth());
-            foeTextView.setBackgroundColor(Color.parseColor("#345678"));
+            foeTextView.setBackgroundColor(Color.parseColor(foes.get(i).getColor()));
             foeTextView.setGravity(Gravity.CENTER);
             foeTextView.setTextColor(Color.parseColor("#FFFFFF"));
 

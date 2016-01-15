@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:background="#125634"
+            android:background="#414141"
             android:layout_weight="1"
             android:weightSum="5"
             android:orientation="horizontal"
@@ -62,7 +62,7 @@
                 android:id="@+id/charName"
                 />
             <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
+                style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="80dip"
                 android:layout_height="8dip"
                 android:layout_toRightOf="@id/charIcon"
@@ -75,7 +75,7 @@
                 android:id="@+id/charHealth"
                 />
             <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
+                style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="80dip"
                 android:layout_height="8dip"
                 android:layout_toRightOf="@id/charIcon"

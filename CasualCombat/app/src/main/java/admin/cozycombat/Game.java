@@ -24,10 +24,11 @@ class Game {
 
         // TODO base foes on pc level
         foes = new ArrayList<>();
-        foes.add(new Foe(Foe.GOBLIN));
-        foes.add(new Foe(Foe.GOBLIN));
-        foes.add(new Foe(Foe.GOBLIN));
+        foes.add(Foe.findFoeByID(Foe.GOBLIN));
+        foes.add(Foe.findFoeByID(Foe.GOBLIN));
+        foes.add(Foe.findFoeByID(Foe.GOBLIN));
 
+        // TODO maybe move to Foe? send arraylist there, get it back? or it gets auto done so dont send it back
         // auto change names of duplicates
         ArrayList<Integer> foeNameCounts = new ArrayList<>();
         ArrayList<String> foeNames = new ArrayList<>();
