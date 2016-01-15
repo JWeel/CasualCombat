@@ -1,6 +1,6 @@
-package admin.cozycombat;
+package move;
 
-class Move {
+public class Move {
 
     private int id;
     private int damage;
@@ -11,36 +11,35 @@ class Move {
     private int resistance;
     private int speed;
     private int range;
-
     private int target;
 
-    static final int INDEX_ID = 0;
-    static final int INDEX_DAMAGE = 1;
-    static final int INDEX_COST = 2;
-    static final int INDEX_STRENGTH = 3;
-    static final int INDEX_WILLPOWER = 4;
-    static final int INDEX_DEFENSE = 5;
-    static final int INDEX_RESISTANCE = 6;
-    static final int INDEX_SPEED = 7;
-    static final int INDEX_RANGE = 8;
+    public static final int INDEX_ID = 0;
+    public static final int INDEX_DAMAGE = 1;
+    public static final int INDEX_COST = 2;
+    public static final int INDEX_STRENGTH = 3;
+    public static final int INDEX_WILLPOWER = 4;
+    public static final int INDEX_DEFENSE = 5;
+    public static final int INDEX_RESISTANCE = 6;
+    public static final int INDEX_SPEED = 7;
+    public static final int INDEX_RANGE = 8;
 
-    static final int NO_TARGET = -2;
-    static final int TARGET_SELF = -1;
+    public static final int NO_TARGET = -2;
+    public static final int TARGET_SELF = -1;
 
-    static final int RANGE_SELF = 0;
-    static final int RANGE_SINGLE = 1;
-    static final int RANGE_CLOSE = 2;
-    static final int RANGE_FAR = 3;
+    public static final int RANGE_SELF = 0;
+    public static final int RANGE_SINGLE = 1;
+    public static final int RANGE_CLOSE = 2;
+    public static final int RANGE_FAR = 3;
 
     // structure is id, damage, cost, strength, willpower, defense, resistance, speed, range
-    static final int[] BASIC_ATTACK     = {0, 1, 0, 0, 0, 0, 0, 0, RANGE_FAR};
-    static final int[] BASIC_DEFEND     = {1, 0, 0, 0, 0, 1, 1, 0, RANGE_SELF};
-    static final int[] FIREBALL         = {2, 4, 2, 0, 0, 0, 0, 0, RANGE_CLOSE};
-    static final int[] HEAL             = {3, -3, 3, 0, 0, 0, 0, 0, RANGE_SELF};
+    public static final int[] BASIC_ATTACK     = {0, 1, 0, 0, 0, 0, 0, 0, RANGE_FAR};
+    public static final int[] BASIC_DEFEND     = {1, 0, 0, 0, 0, 1, 1, 0, RANGE_SELF};
+    public static final int[] FIREBALL         = {2, 4, 2, 0, 0, 0, 0, 0, RANGE_CLOSE};
+    public static final int[] HEAL             = {3, -3, 3, 0, 0, 0, 0, 0, RANGE_SELF};
 
-    static final String FIREBALL_       = "2,4,2,0,0,0,0,0,2";
+    public static final String FIREBALL_       = "2,4,2,0,0,0,0,0,2";
 
-    Move(int[] moveArray){
+    public Move(int[] moveArray){
         this.id = moveArray[INDEX_ID];
         this.damage = moveArray[INDEX_DAMAGE];
         this.cost = moveArray[INDEX_COST];
@@ -53,7 +52,7 @@ class Move {
         this.target = NO_TARGET;
     }
 
-    Move(int idx, int dmg, int cst, int str, int wil, int def, int res, int spd, int rng, int tar){
+    public Move(int idx, int dmg, int cst, int str, int wil, int def, int res, int spd, int rng, int tar){
         this.id = idx;
         this.damage = dmg;
         this.cost = cst;
@@ -67,7 +66,7 @@ class Move {
     }
 
     //
-    String getName(){
+    public String getName(){
         switch(this.id){
             case 2:
                 return "Fireball";
@@ -79,7 +78,7 @@ class Move {
     }
 
     //
-    String getInfo(){
+    public String getInfo(){
         switch(this.id){
             case 2:
                 return "Conjure up a mighty ball of fire.";
@@ -90,38 +89,43 @@ class Move {
         }
     }
 
-    boolean isSpell(){
+    public boolean isSpell(){
         return this.id > 1;
     }
 
-    void setTarget(int t) { this.target = t; }
-    int getTarget() { return this.target; }
+    public void setTarget(int t) { this.target = t; }
+    public int getTarget() { return this.target; }
 
-    int getId() {
+    public int getId() {
         return this.id;
     }
-    int getDamage() {
+    public int getDamage() {
         return this.damage;
     }
-    int getCost() {
+    public int getCost() {
         return this.cost;
     }
-    int getStrength() {
+    public int getStrength() {
         return this.strength;
     }
-    int getWillpower() {
+    public int getWillpower() {
         return this.willpower;
     }
-    int getDefense() {
+    public int getDefense() {
         return this.defense;
     }
-    int getResistance() {
+    public int getResistance() {
         return this.resistance;
     }
-    int getSpeed() {
+    public int getSpeed() {
         return this.speed;
     }
-    int getRange() {
+    public int getRange() {
         return this.range;
+    }
+
+    @Override
+    public String toString(){
+        return getName() + "[DMG=" + damage + ",CST=" + cost + ",RNG=" + range + "TAR=" + target + "]";
     }
 }

@@ -336,8 +336,8 @@
             android:layout_above="@id/shopCharStrengthAdd"
             android:layout_alignLeft="@id/shopCharStrengthAdd"
             android:layout_alignStart="@id/shopCharStrengthAdd"
-            android:layout_marginLeft="-12dip"
-            android:layout_marginStart="-12dip"
+            android:layout_marginLeft="-13dip"
+            android:layout_marginStart="-13dip"
             android:layout_marginBottom="4dip"
             android:id="@+id/shopCharStrength"
             />

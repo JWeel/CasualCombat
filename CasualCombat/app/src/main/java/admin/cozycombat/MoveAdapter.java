@@ -1,23 +1,31 @@
 package admin.cozycombat;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import move.Move;
+
 // TODO consider renaming to spell
-class MoveAdapter extends ArrayAdapter<Move> {
+class MoveAdapter extends ArrayAdapter<Integer> {
     private ArrayList<Move> moves;
 
-    public MoveAdapter(Context context, int resource, int textViewResourceId, ArrayList<Move> newMoves){
-        super(context, resource, textViewResourceId, newMoves);
-        moves = newMoves;
+    public MoveAdapter(Context context, int resource, int textViewResourceId, ArrayList<Integer> moveIds){
+        super(context, resource, textViewResourceId, moveIds);
+
+        moves = new ArrayList<>();
+        for (int i = 0; i < moveIds.size(); i++) {
+            moves.add(new Move(2, 4, 2, 0, 0, 0, 0, 0, 2, 0));
+            //moves.add(new Move(moveIds.get(i)));
+        }
+    }
+
+    Move getListMove(int position){
+        return moves.get(position);
     }
 
     @Override

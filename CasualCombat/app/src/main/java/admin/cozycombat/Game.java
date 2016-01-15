@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import move.Move;
+
 class Game {
 
     ArrayList<Combatant> combatants;
@@ -54,6 +56,8 @@ class Game {
         // if combatants list is made then round has started
         if (roundInProgress()) {
 
+            System.err.println(playerCharacter.getName() + " " + playerCharacter.getMove().getName());
+
             // TODO maybe this is unnecessary ?
             // check for death
             for (int i = 0; i < combatants.size(); i++){
@@ -81,6 +85,8 @@ class Game {
 
                     // moves can affect: self, 1 target, 3 targets (close), or 5 targets (far)
                     if (attacker.getMove().getRange() == Move.RANGE_SELF) {
+                        System.out.println(playerCharacter.getMove().toString());
+                        System.out.println("HEALTH TEST" + playerCharacter.getHealth());
                         // SELF
                         attacker.modifyHealth(attacker.getMove().getDamage());
 
@@ -92,6 +98,7 @@ class Game {
                     // multiple targets
                     } else {
 
+                        System.out.println("HEALTH NOW" + playerCharacter.getHealth());
                         int target = attacker.getMove().getTarget();
                         damage(attacker, foes.get(target), 1.0f);
                         if (target > 0){
@@ -102,6 +109,7 @@ class Game {
                             if (!foes.get(target + 1).isDead()) damage(attacker, foes.get(target+1), 0.75f);
                             if (attacker.getMove().getRange() == Move.RANGE_FAR && target < foes.size()-2 && !foes.get(target+2).isDead()) damage(attacker, foes.get(target+2), 0.5f);
                         }
+                        System.out.println("HEALTH AFTER" + playerCharacter.getHealth());
 
                     }
                 }
@@ -137,7 +145,6 @@ class Game {
 
     //
     private void damage(Combatant attacker, Combatant defender, float distanceModifier){
-
         int damage = attacker.getMove().getDamage();
         if (attacker.getMove().isSpell()) damage += attacker.getWillpower();
         else damage += attacker.getStrength();
@@ -161,8 +168,13 @@ class Game {
             log("" + defender.getName() + " is defeated!");
             combatants.remove(defender);
         }
+        System.out.println(log.toString());
     }
 
+    //
+    void pickMove(Move m){
+        playerCharacter.setMove(m);
+    }
 
     private void log(String s){
         log.add(s);
@@ -175,6 +187,7 @@ class Game {
 
     //
     boolean gameOver(){
+        System.out.println("" + playerCharacter.getHealth());
         if (!log.isEmpty()) return false;
         if (playerCharacter.isDead()) return true;
         for (Foe foe : foes) {

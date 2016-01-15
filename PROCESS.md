@@ -58,6 +58,8 @@ Day 9:
 * Design problem: Once again how to handle database of moves, etc
 
 Day 10:
+* Send character from play to shop
+* Prepare alpha
 
 Day 11:
 

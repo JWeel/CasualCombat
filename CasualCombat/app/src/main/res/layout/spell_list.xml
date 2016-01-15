@@ -25,21 +25,6 @@
         android:id="@+id/listSpellName"
         />
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="30dip"
-        android:text="12345678901234567890121234567890123456789012"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        android:typeface="monospace"
-        android:gravity="left"
-        android:layout_above="@id/listSpellCost"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="2dip"
-        android:layout_marginStart="2dip"
-        android:id="@+id/listSpellInfo"
-        />
-    <TextView
         android:layout_width="70dip"
         android:layout_height="16dip"
         android:text="Cost 99 MP"
@@ -54,6 +39,21 @@
         android:layout_marginLeft="4dip"
         android:layout_marginStart="4dip"
         android:id="@+id/listSpellCost"
+        />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="30dip"
+        android:text="12345678901234567890121234567890123456789012"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:typeface="monospace"
+        android:gravity="left"
+        android:layout_above="@id/listSpellCost"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="2dip"
+        android:layout_marginStart="2dip"
+        android:id="@+id/listSpellInfo"
         />
     <ImageView
         android:layout_width="16dip"

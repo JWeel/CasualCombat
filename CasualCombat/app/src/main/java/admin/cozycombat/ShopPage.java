@@ -1,5 +1,6 @@
 package admin.cozycombat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,11 +17,17 @@ public class ShopPage extends AppCompatActivity {
     // maybe the three columns of buyable things corresponds to spells/items/gear
     // so for each 2 are buyable after each fight
 
+    PlayerCharacter playerCharacter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_page);
+
+
+        Intent previousPage = getIntent();
+        playerCharacter = previousPage.getParcelableExtra(MenuPage.KEY_PLAYER);
+
     }
 
     @Override

@@ -135,7 +135,7 @@ public class MenuPage extends AppCompatActivity {
             }
 
             Intent newPage = new Intent(this, PlayPage.class);
-            newPage.putExtra(KEY_PLAYER, playerCharacter); // TODO key
+            newPage.putExtra(KEY_PLAYER, playerCharacter);
 
             startActivity(newPage);
         } else {

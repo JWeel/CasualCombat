@@ -2,6 +2,8 @@ package admin.cozycombat;
 
 import java.util.ArrayList;
 
+import move.Move;
+
 class Foe extends Combatant {
 
     private int maxHealth;

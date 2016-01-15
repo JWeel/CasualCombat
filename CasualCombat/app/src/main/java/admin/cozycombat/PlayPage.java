@@ -21,6 +21,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import move.Move;
+
 public class PlayPage extends AppCompatActivity {
 
     // TODO
@@ -48,10 +50,7 @@ public class PlayPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_page);
 
-        resizeButtons();
-        prepareLists();
 
-        // todo get pc from something
         Intent previousPage = getIntent();
         PlayerCharacter playerCharacter = previousPage.getParcelableExtra(MenuPage.KEY_PLAYER);
 
@@ -59,6 +58,9 @@ public class PlayPage extends AppCompatActivity {
 
         displayPlayer(game.getPlayerCharacter());
         displayFoes(game.getFoes());
+
+        resizeButtons();
+        prepareLists();
 
         log = new LinkedList<>();
 
@@ -107,14 +109,20 @@ public class PlayPage extends AppCompatActivity {
         itemParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         itemListView.setLayoutParams(itemParams);
 
-//        MoveAdapter adapter = new MoveAdapter(this, R.layout.spell_list, R.id.listSpellName, game.getPlayerCharacter().getSpells());
-//        storedPlayerListView.setAdapter(adapter);
-//        storedPlayerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                loadPlayerCharacter(position);
-//            }
-//        });
+        final MoveAdapter adapter = new MoveAdapter(this, R.layout.spell_list, R.id.listSpellName, game.getPlayerCharacter().getSpells());
+        spellListView.setAdapter(adapter);
+        spellListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                game.pickMove(adapter.getListMove(position));
+                selectingMove = false;
+                selectingFoe = true;
+                // set views of other moves to disable (greyed out)
+                disableMoveButons(BUTTON_INDEX_ATTACK);
+                findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
+                System.err.println(game.getPlayerCharacter().getMove().toString());
+            }
+        });
 
         spellListView.setVisibility(View.INVISIBLE);
         itemListView.setVisibility(View.INVISIBLE);
@@ -172,10 +180,13 @@ public class PlayPage extends AppCompatActivity {
                         if (game.getFoes().get(targetId).isDead()) {
                             // TODO tell player can't target dead? or just ignore
                         } else {
+                            System.err.println(game.getPlayerCharacter().getMove().toString());
+                            // TODO game method for set target
                             game.getPlayerCharacter().getMove().setTarget(targetId);
                             selectingFoe = false;
                             findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
                             disableMoveButons(BUTTON_INDEX_ALL);
+                            System.err.println(game.getPlayerCharacter().getMove().toString());
                         }
                     }
                 }
@@ -189,12 +200,12 @@ public class PlayPage extends AppCompatActivity {
     //
     public void attackClick(View attackButton){
         if (selectingFoe){
-            game.getPlayerCharacter().setMove(null);
+            game.pickMove(null);
             // restore buttons
             enableMoveButtons();
         } else {
             // set default attack move to player character
-            game.getPlayerCharacter().setMove(new Move(Move.BASIC_ATTACK));
+            game.pickMove(new Move(Move.BASIC_ATTACK));
 
             // set views of other moves to disable (greyed out)
             disableMoveButons(BUTTON_INDEX_ATTACK);
@@ -250,36 +261,27 @@ public class PlayPage extends AppCompatActivity {
         findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
     }
 
-    // TODO maybe dont change color, enable does maybe enough
     // enables all move buttons and restores their background color
     private void enableMoveButtons(){
         findViewById(R.id.attackButton).setEnabled(true);
-//        findViewById(R.id.attackButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
         findViewById(R.id.spellButton).setEnabled(true);
-//        findViewById(R.id.spellButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
         findViewById(R.id.itemButton).setEnabled(true);
-//        findViewById(R.id.itemButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
         findViewById(R.id.defendButton).setEnabled(true);
-//        findViewById(R.id.defendButton).setBackgroundColor(Color.parseColor("#FFFFFF"));
     }
 
     // disables move buttons and greys them out. can ignore a button based on passed int
     private void disableMoveButons(int ignoreIndex){
         if (ignoreIndex != BUTTON_INDEX_ATTACK) {
             findViewById(R.id.attackButton).setEnabled(false);
-//            findViewById(R.id.attackButton).setBackgroundColor(Color.parseColor("#999999"));
         }
         if (ignoreIndex != BUTTON_INDEX_SPELL) {
             findViewById(R.id.spellButton).setEnabled(false);
-//            findViewById(R.id.spellButton).setBackgroundColor(Color.parseColor("#999999"));
         }
         if (ignoreIndex != BUTTON_INDEX_ITEM) {
             findViewById(R.id.itemButton).setEnabled(false);
-//            findViewById(R.id.itemButton).setBackgroundColor(Color.parseColor("#999999"));
         }
         if (ignoreIndex != BUTTON_INDEX_DEFEND) {
             findViewById(R.id.defendButton).setEnabled(false);
-//            findViewById(R.id.defendButton).setBackgroundColor(Color.parseColor("#999999"));
         }
     }
 
@@ -316,6 +318,8 @@ public class PlayPage extends AppCompatActivity {
             // if pc wins, 2 messages (1 for money and 1 for level up)
 
             Intent newPage = new Intent(this, ShopPage.class);
+            newPage.putExtra(MenuPage.KEY_PLAYER, game.getPlayerCharacter());
+
             startActivity(newPage);
 
         }

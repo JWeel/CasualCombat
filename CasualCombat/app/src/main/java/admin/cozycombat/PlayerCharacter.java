@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+import move.Move;
+
 class PlayerCharacter extends Combatant implements Parcelable {
 
     private int maxHealth;
