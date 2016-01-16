@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import move.Move;
 
@@ -14,7 +15,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     private int level;
     private int levelPoints;
 
-    private ArrayList<Integer> items;
+    private HashSet<Integer> items;
 
     Item weapon;
     Item armor;
@@ -34,10 +35,10 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.willpower = 1;
         this.resistance = 1;
         this.name = "";
-        this.spells = new ArrayList<Integer>();
+        this.spells = new HashSet<Integer>();
         this.spells.add(Move.FIREBALL);
         this.spells.add(Move.HEAL);
-        this.items = new ArrayList<Integer>();
+        this.items = new HashSet<Integer>();
     }
 
     // returns true if a player character has both a move and a target
@@ -130,7 +131,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         return this.speed + speedBonus;
     }
 
-    public ArrayList<Integer> getItems() { return this.items; }
+    public HashSet<Integer> getItems() { return this.items; }
 
     public PlayerCharacter copy(){
         PlayerCharacter copiedPlayerCharacter = new PlayerCharacter();
@@ -148,8 +149,9 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         copiedPlayerCharacter.levelPoints = this.levelPoints;
         copiedPlayerCharacter.money = this.money;
         copiedPlayerCharacter.name = this.name;
-        for (int i = 0; i < this.spells.size(); i++) copiedPlayerCharacter.spells.add(this.spells.get(i));
-        for (int i = 0; i < this.items.size(); i++) copiedPlayerCharacter.items.add(this.items.get(i));
+//        copiedPlayerCharacter.color = this.color;
+        copiedPlayerCharacter.spells = new HashSet<>(this.spells);
+        copiedPlayerCharacter.items = new HashSet<>(this.items);
 
         // TODO copy constructor for items
         //copiedPlayerCharacter.weapon = this.weapon;
@@ -161,7 +163,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
 
     // Parcelable required to pass PlayerCharacter between Android activities
     public PlayerCharacter (Parcel in){
-        String[] contents = new String[12];
+        String[] contents = new String[13];
         in.readStringArray(contents);
         name = contents[0];
         level = Integer.parseInt(contents[1]);
@@ -177,11 +179,14 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         defense = Integer.parseInt(contents[9]);
         resistance = Integer.parseInt(contents[10]);
         speed = Integer.parseInt(contents[11]);
+        levelPoints = Integer.parseInt(contents[12]);
 
-        spells = new ArrayList<>();
-        in.readList(spells, null);
-        items = new ArrayList<>();
-        in.readList(items, null);
+        ArrayList<Integer> readSpells = new ArrayList<>();
+        in.readList(readSpells, null);
+        spells = new HashSet<>(readSpells);
+        ArrayList<Integer> readItems = new ArrayList<>();
+        in.readList(readItems, null);
+        items = new HashSet<>(readItems);
     }
 
     // standard Parcelable methods
@@ -199,10 +204,11 @@ public class PlayerCharacter extends Combatant implements Parcelable {
                 String.valueOf(willpower),
                 String.valueOf(defense),
                 String.valueOf(resistance),
-                String.valueOf(speed)
+                String.valueOf(speed),
+                String.valueOf(levelPoints)
         });
-        dest.writeList(spells);
-        dest.writeList(items);
+        dest.writeList(new ArrayList<>(spells));
+        dest.writeList(new ArrayList<>(items));
     }
     public static final Parcelable.Creator<PlayerCharacter> CREATOR = new Parcelable.Creator<PlayerCharacter>() {
         @Override

@@ -54,6 +54,7 @@ class MoveAdapter extends ArrayAdapter<Integer> {
         }
         listItem.findViewById(R.id.listSpellRange).setBackgroundResource(drawableId);
 
+        listItem.setEnabled(false);
         return listItem;
     }
 }

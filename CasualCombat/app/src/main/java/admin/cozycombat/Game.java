@@ -2,7 +2,9 @@ package admin.cozycombat;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import foe.Foe;
 import move.Move;
@@ -28,24 +30,11 @@ class Game {
         foes.add(Foe.findFoeByID(Foe.GOBLIN));
         foes.add(Foe.findFoeByID(Foe.GOBLIN));
 
-        // TODO maybe move to Foe? send arraylist there, get it back? or it gets auto done so dont send it back
-        // auto change names of duplicates
-        ArrayList<Integer> foeNameCounts = new ArrayList<>();
-        ArrayList<String> foeNames = new ArrayList<>();
-        for (int i = 0; i < foes.size(); i++) {
-            if (!foeNames.contains(foes.get(i).getName())) {
-                foeNames.add(foes.get(i).getName());
-                foeNameCounts.add(1);
-            } else {
-                int index = foeNames.indexOf(foes.get(i).getName());
-                foeNameCounts.set(index, foeNameCounts.get(index) + 1);
-                foes.get(i).setName(foes.get(i).getName() + " " + Integer.toString(foeNameCounts.get(index)));
+        // rename foes if types occur more than once
+        Foe.renameFoesByCount(foes);
 
-                if (!foes.get(index).getName().endsWith("1")) foes.get(index).setName(foes.get(index).getName() + " 1");
-            }
-        }
+
         log = new LinkedList<>();
-
         roundCount = 0;
     }
 
@@ -58,17 +47,15 @@ class Game {
         // if combatants list is made then round has started
         if (roundInProgress()) {
 
-            System.err.println(playerCharacter.getName() + " " + playerCharacter.getMove().getName());
-
-            // TODO maybe this is unnecessary ?
-            // check for death
-            for (int i = 0; i < combatants.size(); i++){
-                if (combatants.get(i).isDead()){
-                    log("" + combatants.get(i).getName() + " is defeated!");
-                    combatants.remove(i);
-                    return;
-                }
-            }
+//            // TODO maybe this is unnecessary ?
+//            // check for death
+//            for (int i = 0; i < combatants.size(); i++){
+//                if (combatants.get(i).isDead()){
+//                    log("" + combatants.get(i).getName() + " is defeated!");
+//                    combatants.remove(i);
+//                    return;
+//                }
+//            }
 
             // list is sorted by speed. first in list is up next
             Combatant attacker = combatants.get(0);
@@ -134,7 +121,6 @@ class Game {
                 int nUnique = uniqueFoeIds.size();
                 playerCharacter.addLevel();
                 playerCharacter.addLevelPoints(nUnique);
-                System.err.println("LP = " + playerCharacter.getLevelPoints());
                 log(playerCharacter.getName() + " received " + nUnique + " level up points!");
                 log(" ");
             }
@@ -185,6 +171,7 @@ class Game {
         if (defender.isDead()) {
             log(defender.getName() + " is defeated!");
             combatants.remove(defender);
+            if (!defender.isFoe()) log(" ");
         }
     }
 

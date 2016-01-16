@@ -108,21 +108,28 @@ public class PlayPage extends AppCompatActivity {
         itemParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         itemListView.setLayoutParams(itemParams);
 
-        final MoveAdapter adapter = new MoveAdapter(this, R.layout.spell_list, R.id.listSpellName, game.getPlayerCharacter().getSpells());
+        final MoveAdapter adapter = new MoveAdapter(this, R.layout.spell_list, R.id.listSpellName, new ArrayList<>(game.getPlayerCharacter().getSpells()));
         spellListView.setAdapter(adapter);
         spellListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                game.pickMove(adapter.getListMove(position));
 
-                // TODO if range == self then dont select foe but continue
+                // check have enough magic
+
+                Move move = adapter.getListMove(position);
+                game.pickMove(move);
 
                 selectingMove = false;
-                selectingFoe = true;
-                // set views of other moves to disable (greyed out)
-                disableMoveButons(BUTTON_INDEX_ATTACK);
+
+                if (move.getRange() == Move.RANGE_SELF) {
+                    game.pickTarget(Move.TARGET_SELF);
+                    disableMoveButons(BUTTON_INDEX_ALL);
+                    findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
+                } else {
+                    selectingFoe = true;
+                    disableMoveButons(BUTTON_INDEX_SPELL);
+                }
                 findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
-                System.err.println(game.getPlayerCharacter().getSpells().toString());
             }
         });
 
@@ -143,6 +150,8 @@ public class PlayPage extends AppCompatActivity {
         charMagic.setProgress(game.getPlayerCharacter().getMagic());
 
         ((TextView) findViewById(R.id.charName)).setText(playerCharacter.getName());
+        ((TextView) findViewById(R.id.charHealthText)).setText("" + playerCharacter.getHealth());
+        ((TextView) findViewById(R.id.charMagicText)).setText("" + playerCharacter.getMagic());
         ((TextView) findViewById(R.id.charLevel)).setText("LVL " + playerCharacter.getLevel());
         ((TextView) findViewById(R.id.charStrength)).setText("STR " + playerCharacter.getStrength());
         ((TextView) findViewById(R.id.charWillpower)).setText("WIL " + playerCharacter.getStrength());
@@ -176,13 +185,11 @@ public class PlayPage extends AppCompatActivity {
                         if (game.getFoes().get(targetId).isDead()) {
                             // TODO tell player can't target dead? or just ignore
                         } else {
-                            System.err.println(game.getPlayerCharacter().getMove().toString());
                             // TODO game method for set target
                             game.pickTarget(targetId);
                             selectingFoe = false;
                             findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
                             disableMoveButons(BUTTON_INDEX_ALL);
-                            System.err.println(game.getPlayerCharacter().getMove().toString());
                         }
                     }
                 }
@@ -212,19 +219,18 @@ public class PlayPage extends AppCompatActivity {
     //
     public void spellClick(View spellButton){
         if (selectingMove){
-            game.getPlayerCharacter().setMove(null);
-
             findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
 
             // restore buttons
             enableMoveButtons();
         } else {
-            // listview
             findViewById(R.id.listSpells).setVisibility(View.VISIBLE);
 
+            selectingFoe = false;
             // set views of other moves to disable (greyed out)
             disableMoveButons(BUTTON_INDEX_SPELL);
         }
+        game.getPlayerCharacter().setMove(null);
         selectingMove = !selectingMove;
     }
 
@@ -313,8 +319,6 @@ public class PlayPage extends AppCompatActivity {
             // who died (pc or some foe)
             // if pc wins, 2 messages (1 for money and 1 for level up)
 
-            System.err.println("LP = " + game.getPlayerCharacter().getLevelPoints());
-
             Intent newPage = new Intent(this, ShopPage.class);
             newPage.putExtra(TitlePage.KEY_PLAYER, game.getPlayerCharacter());
 
@@ -333,6 +337,8 @@ public class PlayPage extends AppCompatActivity {
 
         ((ProgressBar) findViewById(R.id.charHealth)).setProgress(game.getPlayerCharacter().getHealth());
         ((ProgressBar) findViewById(R.id.charMagic)).setProgress(game.getPlayerCharacter().getMagic());
+        ((TextView) findViewById(R.id.charHealthText)).setText("" + game.getPlayerCharacter().getHealth());
+        ((TextView) findViewById(R.id.charMagicText)).setText("" + game.getPlayerCharacter().getMagic());
     }
 
     //

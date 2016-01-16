@@ -78,6 +78,21 @@
                 android:layout_marginStart="4dip"
                 android:id="@+id/charHealth"
                 />
+            <TextView
+                android:layout_width="30dip"
+                android:layout_height="16dip"
+                android:text="999"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:typeface="monospace"
+                android:gravity="center_horizontal"
+                android:layout_alignTop="@id/charHealth"
+                android:layout_alignLeft="@id/charHealth"
+                android:layout_alignStart="@id/charHealth"
+                android:layout_marginLeft="35dip"
+                android:layout_marginStart="35dip"
+                android:id="@+id/charHealthText"
+                />
             <ProgressBar
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:progressDrawable="@drawable/magic_bar"
@@ -90,6 +105,21 @@
                 android:layout_marginLeft="4dip"
                 android:layout_marginStart="4dip"
                 android:id="@+id/charMagic"
+                />
+            <TextView
+                android:layout_width="30dip"
+                android:layout_height="16dip"
+                android:text="999"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:typeface="monospace"
+                android:gravity="center_horizontal"
+                android:layout_alignTop="@id/charMagic"
+                android:layout_alignLeft="@id/charMagic"
+                android:layout_alignStart="@id/charMagic"
+                android:layout_marginLeft="35dip"
+                android:layout_marginStart="35dip"
+                android:id="@+id/charMagicText"
                 />
 
             <TextView

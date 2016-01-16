@@ -1,8 +1,6 @@
 package foe;
 
-import java.util.ArrayList;
-
-import admin.cozycombat.Combatant;
+import java.util.HashSet;
 
 public class Goblin extends Foe {
 
@@ -18,7 +16,7 @@ public class Goblin extends Foe {
         this.speed = 6;
         this.name = "GOBLIN";
         this.money = 1;
-        this.spells = new ArrayList<Integer>();
+        this.spells = new HashSet<>();
 
         this.color = "#125634";
         this.id = Foe.GOBLIN;

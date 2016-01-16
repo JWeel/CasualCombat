@@ -419,29 +419,30 @@
         android:padding="8dip"
         android:id="@+id/shopLayoutMiddle"
         >
-        <TextView
+        <Button
             android:text="Save Progress"
             android:layout_width="160dip"
             android:layout_height="50dip"
-            android:background="#459785"
             android:textColor="#FFFFFF"
+            android:background="#459785"
             android:textSize="20sp"
             android:gravity="center"
             android:layout_alignParentBottom="true"
+            android:onClick="saveClick"
             android:enabled="false"
             android:id="@+id/saveButton"
             />
-        <TextView
+        <Button
             android:text="Next Battle"
             android:layout_width="160dip"
             android:layout_height="50dip"
-            android:background="#459785"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:gravity="center"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:onClick="nextClick"
             android:enabled="false"
             android:id="@+id/nextButton"
             />

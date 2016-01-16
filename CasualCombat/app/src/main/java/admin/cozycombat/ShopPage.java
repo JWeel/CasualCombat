@@ -33,8 +33,6 @@ public class ShopPage extends AppCompatActivity {
 
         Intent previousPage = getIntent();
         playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
-        System.err.println("LP = " + playerCharacter.getLevelPoints());
-
 
         if (playerCharacter.isDead()) {
             findViewById(R.id.shopLayoutCharacter).setVisibility(View.INVISIBLE);
@@ -119,6 +117,20 @@ public class ShopPage extends AppCompatActivity {
         findViewById(R.id.shopCharResistanceAdd).setVisibility(visibility);
         findViewById(R.id.shopCharSpeedAdd).setVisibility(visibility);
         findViewById(R.id.shopCharPoints).setVisibility(visibility);
+    }
+
+    //
+    public void saveClick(View saveButton){
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, TitlePage.KEY_PREFS, MODE_PRIVATE);;
+        complexPreferences.putObject(playerCharacter.getName(), playerCharacter);
+        complexPreferences.commit();
+        findViewById(R.id.saveButton).setEnabled(false);
+    }
+
+    //
+    public void nextClick(View nextButton){
+        // TODO also finish prev activity
+        finish();
     }
 
     //

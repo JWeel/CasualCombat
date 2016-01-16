@@ -2,7 +2,7 @@ package admin.cozycombat;
 
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import move.Move;
 
@@ -20,7 +20,7 @@ public abstract class Combatant implements Comparable<Combatant> {
     protected int money;
     protected String name;
     protected Move move;
-    protected ArrayList<Integer> spells;
+    protected HashSet<Integer> spells;
 
     public int getMaxHealth() { return this.maxHealth; }
     public int getMaxMagic() { return this.maxMagic; }
@@ -34,7 +34,7 @@ public abstract class Combatant implements Comparable<Combatant> {
     public int getMoney() { return this.money; }
     public String getName() { return this.name; }
     public Move getMove() { return this.move; }
-    public ArrayList<Integer> getSpells() { return this.spells; }
+    public HashSet<Integer> getSpells() { return this.spells; }
 
     public abstract boolean isFoe();
 

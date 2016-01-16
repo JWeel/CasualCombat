@@ -63,7 +63,7 @@ Day 10:
 * Prepare alpha
 * Overhaul structure of Moves, Foes, etc.
 * Design decision for ^ : everything is classes. Specific moves extend abstract Move
-* Implement using spells
+* Implemented using spells
 * Start on layout overhaul for playpage and shoppage
 * Cancel on title page (by the way menupage is now named titlepage)
 * Dynamic progress bar now uses xml layout colors
@@ -72,6 +72,12 @@ Day 10:
 * Fail game end now brings player character to fail screen
 
 Day 11:
+* Fixed issues with duplicate spells
+* Improved auto foe naming, and is done now in Foe (static)
+* Spells and Items are now HashSets instead of ArrayList
+* Fixed level points not being awarded
+* Self spells now work correctly
+* Implemented save progress after combat
 
 Day 12:
 
