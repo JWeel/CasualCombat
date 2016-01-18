@@ -3,16 +3,11 @@ package move;
 public class Heal extends Move {
 
     Heal(){
-        this.id = 3;
+        this.id = Move.HEAL;
         this.damage = -3;
         this.cost = 3;
         this.range = Move.RANGE_SELF;
-    }
-
-    public String getName(){
-        return "Heal";
-    }
-    public String getInfo(){
-        return "Restore some health at the cost of magic";
+        this.name = "Heal";
+        this.info = "Restore some health at the cost of magic";
     }
 }

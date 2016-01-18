@@ -22,15 +22,11 @@
         android:layout_marginTop="1dip"
         android:layout_marginLeft="4dip"
         android:layout_marginStart="4dip"
-        android:id="@+id/listSpellName"
+        android:id="@+id/listItemName"
         />
-    <TextView
-        android:layout_width="70dip"
+    <Space
+        android:layout_width="wrap_content"
         android:layout_height="16dip"
-        android:text="Cost 99 MP"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        android:typeface="monospace"
         android:gravity="center_vertical"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -38,7 +34,7 @@
         android:layout_marginBottom="1dip"
         android:layout_marginLeft="4dip"
         android:layout_marginStart="4dip"
-        android:id="@+id/listSpellCost"
+        android:id="@+id/listItemSpace"
         />
     <TextView
         android:layout_width="fill_parent"
@@ -48,12 +44,12 @@
         android:textSize="12sp"
         android:typeface="monospace"
         android:gravity="left"
-        android:layout_above="@id/listSpellCost"
+        android:layout_above="@id/listItemSpace"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="2dip"
         android:layout_marginStart="2dip"
-        android:id="@+id/listSpellInfo"
+        android:id="@+id/listItemInfo"
         />
     <ImageView
         android:layout_width="16dip"
@@ -65,7 +61,7 @@
         android:layout_marginRight="10dip"
         android:layout_marginEnd="10dip"
         android:background="@drawable/range_far"
-        android:id="@+id/listSpellRange"
+        android:id="@+id/listItemRange"
         />
 
 </RelativeLayout>

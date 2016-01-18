@@ -73,12 +73,21 @@ class Game {
             if (!attacker.isFoe()) {
                 if (!attacker.isDefending()){
 
+                    if (attacker.getMove().isItemMove()){
+                        ((PlayerCharacter) attacker).getItems().remove((Integer) attacker.getMove().getId());
+                    }
+
                     // moves can affect: self, 1 target, 3 targets (close), or 5 targets (far)
                     if (attacker.getMove().getRange() == Move.RANGE_SELF) {
                         // SELF
                         int healAmount = attacker.getMove().getDamage();
-                        attacker.modifyHealth(healAmount);
-                        log(attacker.getName() + " heals for " + Math.abs(healAmount) + "!");
+                        if (healAmount != 0) {
+                            attacker.modifyHealth(healAmount);
+                            log(attacker.getName() + " heals for " + Math.abs(healAmount) + "!");
+                        }
+                        // if negative cost, that means magic is being restored
+                        if (attacker.getMove().getCost() < 0)
+                            log(attacker.getName() + " restores " + Math.abs(attacker.getMove().getCost()) + " magic!");
 
                     } else if (attacker.getMove().getRange() == Move.RANGE_SINGLE || foes.size() == 1) {
 
@@ -151,14 +160,13 @@ class Game {
     private void damage(Combatant attacker, Combatant defender, float distanceModifier){
         int damage = attacker.getMove().getDamage();
         if (attacker.getMove().isSpell()) damage += attacker.getWillpower();
-        else damage += attacker.getStrength();
+        else if (!attacker.getMove().isItemMove()) damage += attacker.getStrength();
 
-        // TODO should distance modifier be before or after defense
-        damage = (int) ((float) damage * distanceModifier);
+        damage = (int) (((float) damage) * distanceModifier);
 
-        int defense;
+        int defense = 0;
         if (attacker.getMove().isSpell()) defense = defender.getResistance();
-        else defense = defender.getDefense();
+        else if (!attacker.getMove().isItemMove()) defense += defender.getDefense();
 
         if (defender.isDefending()) defense *= 2;
 

@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
+import item.Item;
 import move.Move;
 
 public class PlayerCharacter extends Combatant implements Parcelable {
@@ -15,11 +17,13 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     private int level;
     private int levelPoints;
 
-    private HashSet<Integer> items;
+    private ArrayList<Integer> items;
 
     Item weapon;
     Item armor;
     Item boots;
+
+    private String colorString;
 
     PlayerCharacter(){
         this.level = 0;
@@ -35,10 +39,12 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.willpower = 1;
         this.resistance = 1;
         this.name = "";
-        this.spells = new HashSet<Integer>();
+        this.spells = new HashSet<>();
         this.spells.add(Move.FIREBALL);
         this.spells.add(Move.HEAL);
-        this.items = new HashSet<Integer>();
+        this.items = new ArrayList<>();
+        this.items.add(Item.HERB);
+        this.colorString = "#FFFFFFFF";
     }
 
     // returns true if a player character has both a move and a target
@@ -131,7 +137,17 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         return this.speed + speedBonus;
     }
 
-    public HashSet<Integer> getItems() { return this.items; }
+    public String getColorString(){ return this.colorString; }
+
+    public void changeColorString(){
+        Random rand = new Random();
+        String red = String.format("%02X", rand.nextInt(0xFF));
+        String green = String.format("%02X", rand.nextInt(0xFF));
+        String blue = String.format("%02X", rand.nextInt(0xFF));
+        this.colorString= "#FF" + red + green + blue;
+    }
+
+    public ArrayList<Integer> getItems() { return this.items; }
 
     public PlayerCharacter copy(){
         PlayerCharacter copiedPlayerCharacter = new PlayerCharacter();
@@ -149,9 +165,9 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         copiedPlayerCharacter.levelPoints = this.levelPoints;
         copiedPlayerCharacter.money = this.money;
         copiedPlayerCharacter.name = this.name;
-//        copiedPlayerCharacter.color = this.color;
+        copiedPlayerCharacter.colorString = this.colorString;
         copiedPlayerCharacter.spells = new HashSet<>(this.spells);
-        copiedPlayerCharacter.items = new HashSet<>(this.items);
+        copiedPlayerCharacter.items = new ArrayList<>(this.items);
 
         // TODO copy constructor for items
         //copiedPlayerCharacter.weapon = this.weapon;
@@ -163,7 +179,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
 
     // Parcelable required to pass PlayerCharacter between Android activities
     public PlayerCharacter (Parcel in){
-        String[] contents = new String[13];
+        String[] contents = new String[14];
         in.readStringArray(contents);
         name = contents[0];
         level = Integer.parseInt(contents[1]);
@@ -180,13 +196,13 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         resistance = Integer.parseInt(contents[10]);
         speed = Integer.parseInt(contents[11]);
         levelPoints = Integer.parseInt(contents[12]);
+        colorString = contents[13];
 
         ArrayList<Integer> readSpells = new ArrayList<>();
         in.readList(readSpells, null);
         spells = new HashSet<>(readSpells);
-        ArrayList<Integer> readItems = new ArrayList<>();
-        in.readList(readItems, null);
-        items = new HashSet<>(readItems);
+        items = new ArrayList<>();
+        in.readList(items, null);
     }
 
     // standard Parcelable methods
@@ -205,10 +221,11 @@ public class PlayerCharacter extends Combatant implements Parcelable {
                 String.valueOf(defense),
                 String.valueOf(resistance),
                 String.valueOf(speed),
-                String.valueOf(levelPoints)
+                String.valueOf(levelPoints),
+                colorString
         });
         dest.writeList(new ArrayList<>(spells));
-        dest.writeList(new ArrayList<>(items));
+        dest.writeList(items);
     }
     public static final Parcelable.Creator<PlayerCharacter> CREATOR = new Parcelable.Creator<PlayerCharacter>() {
         @Override

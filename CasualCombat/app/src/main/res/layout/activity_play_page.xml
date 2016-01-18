@@ -300,16 +300,31 @@
     <ListView
         android:layout_width="100dip"
         android:layout_height="300dip"
-        android:background="#0066AA"
+        android:background="#556699"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="16dip"
         android:layout_marginRight="18dip"
         android:layout_marginEnd="18dip"
+        android:padding="4dip"
         android:id="@+id/listSpells"
         android:visibility="invisible"
         >
     </ListView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No usable spells."
+        android:textColor="#FFFFFF"
+        android:layout_alignLeft="@id/listSpells"
+        android:layout_alignStart="@id/listSpells"
+        android:layout_alignTop="@id/listSpells"
+        android:layout_marginLeft="20dip"
+        android:layout_marginStart="20dip"
+        android:layout_marginTop="20dip"
+        android:id="@+id/listSpellsEmptyText"
+        android:visibility="invisible"
+        />
     <ListView
         android:layout_width="100dip"
         android:layout_height="300dip"
@@ -319,9 +334,24 @@
         android:layout_marginTop="16dip"
         android:layout_marginLeft="18dip"
         android:layout_marginStart="18dip"
+        android:padding="4dip"
         android:id="@+id/listItems"
         android:visibility="invisible"
         >
     </ListView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No usable items."
+        android:textColor="#FFFFFF"
+        android:layout_alignLeft="@id/listItems"
+        android:layout_alignStart="@id/listItems"
+        android:layout_alignTop="@id/listItems"
+        android:layout_marginLeft="20dip"
+        android:layout_marginStart="20dip"
+        android:layout_marginTop="20dip"
+        android:id="@+id/listItemsEmptyText"
+        android:visibility="invisible"
+        />
 
 </RelativeLayout>

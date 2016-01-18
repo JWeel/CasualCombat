@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -17,12 +19,14 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 public class TitlePage extends AppCompatActivity {
 
@@ -33,6 +37,7 @@ public class TitlePage extends AppCompatActivity {
     // maybe use camera to take selfie for character icon
     // an option button on the right side of the upper action bar where you can go to information
     // possibly improve the player screen buttons margins to be dynamically perfectly sized based on width. (screenWidth - 5 * 30) / 6 ?
+    // consider putting health/maxhealth in the textview(s)
 
     ArrayList<PlayerCharacter> storedPlayerCharacters;
     PlayerCharacter playerCharacter;
@@ -85,6 +90,7 @@ public class TitlePage extends AppCompatActivity {
         setPlayerVisibility(View.VISIBLE);
         setLevelUpButtonsVisibility(View.INVISIBLE);
         setLoadedPlayerListVisibility(View.INVISIBLE);
+        setCharacterAvatar();
 
         ((Button) findViewById(R.id.readyButton)).setText("Start");
         findViewById(R.id.readyButton).setEnabled(true);
@@ -299,6 +305,21 @@ public class TitlePage extends AppCompatActivity {
     public void leaderboardClick(View leaderButton){
         Intent newPage = new Intent(this, LeaderboardPage.class);
         startActivity(newPage);
+    }
+
+    //
+    private void setCharacterAvatar(){
+        ImageView avatar = (ImageView) findViewById(R.id.titleCharIcon);
+        Drawable d = ContextCompat.getDrawable(getBaseContext(), R.drawable.avatar);
+//        System.out.println(playerCharacter.getColorString());
+        d.mutate().setColorFilter(Color.parseColor(playerCharacter.getColorString()), PorterDuff.Mode.MULTIPLY);
+        avatar.setImageDrawable(d);
+    }
+
+    //
+    public void secretClick(View characterAvatar){
+        playerCharacter.changeColorString();
+        setCharacterAvatar();
     }
 
     @Override

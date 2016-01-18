@@ -3,6 +3,8 @@ package admin.cozycombat;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -40,6 +42,7 @@ public class ShopPage extends AppCompatActivity {
             findViewById(R.id.shopLayoutShop).setVisibility(View.INVISIBLE);
             findViewById(R.id.shopDeathText).setVisibility(View.VISIBLE);
         } else {
+            setCharacterAvatar();
             updatePlayerSkillViews();
         }
     }
@@ -83,8 +86,6 @@ public class ShopPage extends AppCompatActivity {
 
     //
     private void updatePlayerSkillViews(){
-        ImageView shopCharIcon = (ImageView) findViewById(R.id.shopCharIcon);
-
         ProgressBar shopCharHealth = (ProgressBar) findViewById(R.id.shopCharHealth);
         shopCharHealth.setMax(playerCharacter.getMaxHealth());
         shopCharHealth.setProgress(playerCharacter.getHealth());
@@ -137,6 +138,20 @@ public class ShopPage extends AppCompatActivity {
     public void titleClick(View deathText){
         // TODO also finish prev activity
         finish();
+    }
+
+    //
+    private void setCharacterAvatar(){
+        ImageView avatar = (ImageView) findViewById(R.id.shopCharIcon);
+        Drawable d = ContextCompat.getDrawable(getBaseContext(), R.drawable.avatar);
+        d.mutate().setColorFilter(Color.parseColor(playerCharacter.getColorString()), PorterDuff.Mode.MULTIPLY);
+        avatar.setImageDrawable(d);
+    }
+
+    //
+    public void secretClick(View characterAvatar){
+        playerCharacter.changeColorString();
+        setCharacterAvatar();
     }
 
     @Override

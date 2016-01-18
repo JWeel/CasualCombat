@@ -78,6 +78,16 @@ Day 11:
 * Fixed level points not being awarded
 * Self spells now work correctly
 * Implemented save progress after combat
+* Overhauled items-> now are classes as well. Equippable and usable
+* Usable items use a matching move
+* SpellAdapter now has methods to check for player character sufficient magic
+* TextViews that display if item or spell list are empty
+* Dynamically implement ^ for spells
+* Implement ^ for Items
+* Items list is now an arraylist again (allowing duplicates)
+* Implement using UsableItems
+* Implement restoring magic (with items), and restoring usability of spells
+* Implement coloring the avatar
 
 Day 12:
 

@@ -2,6 +2,9 @@ package admin.cozycombat;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import foe.Foe;
+import item.UsableItem;
 import move.Move;
 
 public class PlayPage extends AppCompatActivity {
@@ -108,15 +112,14 @@ public class PlayPage extends AppCompatActivity {
         itemParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         itemListView.setLayoutParams(itemParams);
 
-        final MoveAdapter adapter = new MoveAdapter(this, R.layout.spell_list, R.id.listSpellName, new ArrayList<>(game.getPlayerCharacter().getSpells()));
-        spellListView.setAdapter(adapter);
+        final SpellAdapter spellAdapter = new SpellAdapter(this, R.layout.spell_list, R.id.listSpellName, new ArrayList<>(game.getPlayerCharacter().getSpells()));
+        spellAdapter.updateUsableSpells(game.getPlayerCharacter());
+        spellListView.setAdapter(spellAdapter);
         spellListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // check have enough magic
-
-                Move move = adapter.getListMove(position);
+                Move move = spellAdapter.getListMove(position);
                 game.pickMove(move);
 
                 selectingMove = false;
@@ -133,6 +136,29 @@ public class PlayPage extends AppCompatActivity {
             }
         });
 
+        final ItemAdapter itemAdapter = new ItemAdapter(this, R.layout.item_list, R.id.listItemName, new ArrayList<>(game.getPlayerCharacter().getItems()));
+        itemListView.setAdapter(itemAdapter);
+        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                UsableItem item = itemAdapter.getListItem(position);
+                game.pickMove(item.getItemMove());
+
+                selectingMove = false;
+
+                if (item.getItemMove().getRange() == Move.RANGE_SELF) {
+                    game.pickTarget(Move.TARGET_SELF);
+                    disableMoveButons(BUTTON_INDEX_ALL);
+                    findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
+                } else {
+                    selectingFoe = true;
+                    disableMoveButons(BUTTON_INDEX_ITEM);
+                }
+                findViewById(R.id.listItems).setVisibility(View.INVISIBLE);
+            }
+        });
+
         spellListView.setVisibility(View.INVISIBLE);
         itemListView.setVisibility(View.INVISIBLE);
     }
@@ -140,6 +166,9 @@ public class PlayPage extends AppCompatActivity {
     //
     private void updatePlayerValues(PlayerCharacter playerCharacter){
         ImageView charIcon = (ImageView) findViewById(R.id.charIcon);
+        Drawable d = ContextCompat.getDrawable(getBaseContext(), R.drawable.avatar);
+        d.mutate().setColorFilter(Color.parseColor(game.getPlayerCharacter().getColorString()), PorterDuff.Mode.MULTIPLY);
+        charIcon.setImageDrawable(d);
 
         ProgressBar charHealth = (ProgressBar) findViewById(R.id.charHealth);
         charHealth.setMax(game.getPlayerCharacter().getMaxHealth());
@@ -220,11 +249,13 @@ public class PlayPage extends AppCompatActivity {
     public void spellClick(View spellButton){
         if (selectingMove){
             findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
+            findViewById(R.id.listSpellsEmptyText).setVisibility(View.INVISIBLE);
 
             // restore buttons
             enableMoveButtons();
         } else {
             findViewById(R.id.listSpells).setVisibility(View.VISIBLE);
+            if (((SpellAdapter)(((ListView) findViewById(R.id.listSpells)).getAdapter())).noUsableSpells()) findViewById(R.id.listSpellsEmptyText).setVisibility(View.VISIBLE);
 
             selectingFoe = false;
             // set views of other moves to disable (greyed out)
@@ -237,19 +268,21 @@ public class PlayPage extends AppCompatActivity {
     //
     public void itemClick(View itemButton){
         if (selectingMove){
-            game.getPlayerCharacter().setMove(null);
-
             findViewById(R.id.listItems).setVisibility(View.INVISIBLE);
+            findViewById(R.id.listItemsEmptyText).setVisibility(View.INVISIBLE);
 
             // restore buttons
             enableMoveButtons();
         } else {
             // listview
             findViewById(R.id.listItems).setVisibility(View.VISIBLE);
+            if (game.getPlayerCharacter().getItems().isEmpty()) findViewById(R.id.listItemsEmptyText).setVisibility(View.VISIBLE);
 
+            selectingFoe = false;
             // set views of other moves to disable (greyed out)
             disableMoveButons(BUTTON_INDEX_ITEM);
         }
+        game.getPlayerCharacter().setMove(null);
         selectingMove = !selectingMove;
     }
 
@@ -310,6 +343,8 @@ public class PlayPage extends AppCompatActivity {
             findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
 
             if (!selectingFoe && !selectingMove) enableMoveButtons();
+            ((SpellAdapter)(((ListView) findViewById(R.id.listSpells)).getAdapter())).updateUsableSpells(game.getPlayerCharacter());
+            ((ItemAdapter)(((ListView) findViewById(R.id.listItems)).getAdapter())).updateUsableItems(game.getPlayerCharacter());
         }
 
         //

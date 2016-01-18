@@ -7,31 +7,54 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import move.Move;
 
-// TODO consider renaming to spell
-class MoveAdapter extends ArrayAdapter<Integer> {
-    private ArrayList<Move> moves;
+class SpellAdapter extends ArrayAdapter<Integer> {
+    private ArrayList<Move> usableSpells;
 
-    public MoveAdapter(Context context, int resource, int textViewResourceId, ArrayList<Integer> moveIds){
+    public SpellAdapter(Context context, int resource, int textViewResourceId, ArrayList<Integer> moveIds){
         super(context, resource, textViewResourceId, moveIds);
 
-        moves = new ArrayList<>();
+        usableSpells = new ArrayList<>();
         for (int i = 0; i < moveIds.size(); i++) {
-            moves.add(Move.findMoveByID(moveIds.get(i)));
+            usableSpells.add(Move.findMoveByID(moveIds.get(i)));
         }
     }
 
+    //
     Move getListMove(int position){
-        return moves.get(position);
+        return usableSpells.get(position);
+    }
+
+    //
+    void updateUsableSpells(PlayerCharacter playerCharacter){
+        usableSpells.clear();
+        for (Integer spellId : playerCharacter.getSpells()){
+            Move spell = Move.findMoveByID(spellId);
+            if (spell.getCost() > playerCharacter.getMagic()) usableSpells.add(null);
+            else usableSpells.add(spell);
+        }
+        this.notifyDataSetChanged();
+    }
+
+    //
+    boolean noUsableSpells(){
+        for (Move spell : usableSpells) if (spell != null) return false;
+        return true;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         View listItem = super.getView(position, convertView, parent);
 
-        Move move = moves.get(position);
+        Move move = usableSpells.get(position);
+        if (move == null){
+            listItem.setVisibility(View.GONE);
+            return listItem;
+        }
+
 
         ((TextView) listItem.findViewById(R.id.listSpellName)).setText(move.getName());
         ((TextView) listItem.findViewById(R.id.listSpellInfo)).setText(move.getInfo());
@@ -54,7 +77,7 @@ class MoveAdapter extends ArrayAdapter<Integer> {
         }
         listItem.findViewById(R.id.listSpellRange).setBackgroundResource(drawableId);
 
-        listItem.setEnabled(false);
+        listItem.setVisibility(View.VISIBLE);
         return listItem;
     }
 }

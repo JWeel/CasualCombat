@@ -33,6 +33,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="4dip"
             android:background="@drawable/avatar"
+            android:onClick="secretClick"
             android:id="@+id/titleCharIcon"
             />
         <TextView

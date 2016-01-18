@@ -1,5 +1,7 @@
 package move;
 
+import item.Item;
+
 public abstract class Move {
 
     public static final int NO_TARGET = -2;
@@ -15,6 +17,10 @@ public abstract class Move {
     public static final int BASIC_DEFEND     = 1;
     public static final int FIREBALL         = 2;
     public static final int HEAL             = 3;
+    public static final int ITEM_BOMB        = Item.BOMB;
+    public static final int ITEM_HERB        = Item.HERB;
+
+    // TODO maybe only one index for BOMB and ITEM_BOMB
 
     public static Move findMoveByID(int id){
         switch(id){
@@ -22,6 +28,8 @@ public abstract class Move {
             case BASIC_DEFEND: return new BasicDefend();
             case FIREBALL: return new Fireball();
             case HEAL: return new Heal();
+            case ITEM_BOMB: return new ItemBomb();
+            case ITEM_HERB: return new ItemHerb();
             default: return null;
         }
     }
@@ -31,13 +39,11 @@ public abstract class Move {
     protected int cost;
     protected int range;
     protected int target = NO_TARGET;
+    protected String name;
+    protected String info;
 
-    public abstract String getName();
-    public abstract String getInfo();
-
-    public boolean isSpell(){
-        return getId() > BASIC_DEFEND;
-    }
+    public boolean isSpell(){ return (this.id > BASIC_DEFEND && this.id < ITEM_BOMB); }
+    public boolean isItemMove() { return this.id >= ITEM_BOMB; }
 
     public void setTarget(int t) { this.target = t; }
     public int getTarget() { return this.target; }
@@ -55,8 +61,11 @@ public abstract class Move {
         return this.range;
     }
 
+    public String getName(){ return this.name; }
+    public String getInfo(){ return this.info; }
+
     @Override
     public String toString(){
-        return getName() + "[DMG=" + damage + ",CST=" + cost + ",RNG=" + range + "TAR=" + target + "]";
+        return name + "[DMG=" + damage + ",CST=" + cost + ",RNG=" + range + "TAR=" + target + "]";
     }
 }

@@ -3,9 +3,12 @@ package admin.cozycombat;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,18 +30,22 @@ class PlayerCharacterAdapter extends ArrayAdapter<PlayerCharacter> {
 
         PlayerCharacter playerCharacter = players.get(position);
 
+        ImageView avatar = (ImageView) listItem.findViewById(R.id.listCharIcon);
+        Drawable d = ContextCompat.getDrawable(listItem.getContext(), R.drawable.avatar);
+        d.setColorFilter(Color.parseColor(playerCharacter.getColorString()), PorterDuff.Mode.MULTIPLY);
+//        d.setColorFilter(Color.parseColor("#ffff0000"), PorterDuff.Mode.MULTIPLY);
+        avatar.setImageDrawable(d);
+
         TextView name = (TextView) listItem.findViewById(R.id.listCharName);
         name.setText(playerCharacter.getName());
 
         ProgressBar health = (ProgressBar) listItem.findViewById(R.id.listCharHealth);
         health.setMax(playerCharacter.getMaxHealth());
         health.setProgress(playerCharacter.getHealth());
-        health.getProgressDrawable().setColorFilter(Color.parseColor("#00AA00"), PorterDuff.Mode.SRC_IN);
 
         ProgressBar magic = (ProgressBar) listItem.findViewById(R.id.listCharMagic);
-        magic.setMax(playerCharacter.getMaxHealth());
-        magic.setProgress(playerCharacter.getHealth());
-        magic.getProgressDrawable().setColorFilter(Color.parseColor("#0055DD"), PorterDuff.Mode.SRC_IN);
+        magic.setMax(playerCharacter.getMaxMagic());
+        magic.setProgress(playerCharacter.getMagic());
 
         TextView strength = (TextView) listItem.findViewById(R.id.listCharStrength);
         strength.setText("STR " + playerCharacter.getStrength());
