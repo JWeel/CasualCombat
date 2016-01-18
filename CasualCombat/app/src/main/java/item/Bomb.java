@@ -7,6 +7,7 @@ public class Bomb extends UsableItem {
     public Bomb(){
         this.id = Item.BOMB;
         this.itemMove = Move.findMoveByID(Move.ITEM_BOMB);
+        this.price = 1;
         this.name = "Bomb";
         this.info = "A small bomb that explodes on impact";
     }

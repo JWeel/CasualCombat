@@ -32,7 +32,7 @@ class PlayerCharacterAdapter extends ArrayAdapter<PlayerCharacter> {
 
         ImageView avatar = (ImageView) listItem.findViewById(R.id.listCharIcon);
         Drawable d = ContextCompat.getDrawable(listItem.getContext(), R.drawable.avatar);
-        d.setColorFilter(Color.parseColor(playerCharacter.getColorString()), PorterDuff.Mode.MULTIPLY);
+        d.mutate().setColorFilter(Color.parseColor(playerCharacter.getColorString()), PorterDuff.Mode.MULTIPLY);
 //        d.setColorFilter(Color.parseColor("#ffff0000"), PorterDuff.Mode.MULTIPLY);
         avatar.setImageDrawable(d);
 

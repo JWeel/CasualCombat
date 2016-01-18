@@ -44,6 +44,8 @@ public class ShopPage extends AppCompatActivity {
         } else {
             setCharacterAvatar();
             updatePlayerSkillViews();
+
+            updateShop();
         }
     }
 
@@ -118,6 +120,26 @@ public class ShopPage extends AppCompatActivity {
         findViewById(R.id.shopCharResistanceAdd).setVisibility(visibility);
         findViewById(R.id.shopCharSpeedAdd).setVisibility(visibility);
         findViewById(R.id.shopCharPoints).setVisibility(visibility);
+    }
+
+    //
+    private void updateShop(){
+        // check if enough gold
+    }
+
+    //
+    public void usableClick(View usableView){
+
+    }
+
+    //
+    public void equippableClick(View equippableView){
+
+    }
+
+    //
+    public void spellClick(View spellView){
+
     }
 
     //

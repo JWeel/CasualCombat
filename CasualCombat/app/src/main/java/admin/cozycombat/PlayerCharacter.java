@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
+import item.EquippableItem;
 import item.Item;
 import move.Move;
 
@@ -19,9 +20,9 @@ public class PlayerCharacter extends Combatant implements Parcelable {
 
     private ArrayList<Integer> items;
 
-    Item weapon;
-    Item armor;
-    Item boots;
+    EquippableItem weapon;
+    EquippableItem armor;
+    EquippableItem boots;
 
     private String colorString;
 
@@ -100,7 +101,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     public int getStrength(){
         int weaponBonus = 0;
         if (this.weapon != null){
-
+            weaponBonus += this.weapon.getBonusStrength();
         }
         return this.strength + weaponBonus;
     }
@@ -108,7 +109,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     public int getWillpower() {
         int weaponBonus = 0;
         if (this.weapon != null) {
-
+            weaponBonus += this.weapon.getBonusWillpower();
         }
         return this.willpower + weaponBonus;
     }
@@ -116,7 +117,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     public int getDefense(){
         int armorBonus = 0;
         if (this.armor != null){
-
+            armorBonus += this.armor.getBonusDefense();
         }
         return this.defense + armorBonus;
     }
@@ -124,7 +125,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     public int getResistance() {
         int armorBonus = 0;
         if (this.armor != null){
-
+            armorBonus += this.armor.getBonusResistance();
         }
         return this.resistance + armorBonus;
     }
@@ -132,7 +133,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     public int getSpeed(){
         int speedBonus = 0;
         if (this.boots != null){
-
+            speedBonus += this.boots.getBonusSpeed();
         }
         return this.speed + speedBonus;
     }

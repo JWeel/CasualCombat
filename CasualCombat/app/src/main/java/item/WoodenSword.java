@@ -9,6 +9,7 @@ public class WoodenSword extends EquippableItem {
         this.bonusDefense = 0;
         this.bonusResistance = 0;
         this.bonusSpeed = 0;
+        this.price = 1;
         this.name = "Wooden Sword";
     }
 }
