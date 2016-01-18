@@ -17,17 +17,19 @@ public abstract class Move {
     public static final int BASIC_DEFEND     = 1;
     public static final int FIREBALL         = 2;
     public static final int HEAL             = 3;
+    public static final int SHOCKWAVE        = 4;
     public static final int ITEM_BOMB        = Item.BOMB;
     public static final int ITEM_HERB        = Item.HERB;
 
     // TODO maybe only one index for BOMB and ITEM_BOMB
 
-    public static Move findMoveByID(int id){
+    public static Move findMoveById(int id){
         switch(id){
             case BASIC_ATTACK: return new BasicAttack();
             case BASIC_DEFEND: return new BasicDefend();
             case FIREBALL: return new Fireball();
             case HEAL: return new Heal();
+            case SHOCKWAVE: return new Shockwave();
             case ITEM_BOMB: return new ItemBomb();
             case ITEM_HERB: return new ItemHerb();
             default: return null;
@@ -63,6 +65,9 @@ public abstract class Move {
 
     public String getName(){ return this.name; }
     public String getInfo(){ return this.info; }
+
+    // could implement prices for individual spells, but for now the price remains constant
+    public int getPrice() { return 3; }
 
     @Override
     public String toString(){

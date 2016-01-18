@@ -19,7 +19,7 @@ public abstract class Item {
     public abstract String getInfo();
     public abstract boolean isEquippable();
 
-    public static Item findItemByID(int id){
+    public static Item findItemById(int id){
         switch(id){
             case WOODEN_SWORD: return new WoodenSword();
             case BOMB: return new Bomb();

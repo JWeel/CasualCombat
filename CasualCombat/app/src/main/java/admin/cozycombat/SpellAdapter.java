@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import move.Move;
 
@@ -19,7 +18,7 @@ class SpellAdapter extends ArrayAdapter<Integer> {
 
         usableSpells = new ArrayList<>();
         for (int i = 0; i < moveIds.size(); i++) {
-            usableSpells.add(Move.findMoveByID(moveIds.get(i)));
+            usableSpells.add(Move.findMoveById(moveIds.get(i)));
         }
     }
 
@@ -32,7 +31,7 @@ class SpellAdapter extends ArrayAdapter<Integer> {
     void updateUsableSpells(PlayerCharacter playerCharacter){
         usableSpells.clear();
         for (Integer spellId : playerCharacter.getSpells()){
-            Move spell = Move.findMoveByID(spellId);
+            Move spell = Move.findMoveById(spellId);
             if (spell.getCost() > playerCharacter.getMagic()) usableSpells.add(null);
             else usableSpells.add(spell);
         }

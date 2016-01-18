@@ -79,9 +79,9 @@
                 android:id="@+id/charHealth"
                 />
             <TextView
-                android:layout_width="30dip"
+                android:layout_width="50dip"
                 android:layout_height="16dip"
-                android:text="999"
+                android:text="99/99"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:typeface="monospace"
@@ -89,8 +89,8 @@
                 android:layout_alignTop="@id/charHealth"
                 android:layout_alignLeft="@id/charHealth"
                 android:layout_alignStart="@id/charHealth"
-                android:layout_marginLeft="35dip"
-                android:layout_marginStart="35dip"
+                android:layout_marginLeft="25dip"
+                android:layout_marginStart="25dip"
                 android:id="@+id/charHealthText"
                 />
             <ProgressBar
@@ -107,9 +107,9 @@
                 android:id="@+id/charMagic"
                 />
             <TextView
-                android:layout_width="30dip"
+                android:layout_width="50dip"
                 android:layout_height="16dip"
-                android:text="999"
+                android:text="99/99"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:typeface="monospace"
@@ -117,8 +117,8 @@
                 android:layout_alignTop="@id/charMagic"
                 android:layout_alignLeft="@id/charMagic"
                 android:layout_alignStart="@id/charMagic"
-                android:layout_marginLeft="35dip"
-                android:layout_marginStart="35dip"
+                android:layout_marginLeft="25dip"
+                android:layout_marginStart="25dip"
                 android:id="@+id/charMagicText"
                 />
 

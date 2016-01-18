@@ -179,8 +179,8 @@ public class PlayPage extends AppCompatActivity {
         charMagic.setProgress(game.getPlayerCharacter().getMagic());
 
         ((TextView) findViewById(R.id.charName)).setText(playerCharacter.getName());
-        ((TextView) findViewById(R.id.charHealthText)).setText("" + playerCharacter.getHealth());
-        ((TextView) findViewById(R.id.charMagicText)).setText("" + playerCharacter.getMagic());
+        ((TextView) findViewById(R.id.charHealthText)).setText("" + playerCharacter.getHealth() + "/" + playerCharacter.getMaxHealth());
+        ((TextView) findViewById(R.id.charMagicText)).setText("" + playerCharacter.getMagic() + "/" + playerCharacter.getMaxMagic());
         ((TextView) findViewById(R.id.charLevel)).setText("LVL " + playerCharacter.getLevel());
         ((TextView) findViewById(R.id.charStrength)).setText("STR " + playerCharacter.getStrength());
         ((TextView) findViewById(R.id.charWillpower)).setText("WIL " + playerCharacter.getStrength());
@@ -237,7 +237,7 @@ public class PlayPage extends AppCompatActivity {
             enableMoveButtons();
         } else {
             // set default attack move to player character
-            game.pickMove(Move.findMoveByID(Move.BASIC_ATTACK));
+            game.pickMove(Move.findMoveById(Move.BASIC_ATTACK));
 
             // set views of other moves to disable (greyed out)
             disableMoveButons(BUTTON_INDEX_ATTACK);
@@ -288,7 +288,7 @@ public class PlayPage extends AppCompatActivity {
 
     //
     public void defendClick(View defendButton){
-        game.getPlayerCharacter().setMove(Move.findMoveByID(Move.BASIC_DEFEND));
+        game.getPlayerCharacter().setMove(Move.findMoveById(Move.BASIC_DEFEND));
         game.pickTarget(Move.TARGET_SELF);
 
         // set views of other moves to disable (greyed out)
@@ -372,8 +372,8 @@ public class PlayPage extends AppCompatActivity {
 
         ((ProgressBar) findViewById(R.id.charHealth)).setProgress(game.getPlayerCharacter().getHealth());
         ((ProgressBar) findViewById(R.id.charMagic)).setProgress(game.getPlayerCharacter().getMagic());
-        ((TextView) findViewById(R.id.charHealthText)).setText("" + game.getPlayerCharacter().getHealth());
-        ((TextView) findViewById(R.id.charMagicText)).setText("" + game.getPlayerCharacter().getMagic());
+        ((TextView) findViewById(R.id.charHealthText)).setText("" + game.getPlayerCharacter().getHealth() + "/" + game.getPlayerCharacter().getMaxHealth());
+        ((TextView) findViewById(R.id.charMagicText)).setText("" + game.getPlayerCharacter().getMagic() + "/" + game.getPlayerCharacter().getMaxMagic());
     }
 
     //

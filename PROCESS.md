@@ -88,6 +88,11 @@ Day 11:
 * Implement using UsableItems
 * Implement restoring magic (with items), and restoring usability of spells
 * Implement coloring the avatar
+* Add new spell
+* Improve display of health and magic in combat
+* Implement restore health and magic buttons in shop
+* Implement showing equipment in shop
+* Start new fights from shop page
 
 Day 12:
 

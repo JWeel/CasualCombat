@@ -14,6 +14,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import item.EquippableItem;
+import item.Item;
+import item.UsableItem;
+import move.Move;
+
 public class ShopPage extends AppCompatActivity {
 
     // TODO
@@ -25,7 +30,15 @@ public class ShopPage extends AppCompatActivity {
     // maybe the three columns of buyable things corresponds to spells/items/gear
     // so for each 2 are buyable after each fight
 
+    private static final int RESTORE_HEALTH_PRICE = 1;
+    private static final int RESTORE_MAGIC_PRICE = 1;
+
     PlayerCharacter playerCharacter;
+
+    //
+    UsableItem buyableUsableItem;
+    EquippableItem buyableEquippableItem;
+    Move buyableSpell;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +51,16 @@ public class ShopPage extends AppCompatActivity {
 
         if (playerCharacter.isDead()) {
             findViewById(R.id.shopLayoutCharacter).setVisibility(View.INVISIBLE);
+            findViewById(R.id.shopLayoutEquipment).setVisibility(View.INVISIBLE);
             findViewById(R.id.shopLayoutMiddle).setVisibility(View.INVISIBLE);
             findViewById(R.id.shopLayoutShop).setVisibility(View.INVISIBLE);
             findViewById(R.id.shopDeathText).setVisibility(View.VISIBLE);
         } else {
             setCharacterAvatar();
             updatePlayerSkillViews();
+            updatePlayerEquipmentViews();
 
-            updateShop();
+            initializeShop();
         }
     }
 
@@ -88,13 +103,7 @@ public class ShopPage extends AppCompatActivity {
 
     //
     private void updatePlayerSkillViews(){
-        ProgressBar shopCharHealth = (ProgressBar) findViewById(R.id.shopCharHealth);
-        shopCharHealth.setMax(playerCharacter.getMaxHealth());
-        shopCharHealth.setProgress(playerCharacter.getHealth());
-
-        ProgressBar shopCharMagic = (ProgressBar) findViewById(R.id.shopCharMagic);
-        shopCharMagic.setMax(playerCharacter.getMaxMagic());
-        shopCharMagic.setProgress(playerCharacter.getMagic());
+        updatePlayerBars();
 
         ((TextView) findViewById(R.id.shopCharName)).setText(playerCharacter.getName());
         ((TextView) findViewById(R.id.shopCharHealthText)).setText("" + playerCharacter.getMaxHealth());
@@ -110,8 +119,36 @@ public class ShopPage extends AppCompatActivity {
     }
 
     //
+    private void updatePlayerBars(){
+        ProgressBar shopCharHealth = (ProgressBar) findViewById(R.id.shopCharHealth);
+        shopCharHealth.setMax(playerCharacter.getMaxHealth());
+        shopCharHealth.setProgress(playerCharacter.getHealth());
+
+        ProgressBar shopCharMagic = (ProgressBar) findViewById(R.id.shopCharMagic);
+        shopCharMagic.setMax(playerCharacter.getMaxMagic());
+        shopCharMagic.setProgress(playerCharacter.getMagic());
+    }
+
+    //
+    private void updatePlayerEquipmentViews(){
+        if (playerCharacter.getWeapon() == null)
+            ((TextView) findViewById(R.id.shopCharWeapon)).setText("Weapon missing");
+        else
+            ((TextView) findViewById(R.id.shopCharWeapon)).setText(playerCharacter.getWeapon().getName() + "\n" + playerCharacter.getWeapon().getStatBonusAsString());
+
+        if (playerCharacter.getArmor() == null)
+            ((TextView) findViewById(R.id.shopCharArmor)).setText("Armor missing");
+        else
+            ((TextView) findViewById(R.id.shopCharArmor)).setText(playerCharacter.getArmor().getName() + "\n" + playerCharacter.getArmor().getStatBonusAsString());
+
+        if (playerCharacter.getBoots() == null)
+            ((TextView) findViewById(R.id.shopCharBoots)).setText("Boots missing");
+        else
+            ((TextView) findViewById(R.id.shopCharBoots)).setText(playerCharacter.getBoots().getName() + "\n" + playerCharacter.getBoots().getStatBonusAsString());
+    }
+
+    //
     private void setLevelUpButtonsVisibility(int visibility){
-        findViewById(R.id.shopCharNameChangeButton).setVisibility(visibility);
         findViewById(R.id.shopCharHealthAdd).setVisibility(visibility);
         findViewById(R.id.shopCharMagicAdd).setVisibility(visibility);
         findViewById(R.id.shopCharStrengthAdd).setVisibility(visibility);
@@ -123,23 +160,132 @@ public class ShopPage extends AppCompatActivity {
     }
 
     //
+    private void initializeShop(){
+
+        // randomly get buyable items and spell
+        buyableUsableItem = (UsableItem) Item.findItemById(Item.HERB);
+        buyableEquippableItem = (EquippableItem) Item.findItemById(Item.WOODEN_SWORD);
+        buyableSpell = Move.findMoveById(Move.SHOCKWAVE);
+
+        displayBuyable(R.id.shopPriceUsable, R.id.shopNameUsable, R.id.shopInfoUsable, buyableUsableItem);
+        displayBuyable(R.id.shopPriceEquippable, R.id.shopNameEquippable, R.id.shopInfoEquippable, buyableEquippableItem);
+        displayBuyable(R.id.shopPriceSpell, R.id.shopNameSpell, R.id.shopInfoSpell, buyableSpell);
+
+        updateShop();
+    }
+
+    //
+    private void displayBuyable(int priceId, int nameId, int infoId, Item item){
+        ((TextView) findViewById(priceId)).setText("" + item.getPrice() + "G");
+        ((TextView) findViewById(nameId)).setText(item.getName());
+        ((TextView) findViewById(infoId)).setText(item.getInfo());
+    }
+
+    //
+    private void displayBuyable(int priceId, int nameId, int infoId, Move spell){
+        ((TextView) findViewById(priceId)).setText("" + spell.getPrice() + "G");
+        ((TextView) findViewById(nameId)).setText(spell.getName());
+        ((TextView) findViewById(infoId)).setText(spell.getInfo());
+    }
+
+    //
     private void updateShop(){
-        // check if enough gold
+        // set character gold view
+        ((TextView) findViewById(R.id.shopCharMoney)).setText("Current gold: " + playerCharacter.getMoney());
+
+        // setup restore health and magic buttons
+        if (playerCharacter.getMoney() < RESTORE_HEALTH_PRICE || playerCharacter.getHealth() == playerCharacter.getMaxHealth())
+            findViewById(R.id.shopHealthRegen).setEnabled(false);
+        else findViewById(R.id.shopHealthRegen).setEnabled(true);
+        if (playerCharacter.getMoney() < RESTORE_MAGIC_PRICE || playerCharacter.getMagic() == playerCharacter.getMaxMagic())
+            findViewById(R.id.shopMagicRegen).setEnabled(false);
+        else findViewById(R.id.shopMagicRegen).setEnabled(true);
+
+        // check enough gold for buyable items and spell
+        TextView usableWarningText = (TextView) findViewById(R.id.shopWarningUsable);
+        if (buyableUsableItem != null) {
+            if (playerCharacter.getMoney() < buyableUsableItem.getPrice()) {
+                findViewById(R.id.shopLayoutUsable).setBackgroundColor(Color.parseColor("#996666"));
+                usableWarningText.setVisibility(View.VISIBLE);
+                usableWarningText.setText("INSUFFICIENT GOLD");
+                findViewById(R.id.shopLayoutUsableInner).setVisibility(View.INVISIBLE);
+            } else {
+                usableWarningText.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            usableWarningText.setVisibility(View.VISIBLE);
+            findViewById(R.id.shopLayoutUsableInner).setVisibility(View.INVISIBLE);
+        }
+        TextView equippableWarningText = (TextView) findViewById(R.id.shopWarningEquippable);
+        if (buyableEquippableItem != null) {
+            if (playerCharacter.getMoney() < buyableEquippableItem.getPrice()) {
+                findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#996666"));
+                equippableWarningText.setVisibility(View.VISIBLE);
+                equippableWarningText.setText("INSUFFICIENT GOLD");
+                findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
+            } else {
+                equippableWarningText.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            equippableWarningText.setVisibility(View.VISIBLE);
+            findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
+        }
+        TextView spellWarningText = (TextView) findViewById(R.id.shopWarningSpell);
+        if (buyableSpell != null) {
+            if (playerCharacter.getMoney() < buyableSpell.getPrice()) {
+                findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#996666"));
+                spellWarningText.setVisibility(View.VISIBLE);
+                spellWarningText.setText("INSUFFICIENT GOLD");
+                findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
+            } else {
+                spellWarningText.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            spellWarningText.setVisibility(View.VISIBLE);
+            findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    //
+    public void restoreHealthClick(View restoreHealthButton){
+        playerCharacter.restoreHealthFully();
+        playerCharacter.subtractMoney(RESTORE_HEALTH_PRICE);
+        updatePlayerBars();
+        updateShop();
+        if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
+    }
+
+    //
+    public void restoreMagicClick(View restoreMagicButton){
+        playerCharacter.restoreMagicFully();
+        playerCharacter.subtractMoney(RESTORE_MAGIC_PRICE);
+        updatePlayerBars();
+        updateShop();
+        if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
     //
     public void usableClick(View usableView){
+        if (buyableUsableItem != null) {
 
+        }
+        updateShop();
     }
 
     //
     public void equippableClick(View equippableView){
+        if (buyableEquippableItem != null) {
 
+        }
+        updateShop();
     }
 
     //
     public void spellClick(View spellView){
+        if (buyableSpell != null) {
 
+        }
+        updateShop();
     }
 
     //
@@ -152,8 +298,10 @@ public class ShopPage extends AppCompatActivity {
 
     //
     public void nextClick(View nextButton){
-        // TODO also finish prev activity
-        finish();
+        Intent newPage = new Intent(this, PlayPage.class);
+        newPage.putExtra(TitlePage.KEY_PLAYER, playerCharacter);
+
+        startActivity(newPage);
     }
 
     //

@@ -20,7 +20,7 @@ class ItemAdapter extends ArrayAdapter<Integer> {
 
         usableItems = new ArrayList<>();
         for (Integer id : moveIds) {
-            usableItems.add((UsableItem) Item.findItemByID(id));
+            usableItems.add((UsableItem) Item.findItemById(id));
         }
     }
 
@@ -33,7 +33,7 @@ class ItemAdapter extends ArrayAdapter<Integer> {
     void updateUsableItems(PlayerCharacter playerCharacter){
         usableItems.clear();
         for (Integer id : playerCharacter.getItems()) {
-            usableItems.add((UsableItem) Item.findItemByID(id));
+            usableItems.add((UsableItem) Item.findItemById(id));
         }
         this.notifyDataSetChanged();
     }

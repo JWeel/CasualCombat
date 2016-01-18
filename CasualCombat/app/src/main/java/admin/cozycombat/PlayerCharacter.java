@@ -20,9 +20,9 @@ public class PlayerCharacter extends Combatant implements Parcelable {
 
     private ArrayList<Integer> items;
 
-    EquippableItem weapon;
-    EquippableItem armor;
-    EquippableItem boots;
+    private EquippableItem weapon;
+    private EquippableItem armor;
+    private EquippableItem boots;
 
     private String colorString;
 
@@ -89,8 +89,13 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     }
 
     void addMoney(int amount){ this.money += amount; }
+    void subtractMoney(int amount){ this.money -= amount; }
     void addLevel(){ this.level++; }
     void addLevelPoints(int amount) { this.levelPoints += amount; }
+
+    public EquippableItem getWeapon() { return this.weapon; }
+    public EquippableItem getArmor() { return this.armor; }
+    public EquippableItem getBoots() { return this.boots; }
 
     public int getLevel() { return this.level; }
 

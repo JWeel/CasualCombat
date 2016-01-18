@@ -23,26 +23,32 @@ public abstract class EquippableItem extends Item {
     public int getBonusSpeed() { return this.bonusSpeed; }
 
     //
-    @Override
-    public String getInfo() {
-        String info = "";
+    public String getStatBonusAsString(){
         switch(this.type){
             case TYPE_WEAPON:
-                info += "Weapon\n";
-                if (this.bonusStrength > this.bonusWillpower) info += "+" + this.bonusStrength + "STR";
-                else info += "+" + this.bonusWillpower + "WIL";
-                break;
+                if (this.bonusStrength > this.bonusWillpower) return  "+" + this.bonusStrength + "STR";
+                else return "+" + this.bonusWillpower + "WIL";
             case TYPE_ARMOR:
-                info += "Armor\n";
-                if (this.bonusDefense > this.bonusResistance) info += "+" + this.bonusDefense + "DEF";
-                else info += "+" + this.bonusResistance + "RES";
-                break;
+                if (this.bonusDefense > this.bonusResistance) return "+" + this.bonusDefense + "DEF";
+                else return "+" + this.bonusResistance + "RES";
             case TYPE_BOOTS:
-                info += "Boots\n";
-                info += "+" + this.bonusSpeed + "SPD";
-                break;
+                return "+" + this.bonusSpeed + "SPD";
+            default: return "";
         }
-        return info;
+    }
+
+    //
+    @Override
+    public String getInfo() {
+        switch(this.type){
+            case TYPE_WEAPON:
+                return "Weapon\n" + getStatBonusAsString();
+            case TYPE_ARMOR:
+                return "Armor\n" + getStatBonusAsString();
+            case TYPE_BOOTS:
+                return "Boots\n" + getStatBonusAsString();
+            default: return "";
+        }
     }
 
     @Override

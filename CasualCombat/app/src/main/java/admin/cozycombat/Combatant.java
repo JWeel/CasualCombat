@@ -48,6 +48,12 @@ public abstract class Combatant implements Comparable<Combatant> {
         if (this.currentMagic < 0) this.currentMagic = 0;
         if (this.currentMagic > this.maxMagic) this.currentMagic = this.maxMagic;
     }
+    public void restoreHealthFully(){
+        this.currentHealth = this.maxHealth;
+    }
+    public void restoreMagicFully(){
+        this.currentMagic = this.maxMagic;
+    }
 
     public void setName(String s){
         this.name = s;
