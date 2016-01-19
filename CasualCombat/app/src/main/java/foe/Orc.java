@@ -15,7 +15,7 @@ public class Orc extends Foe {
         this.resistance = 1;
         this.speed = 3;
         this.name = "Orc";
-        this.money = 1;
+        this.money = 3;
         this.spells = new HashSet<>();
 
         this.color = "#AA9977";

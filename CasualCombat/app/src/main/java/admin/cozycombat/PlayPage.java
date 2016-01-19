@@ -53,9 +53,11 @@ public class PlayPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_page);
 
+        System.err.println("LISTEN UP I CAME FROM : " + this.getCallingActivity());
 
         Intent previousPage = getIntent();
         PlayerCharacter playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
+        System.out.println(playerCharacter.getWeapon());
 
         game = new Game(playerCharacter);
 
@@ -120,19 +122,21 @@ public class PlayPage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Move move = spellAdapter.getListMove(position);
-                game.pickMove(move);
+                if (move != null) {
+                    game.pickMove(move);
 
-                selectingMove = false;
+                    selectingMove = false;
 
-                if (move.getRange() == Move.RANGE_SELF) {
-                    game.pickTarget(Move.TARGET_SELF);
-                    disableMoveButons(BUTTON_INDEX_ALL);
-                    findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
-                } else {
-                    selectingFoe = true;
-                    disableMoveButons(BUTTON_INDEX_SPELL);
+                    if (move.getRange() == Move.RANGE_SELF) {
+                        game.pickTarget(Move.TARGET_SELF);
+                        disableMoveButons(BUTTON_INDEX_ALL);
+                        findViewById(R.id.logNotify).setVisibility(View.VISIBLE);
+                    } else {
+                        selectingFoe = true;
+                        disableMoveButons(BUTTON_INDEX_SPELL);
+                    }
+                    findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
                 }
-                findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
             }
         });
 
@@ -249,13 +253,11 @@ public class PlayPage extends AppCompatActivity {
     public void spellClick(View spellButton){
         if (selectingMove){
             findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
-            findViewById(R.id.listSpellsEmptyText).setVisibility(View.INVISIBLE);
 
             // restore buttons
             enableMoveButtons();
         } else {
             findViewById(R.id.listSpells).setVisibility(View.VISIBLE);
-            if (((SpellAdapter)(((ListView) findViewById(R.id.listSpells)).getAdapter())).noUsableSpells()) findViewById(R.id.listSpellsEmptyText).setVisibility(View.VISIBLE);
 
             selectingFoe = false;
             // set views of other moves to disable (greyed out)
@@ -356,8 +358,8 @@ public class PlayPage extends AppCompatActivity {
 
             Intent newPage = new Intent(this, ShopPage.class);
             newPage.putExtra(TitlePage.KEY_PLAYER, game.getPlayerCharacter());
-
-            startActivity(newPage);
+//            newPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(newPage, TitlePage.REQUEST_CODE_SHOP);
 
         }
     }
@@ -385,11 +387,23 @@ public class PlayPage extends AppCompatActivity {
             enableMoveButtons();
         } else if (selectingMove) {
             selectingMove = false;
-            // TODO hide lists
+            findViewById(R.id.listSpells).setVisibility(View.INVISIBLE);
+            findViewById(R.id.listItems).setVisibility(View.INVISIBLE);
             enableMoveButtons();
         } else {
+            setResult(RESULT_CANCELED);
             finish();
+            // TODO maybe a dialog like in shop
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TitlePage.REQUEST_CODE_SHOP){
+            setResult(resultCode);
+        }
+        finish();
     }
 
     @Override

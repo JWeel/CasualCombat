@@ -1,5 +1,7 @@
 package admin.cozycombat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,6 +48,9 @@ public class ShopPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_page);
 
+        System.err.println("LISTEN UP I CAME FROM : " + this.getCallingActivity());
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent previousPage = getIntent();
         playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
@@ -106,8 +112,8 @@ public class ShopPage extends AppCompatActivity {
         updatePlayerBars();
 
         ((TextView) findViewById(R.id.shopCharName)).setText(playerCharacter.getName());
-        ((TextView) findViewById(R.id.shopCharHealthText)).setText("" + playerCharacter.getMaxHealth());
-        ((TextView) findViewById(R.id.shopCharMagicText)).setText("" + playerCharacter.getMaxMagic());
+        ((TextView) findViewById(R.id.shopCharHealthText)).setText("" + playerCharacter.getHealth() + "/" + playerCharacter.getMaxHealth());
+        ((TextView) findViewById(R.id.shopCharMagicText)).setText("" + playerCharacter.getMagic() + "/" + playerCharacter.getMaxMagic());
         ((TextView) findViewById(R.id.shopCharLevel)).setText("LEVEL " + playerCharacter.getLevel());
         ((TextView) findViewById(R.id.shopCharStrength)).setText("STR " + playerCharacter.getStrength());
         ((TextView) findViewById(R.id.shopCharWillpower)).setText("WIL " + playerCharacter.getWillpower());
@@ -123,10 +129,12 @@ public class ShopPage extends AppCompatActivity {
         ProgressBar shopCharHealth = (ProgressBar) findViewById(R.id.shopCharHealth);
         shopCharHealth.setMax(playerCharacter.getMaxHealth());
         shopCharHealth.setProgress(playerCharacter.getHealth());
+        ((TextView) findViewById(R.id.shopCharHealthText)).setText("" + playerCharacter.getHealth() + "/" + playerCharacter.getMaxHealth());
 
         ProgressBar shopCharMagic = (ProgressBar) findViewById(R.id.shopCharMagic);
         shopCharMagic.setMax(playerCharacter.getMaxMagic());
         shopCharMagic.setProgress(playerCharacter.getMagic());
+        ((TextView) findViewById(R.id.shopCharMagicText)).setText("" + playerCharacter.getMagic() + "/" + playerCharacter.getMaxMagic());
     }
 
     //
@@ -162,7 +170,8 @@ public class ShopPage extends AppCompatActivity {
     //
     private void initializeShop(){
 
-        // randomly get buyable items and spell
+        // TODO randomly get buyable items and spell
+        // TODO check for spell (and equippable item?) that playerCharacter does not already have them
         buyableUsableItem = (UsableItem) Item.findItemById(Item.HERB);
         buyableEquippableItem = (EquippableItem) Item.findItemById(Item.WOODEN_SWORD);
         buyableSpell = Move.findMoveById(Move.SHOCKWAVE);
@@ -267,7 +276,11 @@ public class ShopPage extends AppCompatActivity {
     //
     public void usableClick(View usableView){
         if (buyableUsableItem != null) {
-
+            if (playerCharacter.getMoney() >= buyableUsableItem.getPrice()){
+                playerCharacter.subtractMoney(buyableUsableItem.getPrice());
+                playerCharacter.addUsableItem(buyableUsableItem);
+                buyableUsableItem = null;
+            }
         }
         updateShop();
     }
@@ -275,7 +288,13 @@ public class ShopPage extends AppCompatActivity {
     //
     public void equippableClick(View equippableView){
         if (buyableEquippableItem != null) {
-
+            if (playerCharacter.getMoney() >= buyableEquippableItem.getPrice()){
+                playerCharacter.subtractMoney(buyableEquippableItem.getPrice());
+                playerCharacter.equipItem(buyableEquippableItem);
+                buyableEquippableItem = null;
+                updatePlayerSkillViews();
+                updatePlayerEquipmentViews();
+            }
         }
         updateShop();
     }
@@ -283,25 +302,31 @@ public class ShopPage extends AppCompatActivity {
     //
     public void spellClick(View spellView){
         if (buyableSpell != null) {
-
+            if (playerCharacter.getMoney() >= buyableSpell.getPrice()){
+                playerCharacter.subtractMoney(buyableSpell.getPrice());
+                playerCharacter.addSpell(buyableSpell);
+                buyableSpell = null;
+            }
         }
         updateShop();
     }
 
     //
     public void saveClick(View saveButton){
+        playerCharacter.prepareForSave();
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, TitlePage.KEY_PREFS, MODE_PRIVATE);;
         complexPreferences.putObject(playerCharacter.getName(), playerCharacter);
         complexPreferences.commit();
         findViewById(R.id.saveButton).setEnabled(false);
+        playerCharacter.restoreAfterSave();
     }
 
     //
     public void nextClick(View nextButton){
         Intent newPage = new Intent(this, PlayPage.class);
         newPage.putExtra(TitlePage.KEY_PLAYER, playerCharacter);
-
-        startActivity(newPage);
+//        newPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(newPage, TitlePage.REQUEST_CODE_PLAY);
     }
 
     //
@@ -325,24 +350,73 @@ public class ShopPage extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("YO THIS IS THE REQUEST CODE: " + requestCode);
+        System.out.println("YO THIS IS THE RESULT CODE: " + resultCode);
+        if (requestCode == TitlePage.REQUEST_CODE_PLAY){
+            if (resultCode == TitlePage.RESULT_EXIT || resultCode == RESULT_OK) {
+                setResult(resultCode);
+                finish();
+            }
+        }
+//        if (requestCode == TitlePage.REQUEST_CODE_SHOP){
+//            if (resultCode == TitlePage.RESULT_EXIT) {
+//                setResult(resultCode);
+//                finish();
+//            }
+//        }
+    }
+
+    //
+    @Override
+    public void onBackPressed() {
+        if (playerCharacter.isDead()){
+            setResult(TitlePage.RESULT_EXIT);
+            finish();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("You are about to leave this page.\nUnsaved progress will be lost.");
+        builder.setPositiveButton("Return to title screen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setResult(RESULT_OK, null);
+                finish();
+            }
+        });
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing -> dismisses dialog
+            }
+        });
+        builder.setNegativeButton("Exit app", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setResult(TitlePage.RESULT_EXIT);
+                finish();
+            }
+        });
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    //
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_shop_page, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

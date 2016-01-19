@@ -1,6 +1,7 @@
 package admin.cozycombat;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -38,45 +39,46 @@ class SpellAdapter extends ArrayAdapter<Integer> {
         this.notifyDataSetChanged();
     }
 
-    //
-    boolean noUsableSpells(){
-        for (Move spell : usableSpells) if (spell != null) return false;
-        return true;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         View listItem = super.getView(position, convertView, parent);
 
         Move move = usableSpells.get(position);
         if (move == null){
-            listItem.setVisibility(View.GONE);
-            return listItem;
+            ((TextView) listItem.findViewById(R.id.listSpellInfo)).setText("INSUFFICIENT MAGIC");
+            listItem.setBackgroundColor(Color.parseColor("#BB7788"));
+
+            listItem.findViewById(R.id.listSpellName).setVisibility(View.INVISIBLE);
+            listItem.findViewById(R.id.listSpellCost).setVisibility(View.INVISIBLE);
+            listItem.findViewById(R.id.listSpellRange).setVisibility(View.INVISIBLE);
+
+        } else {
+            listItem.findViewById(R.id.listSpellName).setVisibility(View.VISIBLE);
+            listItem.findViewById(R.id.listSpellCost).setVisibility(View.VISIBLE);
+            listItem.findViewById(R.id.listSpellRange).setVisibility(View.VISIBLE);
+
+            ((TextView) listItem.findViewById(R.id.listSpellName)).setText(move.getName());
+            ((TextView) listItem.findViewById(R.id.listSpellInfo)).setText(move.getInfo());
+            ((TextView) listItem.findViewById(R.id.listSpellCost)).setText("Cost " + move.getCost() + " MP");
+
+            int drawableId = 0;
+            switch (move.getRange()) {
+                case Move.RANGE_SELF:
+                    drawableId = R.drawable.range_self;
+                    break;
+                case Move.RANGE_SINGLE:
+                    drawableId = R.drawable.range_single;
+                    break;
+                case Move.RANGE_CLOSE:
+                    drawableId = R.drawable.range_close;
+                    break;
+                case Move.RANGE_FAR:
+                    drawableId = R.drawable.range_far;
+                    break;
+            }
+            listItem.findViewById(R.id.listSpellRange).setBackgroundResource(drawableId);
+            listItem.setBackgroundColor(Color.parseColor("#7788BB"));
         }
-
-
-        ((TextView) listItem.findViewById(R.id.listSpellName)).setText(move.getName());
-        ((TextView) listItem.findViewById(R.id.listSpellInfo)).setText(move.getInfo());
-        ((TextView) listItem.findViewById(R.id.listSpellCost)).setText("Cost " + move.getCost() + " MP");
-
-        int drawableId = 0;
-        switch(move.getRange()){
-            case Move.RANGE_SELF:
-                drawableId = R.drawable.range_self;
-                break;
-            case Move.RANGE_SINGLE:
-                drawableId = R.drawable.range_single;
-                break;
-            case Move.RANGE_CLOSE:
-                drawableId = R.drawable.range_close;
-                break;
-            case Move.RANGE_FAR:
-                drawableId = R.drawable.range_far;
-                break;
-        }
-        listItem.findViewById(R.id.listSpellRange).setBackgroundResource(drawableId);
-
-        listItem.setVisibility(View.VISIBLE);
         return listItem;
     }
 }

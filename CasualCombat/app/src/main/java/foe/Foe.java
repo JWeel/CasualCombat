@@ -39,7 +39,6 @@ public abstract class Foe extends Combatant {
         Map<String, Integer> foeTypes = new HashMap<>();
         for (Foe foe : foes) {
             int count;
-            System.out.println(foe);
             if (foeTypes.containsKey(foe.getName())) {
                 count = foeTypes.get(foe.getName()) + 1;
                 foeTypes.put(foe.getName(), count);

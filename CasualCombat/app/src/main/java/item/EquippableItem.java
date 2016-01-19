@@ -53,4 +53,15 @@ public abstract class EquippableItem extends Item {
 
     @Override
     public boolean isEquippable() { return true; }
+
+    public EquippableItem copy(){
+        EquippableItem copiedItem = (EquippableItem) findItemById(this.id);
+        copiedItem.type = this.type;
+        copiedItem.bonusStrength = this.bonusStrength;
+        copiedItem.bonusWillpower = this.bonusWillpower;
+        copiedItem.bonusDefense = this.bonusDefense;
+        copiedItem.bonusResistance = this.bonusResistance;
+        copiedItem.bonusSpeed = this.bonusSpeed;
+        return copiedItem;
+    }
 }

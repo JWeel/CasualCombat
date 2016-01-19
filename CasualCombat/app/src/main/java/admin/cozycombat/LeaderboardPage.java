@@ -23,6 +23,8 @@ public class LeaderboardPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard_page);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         prepareStoredPlayerList();
         handleListTextVisibility();
     }
@@ -34,6 +36,7 @@ public class LeaderboardPage extends AppCompatActivity {
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, TitlePage.KEY_PREFS, MODE_PRIVATE);
         for (String key : keys.keySet()) {
             PlayerCharacter pc = complexPreferences.getObject(key, PlayerCharacter.class);
+            pc.restoreAfterSave();
             storedPlayerCharacters.add(pc);
         }
 
@@ -64,25 +67,20 @@ public class LeaderboardPage extends AppCompatActivity {
         }
     }
 
+    //
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_leaderboard_page, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,24 +25,39 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
+
+import item.EquippableItem;
+import item.Item;
 
 public class TitlePage extends AppCompatActivity {
 
     static final String KEY_PREFS = "CASUALCOMBATPREFS";
     static final String KEY_PLAYER = "CASUALCOMBATPLAYER";
 
+    static final int REQUEST_CODE_LEADERBOARD = 0;
+    static final int REQUEST_CODE_PLAY = 1;
+    static final int REQUEST_CODE_SHOP = 2;
+    static final int REQUEST_CODE_INFO = 3;
+    static final int RESULT_EXIT = 2; // standard result codes are -1, 0 and 1
+
     // TODO
+    // TODO possible solution for stack issue : have titlepage start shoppage instead of playpage, and autoredirect to a playpage.
+    // then on playpage backspace (if first time) it returns to titlepage, otherwise it returns to playpage
+    //
     // maybe use camera to take selfie for character icon
     // an option button on the right side of the upper action bar where you can go to information
     // possibly improve the player screen buttons margins to be dynamically perfectly sized based on width. (screenWidth - 5 * 30) / 6 ?
     // consider putting health/maxhealth in the textview(s)
+    // TODO check for max stat (over 99, either make it not go higher in playerCharacter (is easier) or remove the buttons (not easy because then another check needed)
 
-    ArrayList<PlayerCharacter> storedPlayerCharacters;
-    PlayerCharacter playerCharacter;
+    private ArrayList<PlayerCharacter> storedPlayerCharacters;
+    private PlayerCharacter playerCharacter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +65,6 @@ public class TitlePage extends AppCompatActivity {
         setContentView(R.layout.activity_title_page);
 
         prepareStoredPlayerList();
-
         setPlayerVisibility(View.INVISIBLE);
         setLevelUpButtonsVisibility(View.INVISIBLE);
     }
@@ -61,6 +77,7 @@ public class TitlePage extends AppCompatActivity {
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, KEY_PREFS, MODE_PRIVATE);
         for (String key : keys.keySet()) {
             PlayerCharacter pc = complexPreferences.getObject(key, PlayerCharacter.class);
+            pc.restoreAfterSave();
             storedPlayerCharacters.add(pc);
         }
 
@@ -97,6 +114,17 @@ public class TitlePage extends AppCompatActivity {
     }
 
     //
+    private void reloadPlayerCharacter(){
+        String currentPlayerCharacterName = playerCharacter.getName();
+        for (PlayerCharacter storedPlayerCharacter : storedPlayerCharacters){
+            if (storedPlayerCharacter.getName().equals(currentPlayerCharacterName)) {
+                playerCharacter = storedPlayerCharacter;
+                break;
+            }
+        }
+    }
+
+    //
     private void setPlayerVisibility(int visibility){
         findViewById(R.id.titleLayoutCharacter).setVisibility(visibility);
         findViewById(R.id.titleCancelButton).setVisibility(visibility);
@@ -106,17 +134,18 @@ public class TitlePage extends AppCompatActivity {
     public void readyClick(View readyButton){
 
         if (playerCharacter != null && playerCharacter.finishedLevelUp()) {
-
-            if (!exists(playerCharacter)) {
+            if (!existsInList(playerCharacter.getName())) {
+                playerCharacter.prepareForSave();
                 ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, KEY_PREFS, MODE_PRIVATE);;
                 complexPreferences.putObject(playerCharacter.getName(), playerCharacter);
                 complexPreferences.commit();
+                playerCharacter.restoreAfterSave();
             }
 
             Intent newPage = new Intent(this, PlayPage.class);
             newPage.putExtra(KEY_PLAYER, playerCharacter);
-
-            startActivity(newPage);
+//            newPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(newPage, REQUEST_CODE_PLAY);
         } else {
 
             ((Button) readyButton).setText("Start");
@@ -124,6 +153,7 @@ public class TitlePage extends AppCompatActivity {
 
             // prepare creatable character
             playerCharacter = new PlayerCharacter();
+            setCharacterAvatar();
             nameChangeClick(null);
 
             updatePlayerSkillViews();
@@ -134,9 +164,18 @@ public class TitlePage extends AppCompatActivity {
     }
 
     //
-    private boolean exists(PlayerCharacter playerCharacter){
+    private boolean existsInList(String newName){
         for (PlayerCharacter pc : storedPlayerCharacters){
-            if (pc.getName().equals(playerCharacter.getName())) return true;
+            if (pc.getName().equals(newName)) return true;
+        }
+        return false;
+    }
+
+    //
+    private boolean existsInStorage(String newName){
+        Map<String, ?> sharedPrefsPlayerCharacters = getSharedPreferences(KEY_PREFS, MODE_PRIVATE).getAll();
+        for (String key : sharedPrefsPlayerCharacters.keySet()) {
+            if (newName.equals(key)) return true;
         }
         return false;
     }
@@ -173,9 +212,13 @@ public class TitlePage extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 String newName = dialogEditText.getText().toString();
-                if (!newName.isEmpty()) { // TODO and name does not exist (unless name is equal to already entered name)
+                if (!newName.isEmpty() && !existsInList(newName)) {
                     renamePlayerCharacter(newName);
                     dialog.dismiss();
+                }
+                if (existsInList(newName) && !playerCharacter.getName().equals(newName)){
+                    Toast toast = Toast.makeText(getBaseContext(), "Name already taken!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
@@ -244,8 +287,8 @@ public class TitlePage extends AppCompatActivity {
         ((TextView) findViewById(R.id.titleCharName)).setText(playerCharacter.getName());
         ((TextView) findViewById(R.id.titleCharLevel)).setText("LEVEL " + playerCharacter.getLevel());
 
-        ((TextView) findViewById(R.id.titleCharHealthText)).setText("" + playerCharacter.getMaxHealth());
-        ((TextView) findViewById(R.id.titleCharMagicText)).setText("" + playerCharacter.getMaxMagic());
+        ((TextView) findViewById(R.id.titleCharHealthText)).setText("" + playerCharacter.getHealth() + "/" + playerCharacter.getMaxHealth());
+        ((TextView) findViewById(R.id.titleCharMagicText)).setText("" + playerCharacter.getMagic() + "/" + playerCharacter.getMaxMagic());
         ((TextView) findViewById(R.id.titleCharStrength)).setText("STR " + playerCharacter.getStrength());
         ((TextView) findViewById(R.id.titleCharWillpower)).setText("WIL " + playerCharacter.getWillpower());
         ((TextView) findViewById(R.id.titleCharDefense)).setText("DEF " + playerCharacter.getDefense());
@@ -304,7 +347,7 @@ public class TitlePage extends AppCompatActivity {
     //
     public void leaderboardClick(View leaderButton){
         Intent newPage = new Intent(this, LeaderboardPage.class);
-        startActivity(newPage);
+        startActivityForResult(newPage, REQUEST_CODE_LEADERBOARD);
     }
 
     //
@@ -320,6 +363,46 @@ public class TitlePage extends AppCompatActivity {
     public void secretClick(View characterAvatar){
         playerCharacter.changeColorString();
         setCharacterAvatar();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("YO THIS IS THE REQUEST CODE: " + requestCode);
+        System.out.println("YO THIS IS THE RESULT CODE: " + resultCode);
+
+        System.err.println("LISTEN UP I CAME FROM : " + this.getCallingActivity());
+        switch(requestCode){
+            case REQUEST_CODE_LEADERBOARD:
+                if (existsInList(playerCharacter.getName()) && !existsInStorage(playerCharacter.getName())) {
+                    playerCharacter = null;
+                    ((Button) findViewById(R.id.readyButton)).setText("New");
+                    findViewById(R.id.readyButton).setEnabled(true);
+                    setPlayerVisibility(View.INVISIBLE);
+                    setLevelUpButtonsVisibility(View.INVISIBLE);
+                }
+                prepareStoredPlayerList();
+                break;
+//            case REQUEST_CODE_PLAY:
+//                if (resultCode == RESULT_EXIT) finish();
+//                if (resultCode == RESULT_OK){
+//                    // update character
+//                    prepareStoredPlayerList();
+//                    reloadPlayerCharacter();
+//                    updatePlayerSkillViews();
+//                    setCharacterAvatar();
+//                }
+//                break;
+        }
+        if (resultCode == RESULT_EXIT) finish();
+        if (resultCode == RESULT_OK) {
+            // update character
+            prepareStoredPlayerList();
+            reloadPlayerCharacter();
+            updatePlayerSkillViews();
+            setCharacterAvatar();
+
+        }
     }
 
     @Override

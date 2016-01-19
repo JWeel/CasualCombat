@@ -29,8 +29,8 @@ class Game {
 //        foes.add(Foe.findFoeByID(Foe.GOBLIN));
 //        foes.add(Foe.findFoeByID(Foe.WARG));
 //        foes.add(Foe.findFoeByID(Foe.WARG));
-//        foes.add(Foe.findFoeByID(Foe.ORC));
-        foes.add(Foe.findFoeByID(Foe.KRAKEN));
+        foes.add(Foe.findFoeByID(Foe.ORC));
+//        foes.add(Foe.findFoeByID(Foe.KRAKEN));
         // rename foes if types occur more than once
         Foe.renameFoesByCount(foes);
 

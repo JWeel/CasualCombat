@@ -100,6 +100,18 @@ Day 12:
 * Fix bug with rename foes
 * Fix wrong stats display on PlayPage
 * Fix sold out message on shop
+* Handle interaction between activities - now auto finishes activities as needed.
+* Playerlist is updated in titlepage if changed in leaderboardpage
+* Warning for when exiting shop page - can choose where to go
+* Now when deleting in leaderboard page character selected on titlepage, cleared from titlepage
+* ^ if titlepage has a new character or someone not deleted from leaderboard, they remain on titlepage
+* Add better health/magic display for shoppage and titlepage
+* Implement buying items, equipment and spells
+* Improve insufficient magic view for spell list in combat
+* Fix moving equippable items in parcel and shared preference storage
+* Add check if name already exists when creating/renaming character
+* Fixed nasty bug with loading player that has equipped item (required temp storage and two methods)
+* Design problem: keeping stack small
 
 Day 13:
 

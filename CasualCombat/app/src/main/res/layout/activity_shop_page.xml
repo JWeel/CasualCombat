@@ -101,34 +101,34 @@
                 android:onClick="addClick"
                 android:id="@+id/shopCharHealthAdd"
                 />
-            <TextView
-                android:layout_width="24dip"
-                android:layout_height="24dip"
-                android:text="999"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:typeface="monospace"
-                android:gravity="center"
-                android:layout_alignTop="@id/shopCharHealthAdd"
-                android:layout_toLeftOf="@id/shopCharHealthAdd"
-                android:layout_toStartOf="@id/shopCharHealthAdd"
-                android:layout_marginTop="3dip"
-                android:layout_marginRight="4dip"
-                android:layout_marginEnd="4dip"
-                android:id="@+id/shopCharHealthText"
-                />
             <ProgressBar
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:progressDrawable="@drawable/health_bar"
                 android:layout_width="80dip"
                 android:layout_height="20dip"
                 android:layout_alignTop="@id/shopCharHealthAdd"
-                android:layout_toLeftOf="@id/shopCharHealthText"
-                android:layout_toStartOf="@id/shopCharHealthText"
+                android:layout_toLeftOf="@id/shopCharHealthAdd"
+                android:layout_toStartOf="@id/shopCharHealthAdd"
                 android:layout_marginTop="5dip"
                 android:layout_marginRight="8dip"
                 android:layout_marginEnd="8dip"
                 android:id="@+id/shopCharHealth"
+                />
+            <TextView
+                android:layout_width="50dip"
+                android:layout_height="24dip"
+                android:text="99/99"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:typeface="monospace"
+                android:gravity="center"
+                android:layout_alignTop="@id/shopCharHealthAdd"
+                android:layout_alignLeft="@id/shopCharHealth"
+                android:layout_alignStart="@id/shopCharHealth"
+                android:layout_marginTop="3dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginStart="15dip"
+                android:id="@+id/shopCharHealthText"
                 />
 
             <Button
@@ -149,34 +149,34 @@
                 android:onClick="addClick"
                 android:id="@+id/shopCharMagicAdd"
                 />
-            <TextView
-                android:layout_width="24dip"
-                android:layout_height="24dip"
-                android:text="999"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:typeface="monospace"
-                android:gravity="center"
-                android:layout_alignTop="@id/shopCharMagicAdd"
-                android:layout_toLeftOf="@id/shopCharMagicAdd"
-                android:layout_toStartOf="@id/shopCharMagicAdd"
-                android:layout_marginTop="3dip"
-                android:layout_marginRight="4dip"
-                android:layout_marginEnd="4dip"
-                android:id="@+id/shopCharMagicText"
-                />
             <ProgressBar
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:progressDrawable="@drawable/magic_bar"
                 android:layout_width="80dip"
                 android:layout_height="20dip"
                 android:layout_alignTop="@id/shopCharMagicAdd"
-                android:layout_toLeftOf="@id/shopCharMagicText"
-                android:layout_toStartOf="@id/shopCharMagicText"
+                android:layout_toLeftOf="@id/shopCharMagicAdd"
+                android:layout_toStartOf="@id/shopCharMagicAdd"
                 android:layout_marginTop="5dip"
                 android:layout_marginRight="8dip"
                 android:layout_marginEnd="8dip"
                 android:id="@+id/shopCharMagic"
+                />
+            <TextView
+                android:layout_width="50dip"
+                android:layout_height="24dip"
+                android:text="99/99"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:typeface="monospace"
+                android:gravity="center"
+                android:layout_alignTop="@id/shopCharMagicAdd"
+                android:layout_alignLeft="@id/shopCharMagic"
+                android:layout_alignStart="@id/shopCharMagic"
+                android:layout_marginTop="3dip"
+                android:layout_marginLeft="15dip"
+                android:layout_marginStart="15dip"
+                android:id="@+id/shopCharMagicText"
                 />
 
             <Button
@@ -537,6 +537,8 @@
                     <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
+                        android:clickable="true"
+                        android:onClick="usableClick"
                         android:id="@+id/shopLayoutUsableInner"
                         >
                         <TextView
@@ -611,6 +613,8 @@
                     <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
+                        android:clickable="true"
+                        android:onClick="equippableClick"
                         android:id="@+id/shopLayoutEquippableInner"
                         >
                         <TextView
@@ -685,6 +689,8 @@
                     <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
+                        android:clickable="true"
+                        android:onClick="spellClick"
                         android:id="@+id/shopLayoutSpellInner"
                         >
                         <TextView
