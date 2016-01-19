@@ -24,10 +24,13 @@ class Game {
 
         // TODO base foes on pc level
         foes = new ArrayList<>();
-        foes.add(Foe.findFoeByID(Foe.GOBLIN));
-        foes.add(Foe.findFoeByID(Foe.GOBLIN));
-        foes.add(Foe.findFoeByID(Foe.GOBLIN));
-
+//        foes.add(Foe.findFoeByID(Foe.GOBLIN));
+//        foes.add(Foe.findFoeByID(Foe.GOBLIN));
+//        foes.add(Foe.findFoeByID(Foe.GOBLIN));
+//        foes.add(Foe.findFoeByID(Foe.WARG));
+//        foes.add(Foe.findFoeByID(Foe.WARG));
+//        foes.add(Foe.findFoeByID(Foe.ORC));
+        foes.add(Foe.findFoeByID(Foe.KRAKEN));
         // rename foes if types occur more than once
         Foe.renameFoesByCount(foes);
 
@@ -106,6 +109,8 @@ class Game {
                             if (attacker.getMove().getRange() == Move.RANGE_FAR && target < foes.size()-2 && !foes.get(target+2).isDead()) damage(attacker, foes.get(target+2), 0.5f);
                         }
                     }
+                } else {
+                    log(attacker.getName() + " is defending!");
                 }
             }
             combatants.remove(0);

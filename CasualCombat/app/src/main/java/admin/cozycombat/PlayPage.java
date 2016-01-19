@@ -183,9 +183,9 @@ public class PlayPage extends AppCompatActivity {
         ((TextView) findViewById(R.id.charMagicText)).setText("" + playerCharacter.getMagic() + "/" + playerCharacter.getMaxMagic());
         ((TextView) findViewById(R.id.charLevel)).setText("LVL " + playerCharacter.getLevel());
         ((TextView) findViewById(R.id.charStrength)).setText("STR " + playerCharacter.getStrength());
-        ((TextView) findViewById(R.id.charWillpower)).setText("WIL " + playerCharacter.getStrength());
+        ((TextView) findViewById(R.id.charWillpower)).setText("WIL " + playerCharacter.getWillpower());
         ((TextView) findViewById(R.id.charDefense)).setText("DEF " + playerCharacter.getDefense());
-        ((TextView) findViewById(R.id.charResistance)).setText("RES " + playerCharacter.getDefense());
+        ((TextView) findViewById(R.id.charResistance)).setText("RES " + playerCharacter.getResistance());
         ((TextView) findViewById(R.id.charSpeed)).setText("SPD " + playerCharacter.getSpeed());
     }
 

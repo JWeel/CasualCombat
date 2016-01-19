@@ -2,23 +2,23 @@ package foe;
 
 import java.util.HashSet;
 
-public class Goblin extends Foe {
+public class Orc extends Foe {
 
-    public Goblin(){
-        this.maxHealth = 3;
+    public Orc(){
+        this.maxHealth = 4;
         this.currentHealth = maxHealth;
         this.maxMagic = 0;
         this.currentMagic = maxMagic;
-        this.strength = 2;
+        this.strength = 3;
         this.willpower = 0;
         this.defense = 2;
-        this.resistance = 0;
-        this.speed = 4;
-        this.name = "Goblin";
+        this.resistance = 1;
+        this.speed = 3;
+        this.name = "Orc";
         this.money = 1;
         this.spells = new HashSet<>();
 
-        this.color = "#125634";
-        this.id = Foe.GOBLIN;
+        this.color = "#AA9977";
+        this.id = Foe.ORC;
     }
 }

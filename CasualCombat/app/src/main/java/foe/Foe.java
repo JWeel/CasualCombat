@@ -8,15 +8,25 @@ import admin.cozycombat.Combatant;
 
 public abstract class Foe extends Combatant {
 
-    protected String color; // TODO color of button
 
     public static final int GOBLIN = 0;
+    public static final int WARG = 1;
+    public static final int ORC = 2;
+    public static final int KRAKEN = 3;
 
     protected int id;
+    protected String color;
+
+    // TODO if the foe uses defend, possibly needs to be put in choosing of move
+    protected boolean canDefend;
+    // TODO and maybe a prefersSpells for the ai to first cast spells until magic is out before resorting to attack/defend
 
     public static Foe findFoeByID(int id){
         switch(id){
             case GOBLIN: return new Goblin();
+            case WARG: return new Warg();
+            case ORC: return new Orc();
+            case KRAKEN: return new Kraken();
             default: return null;
         }
     }
@@ -29,6 +39,7 @@ public abstract class Foe extends Combatant {
         Map<String, Integer> foeTypes = new HashMap<>();
         for (Foe foe : foes) {
             int count;
+            System.out.println(foe);
             if (foeTypes.containsKey(foe.getName())) {
                 count = foeTypes.get(foe.getName()) + 1;
                 foeTypes.put(foe.getName(), count);

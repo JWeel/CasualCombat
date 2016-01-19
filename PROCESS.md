@@ -95,6 +95,11 @@ Day 11:
 * Start new fights from shop page
 
 Day 12:
+* Add notification for defending, and potential for foes to defend
+* Add three new foes
+* Fix bug with rename foes
+* Fix wrong stats display on PlayPage
+* Fix sold out message on shop
 
 Day 13:
 
