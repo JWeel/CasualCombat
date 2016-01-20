@@ -2,9 +2,12 @@ package foe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.Map;
 
 import admin.cozycombat.Combatant;
+import admin.cozycombat.TitlePage;
+import move.Move;
 
 public abstract class Foe extends Combatant {
 
@@ -13,23 +16,67 @@ public abstract class Foe extends Combatant {
     public static final int WARG = 1;
     public static final int ORC = 2;
     public static final int KRAKEN = 3;
+    public static final int WARLOCK = 4;
+
+    protected ArrayList<Integer> usableMoveids;
 
     protected int id;
     protected String color;
 
     // TODO if the foe uses defend, possibly needs to be put in choosing of move
-    protected boolean canDefend;
+    protected boolean willDefend;
     // TODO and maybe a prefersSpells for the ai to first cast spells until magic is out before resorting to attack/defend
 
     public static Foe findFoeByID(int id){
+        Foe foe;
         switch(id){
-            case GOBLIN: return new Goblin();
-            case WARG: return new Warg();
-            case ORC: return new Orc();
-            case KRAKEN: return new Kraken();
+            case GOBLIN:
+                foe = new Goblin();
+                break;
+            case WARG:
+                foe = new Warg();
+                break;
+            case ORC:
+                foe = new Orc();
+                break;
+            case KRAKEN:
+                foe = new Kraken();
+                break;
+            case WARLOCK:
+                foe = new Warlock();
+                break;
             default: return null;
         }
+        foe.prepareUsableMoveIds();
+        return foe;
     }
+
+    protected void prepareUsableMoveIds(){
+        this.usableMoveids = new ArrayList<>();
+        this.usableMoveids.add(Move.BASIC_ATTACK);
+        if (this.willDefend) this.usableMoveids.add(Move.BASIC_DEFEND);
+        for (int spellId : this.spells){
+            Move spell = Move.findMoveById(spellId);
+            if (this.currentMagic >= spell.getCost()) this.usableMoveids.add(spellId);
+        }
+    }
+
+    public void updateUsableMoveIds(){
+        ListIterator<Integer> iter = this.usableMoveids.listIterator();
+        while(iter.hasNext()){
+            if(Move.findMoveById(iter.next()).getCost() > this.currentMagic) {
+                iter.remove();
+            }
+        }
+    }
+
+    public void setRandomMove(){
+        int id = this.usableMoveids.get(TitlePage.random.nextInt(this.usableMoveids.size()));
+        this.move = Move.findMoveById(id);
+        if (this.move.getRange() == Move.RANGE_SELF) this.move.setTarget(Move.TARGET_SELF);
+        else this.move.setTarget(0);
+    }
+
     public String getColor(){ return this.color; }
 
     public int getId(){ return this.id; }

@@ -118,6 +118,13 @@ Day 13:
 * Hopefully fixed stack now (design choice: redirect to play via shop, always finish play. never more than 3 total activities on stack (4 with info))
 * Fix correctly sending character back to shop from play
 * fix already own gear check if don't own gear
+* Add foe move pick ai
+* Improve move log in combat (now says what is being used)
+* Fix on return to shop resupplied item being invisible
+* Redo the log in combat, it is now scrollable and no longer has limit (all combat history is now viewable)
+* Foes now can no longer cast spells if they don't have enough magic for it
+* Fix when coming back from leaderboard to title and not have any character view
+
 
 Day 14:
 

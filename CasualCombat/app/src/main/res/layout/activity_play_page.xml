@@ -269,18 +269,23 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:background="#898989"
             android:layout_weight="1"
             android:padding="4dip"
+            android:onClick="logClick"
+            android:clickable="true"
+            android:background="#898989"
             >
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:typeface="monospace"
+                android:maxLines="9"
+                android:scrollbars="vertical"
+                android:gravity="bottom"
+                android:textColor="#FFFFFF"
                 android:onClick="logClick"
                 android:clickable="true"
                 android:id="@+id/logText"
-                android:typeface="monospace"
-                android:textColor="#FFFFFF"
                 />
             <TextView
                 android:layout_width="wrap_content"

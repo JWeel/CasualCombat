@@ -21,6 +21,7 @@ public class Kraken extends Foe {
         this.spells = new HashSet<>();
         spells.add(Move.SHOCKWAVE);
 
+        this.willDefend = false;
         this.color = "#002288";
         this.id = Foe.KRAKEN;
     }

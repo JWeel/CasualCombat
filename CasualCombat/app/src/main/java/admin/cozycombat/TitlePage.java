@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 public class TitlePage extends AppCompatActivity {
 
@@ -41,18 +42,10 @@ public class TitlePage extends AppCompatActivity {
 
     // TODO
     // major features still tbi
-    // Foe AI
     // select random foe for combat (based on level?)
     // select random buyable stuff for shop (based on level?)
     // information page (how to play, what do icons mean, maybe info about spells but prolly not needed)
-    // fix stack (maybe with what is says in next todo)
 
-    // TODO
-    // TODO possible solution for stack issue : have titlepage start shoppage instead of playpage, and autoredirect to a playpage.
-    // then on playpage backspace (if first time) it returns to titlepage, otherwise it returns to playpage
-    //
-    // maybe use camera to take selfie for character icon
-    // an option button on the right side of the upper action bar where you can go to information
     // possibly improve the player screen buttons margins to be dynamically perfectly sized based on width. (screenWidth - 5 * 30) / 6 ?
     // consider putting health/maxhealth in the textview(s)
     // TODO check for max stat (over 99, either make it not go higher in playerCharacter (is easier) or remove the buttons (not easy because then another check needed)
@@ -61,13 +54,19 @@ public class TitlePage extends AppCompatActivity {
 
     // TODO add the equipment to the titlepage character view
 
+    // TODO maybe make the log view in combat be a scrollable list somehow
+
     private ArrayList<PlayerCharacter> storedPlayerCharacters;
     private PlayerCharacter playerCharacter;
+
+    public static Random random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_title_page);
+
+        random = new Random();
 
         prepareStoredPlayerList();
         setPlayerVisibility(View.INVISIBLE);
@@ -379,12 +378,14 @@ public class TitlePage extends AppCompatActivity {
         System.err.println("LISTEN UP I CAME FROM : " + this.getCallingActivity());
         switch(requestCode){
             case REQUEST_CODE_LEADERBOARD_PAGE:
-                if (existsInList(playerCharacter.getName()) && !existsInStorage(playerCharacter.getName())) {
-                    playerCharacter = null;
-                    ((Button) findViewById(R.id.readyButton)).setText("New");
-                    findViewById(R.id.readyButton).setEnabled(true);
-                    setPlayerVisibility(View.INVISIBLE);
-                    setLevelUpButtonsVisibility(View.INVISIBLE);
+                if (playerCharacter != null) {
+                    if (existsInList(playerCharacter.getName()) && !existsInStorage(playerCharacter.getName())) {
+                        playerCharacter = null;
+                        ((Button) findViewById(R.id.readyButton)).setText("New");
+                        findViewById(R.id.readyButton).setEnabled(true);
+                        setPlayerVisibility(View.INVISIBLE);
+                        setLevelUpButtonsVisibility(View.INVISIBLE);
+                    }
                 }
                 prepareStoredPlayerList();
                 break;

@@ -232,6 +232,7 @@ public class ShopPage extends AppCompatActivity {
                 findViewById(R.id.shopLayoutUsableInner).setVisibility(View.INVISIBLE);
             } else {
                 usableWarningText.setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutUsableInner).setVisibility(View.VISIBLE);
             }
         // sold out
         } else {
@@ -254,6 +255,7 @@ public class ShopPage extends AppCompatActivity {
             // otherwise buyable as intended
             } else {
                 equippableWarningText.setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.VISIBLE);
             }
         // sold out
         } else {
@@ -275,7 +277,8 @@ public class ShopPage extends AppCompatActivity {
 
             // otherwise buyable as intended
             } else {
-                    spellWarningText.setVisibility(View.INVISIBLE);
+                spellWarningText.setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutSpellInner).setVisibility(View.VISIBLE);
             }
         // sold out
         } else {
@@ -359,8 +362,7 @@ public class ShopPage extends AppCompatActivity {
 
     //
     public void titleClick(View deathText){
-        // TODO also finish prev activity
-        finish();
+        onBackPressed();
     }
 
     //
@@ -407,35 +409,35 @@ public class ShopPage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (playerCharacter.isDead()){
-            setResult(TitlePage.RESULT_EXIT);
+            setResult(TitlePage.RESULT_OK);
             finish();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("You are about to leave this page.\nUnsaved progress will be lost.");
+            builder.setPositiveButton("Return to title screen", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    setResult(RESULT_OK, null);
+                    finish();
+                }
+            });
+            builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // do nothing -> dismisses dialog
+                }
+            });
+            builder.setNegativeButton("Exit app", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    setResult(TitlePage.RESULT_EXIT);
+                    finish();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("You are about to leave this page.\nUnsaved progress will be lost.");
-        builder.setPositiveButton("Return to title screen", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setResult(RESULT_OK, null);
-                finish();
-            }
-        });
-        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // do nothing -> dismisses dialog
-            }
-        });
-        builder.setNegativeButton("Exit app", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setResult(TitlePage.RESULT_EXIT);
-                finish();
-            }
-        });
-
-        final AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     //

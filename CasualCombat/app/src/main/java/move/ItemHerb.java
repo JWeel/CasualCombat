@@ -7,7 +7,7 @@ public class ItemHerb extends Move {
         this.damage = 0;
         this.cost = -5;
         this.range = Move.RANGE_SELF;
-        this.name = "";
+        this.name = "Herb";
         this.info = "";
     }
 }

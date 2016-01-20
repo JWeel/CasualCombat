@@ -18,6 +18,7 @@ public class Goblin extends Foe {
         this.money = 1;
         this.spells = new HashSet<>();
 
+        this.willDefend = true;
         this.color = "#125634";
         this.id = Foe.GOBLIN;
     }

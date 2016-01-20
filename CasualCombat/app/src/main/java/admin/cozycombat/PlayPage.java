@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import foe.Foe;
 import item.UsableItem;
@@ -43,7 +43,6 @@ public class PlayPage extends AppCompatActivity {
     private boolean selectingFoe = false;
     private boolean selectingMove = false;
 
-    private LinkedList<String> log;
     private ArrayList<TextView> foeTextViews;
 
     private Game game;
@@ -67,10 +66,7 @@ public class PlayPage extends AppCompatActivity {
         resizeButtons();
         prepareLists();
 
-        log = new LinkedList<>();
-
-        findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
-
+        prepareLogView();
     }
 
     //
@@ -234,6 +230,18 @@ public class PlayPage extends AppCompatActivity {
     }
 
     //
+    private void prepareLogView(){
+
+        TextView logView = (TextView) findViewById(R.id.logText);
+//        logView.setLayoutParams(new LinearLayout.LayoutParams(logView.getWidth(), logView.getHeight() - logView.getLineHeight()));
+        logView.getLayoutParams().height = logView.getHeight() - logView.getLineHeight();
+        logView.setLayoutParams(logView.getLayoutParams());
+        logView.setMovementMethod(new ScrollingMovementMethod());
+
+        findViewById(R.id.logNotify).setVisibility(View.INVISIBLE);
+    }
+
+    //
     public void attackClick(View attackButton){
         if (selectingFoe){
             game.pickMove(null);
@@ -323,20 +331,18 @@ public class PlayPage extends AppCompatActivity {
     }
 
     //
-    public void logClick(View logTextView) {
+    public void logClick(View logLayoutView) {
 
         game.advance();
         String poppedMessage = game.pop();
 
         if (!poppedMessage.isEmpty()) {
-            log.add(poppedMessage);
-            if (log.size() > 8) log.removeFirst();
+            TextView logTextView = (TextView) findViewById(R.id.logText);
+            if (logTextView.getText().length() == 0) logTextView.setText(poppedMessage);
+            else logTextView.setText(logTextView.getText() + "\n" + poppedMessage);
 
-            String logText = "";
-            for (int i = 0; i < log.size(); i++) {
-                logText += log.get(i) + "\n";
-            }
-            ((TextView) logTextView).setText(logText);
+//            final int scrollAmount = logTextView.getLayout().getLineTop(logTextView.getLineCount()) - logTextView.getHeight();
+//            if (scrollAmount > 0) logTextView.scrollTo(0, scrollAmount);
 
             updateHealthMagicDisplays();
         }
@@ -353,10 +359,7 @@ public class PlayPage extends AppCompatActivity {
         if (game.gameOver()){
 
             // TODO make this a method ?
-
             setResult(RESULT_OK, getIntent().putExtra(TitlePage.KEY_PLAYER, game.getPlayerCharacter()));
-            Intent resultIntent = new Intent();
-//            resultIntent.putExtra(TitlePage.KEY_PLAYER, game.getPlayerCharacter());
             finish();
 
         }

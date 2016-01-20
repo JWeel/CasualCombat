@@ -2,6 +2,7 @@ package admin.cozycombat;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import foe.Foe;
@@ -9,7 +10,9 @@ import move.Move;
 
 class Game {
 
-    ArrayList<Combatant> combatants;
+    private static final int AWARDED_LEVEL_POINTS = 1;
+
+    private ArrayList<Combatant> combatants;
 
     private PlayerCharacter playerCharacter;
     private ArrayList<Foe> foes;
@@ -29,8 +32,11 @@ class Game {
 //        foes.add(Foe.findFoeByID(Foe.GOBLIN));
 //        foes.add(Foe.findFoeByID(Foe.WARG));
 //        foes.add(Foe.findFoeByID(Foe.WARG));
-        foes.add(Foe.findFoeByID(Foe.ORC));
-//        foes.add(Foe.findFoeByID(Foe.KRAKEN));
+//        foes.add(Foe.findFoeByID(Foe.ORC));
+        foes.add(Foe.findFoeByID(Foe.KRAKEN));
+//        foes.add(Foe.findFoeByID(Foe.WARLOCK));
+//        foes.add(Foe.findFoeByID(Foe.WARLOCK));
+//        foes.add(Foe.findFoeByID(Foe.WARLOCK));
         // rename foes if types occur more than once
         Foe.renameFoesByCount(foes);
 
@@ -65,9 +71,18 @@ class Game {
                 if (!attacker.isDefending()){
 
                     if (attacker.getMove().getRange() == Move.RANGE_SELF){
+                        // SELF
+                        int healAmount = attacker.getMove().getDamage();
+                        if (healAmount != 0) {
+                            attacker.modifyHealth(healAmount);
+                            log(attacker.getName() + " casts " + attacker.getMove().getName() + " and heals for " + Math.abs(healAmount) + "!");
+                        }
                     } else {
+                        // any other range will only hit playerCharacter, so further range check is unnecessary
                         damage(attacker, playerCharacter, 1.0f);
                     }
+                } else {
+                    log(attacker.getName() + " is defending!");
                 }
             }
             // player characters have different mechanics because they can hit multiple foes
@@ -84,11 +99,11 @@ class Game {
                         int healAmount = attacker.getMove().getDamage();
                         if (healAmount != 0) {
                             attacker.modifyHealth(healAmount);
-                            log(attacker.getName() + " heals for " + Math.abs(healAmount) + "!");
+                            log(attacker.getName() + " casts " + attacker.getMove().getName() + " and heals for " + Math.abs(healAmount) + "!");
                         }
                         // if negative cost, that means magic is being restored
                         if (attacker.getMove().getCost() < 0)
-                            log(attacker.getName() + " restores " + Math.abs(attacker.getMove().getCost()) + " magic!");
+                            log(attacker.getName() + " uses " + attacker.getMove().getName() + " and restores " + Math.abs(attacker.getMove().getCost()) + " magic!");
 
                     } else if (attacker.getMove().getRange() == Move.RANGE_SINGLE || foes.size() == 1) {
 
@@ -126,14 +141,9 @@ class Game {
                 playerCharacter.addMoney(loot);
                 log(playerCharacter.getName() + " found " + loot + " coins!");
 
-                // each unique foe type gives one level point
-                // TODO consider doing this with Set instead
-                ArrayList<Integer> uniqueFoeIds = new ArrayList<>();
-                for (Foe foe : foes) if (!uniqueFoeIds.contains(foe.getId())) uniqueFoeIds.add(foe.getId());
-                int nUnique = uniqueFoeIds.size();
                 playerCharacter.addLevel();
-                playerCharacter.addLevelPoints(nUnique);
-                log(playerCharacter.getName() + " received " + nUnique + " level up points!");
+                playerCharacter.addLevelPoints(AWARDED_LEVEL_POINTS);
+                log(playerCharacter.getName() + " received " + AWARDED_LEVEL_POINTS + " level up point!");
                 log(" ");
             }
 
@@ -143,9 +153,8 @@ class Game {
             // get moves for all foes
             for (int i = 0; i < foes.size(); i++){
                 if (foes.get(i).isDead()) continue;
-                // TODO get move from ai
-                foes.get(i).setMove(Move.findMoveById(Move.BASIC_ATTACK));
-                foes.get(i).getMove().setTarget(0);
+                foes.get(i).updateUsableMoveIds();
+                foes.get(i).setRandomMove();
             }
             // sort combatants by speed
             combatants = new ArrayList<>();
@@ -177,7 +186,8 @@ class Game {
         if (damage <= 0) damage = 1;
 
         defender.modifyHealth(damage);
-        log(attacker.getName() + " hits " + defender.getName() + " for " + damage + "!");
+        if (attacker.getMove().isSpell() || attacker.getMove().isItemMove()) log(attacker.getName() + "'s " + attacker.getMove().getName() + " hits " + defender.getName() + " for " + damage + "!");
+        else log(attacker.getName() + " attacks and hits " + defender.getName() + " for " + damage + "!");
 
         if (defender.isDead()) {
             log(defender.getName() + " is defeated!");

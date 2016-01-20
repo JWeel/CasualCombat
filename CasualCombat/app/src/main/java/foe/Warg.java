@@ -18,6 +18,7 @@ public class Warg extends Foe {
         this.money = 0;
         this.spells = new HashSet<>();
 
+        this.willDefend = false;
         this.color = "#777711";
         this.id = Foe.WARG;
     }

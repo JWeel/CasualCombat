@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
 
 import item.EquippableItem;
 import item.Item;
@@ -214,10 +213,9 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     public String getColorString(){ return this.colorString; }
 
     public void changeColorString(){
-        Random rand = new Random();
-        String red = String.format("%02X", rand.nextInt(0xFF));
-        String green = String.format("%02X", rand.nextInt(0xFF));
-        String blue = String.format("%02X", rand.nextInt(0xFF));
+        String red = String.format("%02X", TitlePage.random.nextInt(0xFF));
+        String green = String.format("%02X", TitlePage.random.nextInt(0xFF));
+        String blue = String.format("%02X", TitlePage.random.nextInt(0xFF));
         this.colorString= "#FF" + red + green + blue;
     }
 
