@@ -140,7 +140,7 @@ public class PlayPage extends AppCompatActivity {
             }
         });
 
-        final ItemAdapter itemAdapter = new ItemAdapter(this, R.layout.item_list, R.id.listItemName, new ArrayList<>(game.getPlayerCharacter().getItems()));
+        final ItemAdapter itemAdapter = new ItemAdapter(this, R.layout.item_list, R.id.listItemName, new ArrayList<>(game.getPlayerCharacter().getUsableItems()));
         itemListView.setAdapter(itemAdapter);
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -278,7 +278,7 @@ public class PlayPage extends AppCompatActivity {
         } else {
             // listview
             findViewById(R.id.listItems).setVisibility(View.VISIBLE);
-            if (game.getPlayerCharacter().getItems().isEmpty()) findViewById(R.id.listItemsEmptyText).setVisibility(View.VISIBLE);
+            if (game.getPlayerCharacter().getUsableItems().isEmpty()) findViewById(R.id.listItemsEmptyText).setVisibility(View.VISIBLE);
 
             selectingFoe = false;
             // set views of other moves to disable (greyed out)
@@ -352,14 +352,12 @@ public class PlayPage extends AppCompatActivity {
         //
         if (game.gameOver()){
 
-            // should print some more messages first
-            // who died (pc or some foe)
-            // if pc wins, 2 messages (1 for money and 1 for level up)
+            // TODO make this a method ?
 
-            Intent newPage = new Intent(this, ShopPage.class);
-            newPage.putExtra(TitlePage.KEY_PLAYER, game.getPlayerCharacter());
-//            newPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(newPage, TitlePage.REQUEST_CODE_SHOP);
+            setResult(RESULT_OK, getIntent().putExtra(TitlePage.KEY_PLAYER, game.getPlayerCharacter()));
+            Intent resultIntent = new Intent();
+//            resultIntent.putExtra(TitlePage.KEY_PLAYER, game.getPlayerCharacter());
+            finish();
 
         }
     }
@@ -394,16 +392,8 @@ public class PlayPage extends AppCompatActivity {
             setResult(RESULT_CANCELED);
             finish();
             // TODO maybe a dialog like in shop
+            //
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == TitlePage.REQUEST_CODE_SHOP){
-            setResult(resultCode);
-        }
-        finish();
     }
 
     @Override

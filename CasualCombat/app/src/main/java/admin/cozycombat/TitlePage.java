@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,24 +25,27 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Map;
-
-import item.EquippableItem;
-import item.Item;
 
 public class TitlePage extends AppCompatActivity {
 
     static final String KEY_PREFS = "CASUALCOMBATPREFS";
     static final String KEY_PLAYER = "CASUALCOMBATPLAYER";
 
-    static final int REQUEST_CODE_LEADERBOARD = 0;
-    static final int REQUEST_CODE_PLAY = 1;
-    static final int REQUEST_CODE_SHOP = 2;
-    static final int REQUEST_CODE_INFO = 3;
+    static final int REQUEST_CODE_LEADERBOARD_PAGE = 0;
+    static final int REQUEST_CODE_SHOP_PAGE = 1;
+    static final int REQUEST_CODE_PLAY_PAGE = 2;
+    static final int REQUEST_CODE_INFO_PAGE = 3;
     static final int RESULT_EXIT = 2; // standard result codes are -1, 0 and 1
+
+    // TODO
+    // major features still tbi
+    // Foe AI
+    // select random foe for combat (based on level?)
+    // select random buyable stuff for shop (based on level?)
+    // information page (how to play, what do icons mean, maybe info about spells but prolly not needed)
+    // fix stack (maybe with what is says in next todo)
 
     // TODO
     // TODO possible solution for stack issue : have titlepage start shoppage instead of playpage, and autoredirect to a playpage.
@@ -55,6 +56,10 @@ public class TitlePage extends AppCompatActivity {
     // possibly improve the player screen buttons margins to be dynamically perfectly sized based on width. (screenWidth - 5 * 30) / 6 ?
     // consider putting health/maxhealth in the textview(s)
     // TODO check for max stat (over 99, either make it not go higher in playerCharacter (is easier) or remove the buttons (not easy because then another check needed)
+
+    // TODO see if removing the intent filter stuff from manifest does anything (week 4)
+
+    // TODO add the equipment to the titlepage character view
 
     private ArrayList<PlayerCharacter> storedPlayerCharacters;
     private PlayerCharacter playerCharacter;
@@ -142,10 +147,10 @@ public class TitlePage extends AppCompatActivity {
                 playerCharacter.restoreAfterSave();
             }
 
-            Intent newPage = new Intent(this, PlayPage.class);
+            Intent newPage = new Intent(this, ShopPage.class);
             newPage.putExtra(KEY_PLAYER, playerCharacter);
 //            newPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(newPage, REQUEST_CODE_PLAY);
+            startActivityForResult(newPage, REQUEST_CODE_SHOP_PAGE);
         } else {
 
             ((Button) readyButton).setText("Start");
@@ -347,7 +352,7 @@ public class TitlePage extends AppCompatActivity {
     //
     public void leaderboardClick(View leaderButton){
         Intent newPage = new Intent(this, LeaderboardPage.class);
-        startActivityForResult(newPage, REQUEST_CODE_LEADERBOARD);
+        startActivityForResult(newPage, REQUEST_CODE_LEADERBOARD_PAGE);
     }
 
     //
@@ -373,7 +378,7 @@ public class TitlePage extends AppCompatActivity {
 
         System.err.println("LISTEN UP I CAME FROM : " + this.getCallingActivity());
         switch(requestCode){
-            case REQUEST_CODE_LEADERBOARD:
+            case REQUEST_CODE_LEADERBOARD_PAGE:
                 if (existsInList(playerCharacter.getName()) && !existsInStorage(playerCharacter.getName())) {
                     playerCharacter = null;
                     ((Button) findViewById(R.id.readyButton)).setText("New");
@@ -383,25 +388,16 @@ public class TitlePage extends AppCompatActivity {
                 }
                 prepareStoredPlayerList();
                 break;
-//            case REQUEST_CODE_PLAY:
-//                if (resultCode == RESULT_EXIT) finish();
-//                if (resultCode == RESULT_OK){
-//                    // update character
-//                    prepareStoredPlayerList();
-//                    reloadPlayerCharacter();
-//                    updatePlayerSkillViews();
-//                    setCharacterAvatar();
-//                }
-//                break;
-        }
-        if (resultCode == RESULT_EXIT) finish();
-        if (resultCode == RESULT_OK) {
-            // update character
-            prepareStoredPlayerList();
-            reloadPlayerCharacter();
-            updatePlayerSkillViews();
-            setCharacterAvatar();
-
+            case REQUEST_CODE_SHOP_PAGE:
+                if (resultCode == RESULT_EXIT) finish();
+                if (resultCode == RESULT_OK){
+                    // update character
+                    prepareStoredPlayerList();
+                    reloadPlayerCharacter();
+                    updatePlayerSkillViews();
+                    setCharacterAvatar();
+                }
+                break;
         }
     }
 

@@ -75,7 +75,7 @@ class Game {
                 if (!attacker.isDefending()){
 
                     if (attacker.getMove().isItemMove()){
-                        ((PlayerCharacter) attacker).getItems().remove((Integer) attacker.getMove().getId());
+                        ((PlayerCharacter) attacker).getUsableItems().remove((Integer) attacker.getMove().getId());
                     }
 
                     // moves can affect: self, 1 target, 3 targets (close), or 5 targets (far)

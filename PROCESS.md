@@ -36,7 +36,7 @@ Day 6:
 
 Day 7:
 * Design problem: How to handle "database" of Moves, Foes, Items, etc.
-* Design choice: ??
+* Design choice: ?? (see day 10 for solution)
 * Implemented Parcelable for PlayerCharacter, added new creation mechanics to main page
 * Creation now persists to new activity, added dialog to name player character
 * Design problem: How to store player character (SharedPreferences) ?
@@ -65,7 +65,7 @@ Day 10:
 * Design decision for ^ : everything is classes. Specific moves extend abstract Move
 * Implemented using spells
 * Start on layout overhaul for playpage and shoppage
-* Cancel on title page (by the way menupage is now named titlepage)
+* Cancel character on title page (by the way menupage is now named titlepage)
 * Dynamic progress bar now uses xml layout colors
 * Possibly temporary icon for player character
 * Successful game end now awards player character with points and money
@@ -84,7 +84,7 @@ Day 11:
 * TextViews that display if item or spell list are empty
 * Dynamically implement ^ for spells
 * Implement ^ for Items
-* Items list is now an arraylist again (allowing duplicates)
+* Usable Items list is now an arraylist again (to allow duplicates)
 * Implement using UsableItems
 * Implement restoring magic (with items), and restoring usability of spells
 * Implement coloring the avatar
@@ -107,13 +107,17 @@ Day 12:
 * ^ if titlepage has a new character or someone not deleted from leaderboard, they remain on titlepage
 * Add better health/magic display for shoppage and titlepage
 * Implement buying items, equipment and spells
-* Improve insufficient magic view for spell list in combat
+* Improve insufficient magic view for spell list in combat (textview from day 11 for spell list view removed)
 * Fix moving equippable items in parcel and shared preference storage
 * Add check if name already exists when creating/renaming character
 * Fixed nasty bug with loading player that has equipped item (required temp storage and two methods)
 * Design problem: keeping stack small
 
 Day 13:
+* Add functionality to shop if already own sold equipment or know sold spell
+* Hopefully fixed stack now (design choice: redirect to play via shop, always finish play. never more than 3 total activities on stack (4 with info))
+* Fix correctly sending character back to shop from play
+* fix already own gear check if don't own gear
 
 Day 14:
 

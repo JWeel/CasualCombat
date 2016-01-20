@@ -36,12 +36,14 @@ public class ShopPage extends AppCompatActivity {
     private static final int RESTORE_HEALTH_PRICE = 1;
     private static final int RESTORE_MAGIC_PRICE = 1;
 
-    PlayerCharacter playerCharacter;
+    private PlayerCharacter playerCharacter;
+
+    private boolean firstVisit;
 
     //
-    UsableItem buyableUsableItem;
-    EquippableItem buyableEquippableItem;
-    Move buyableSpell;
+    private UsableItem buyableUsableItem;
+    private EquippableItem buyableEquippableItem;
+    private Move buyableSpell;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,21 +54,31 @@ public class ShopPage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        firstVisit = true;
+
         Intent previousPage = getIntent();
         playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
 
-        if (playerCharacter.isDead()) {
-            findViewById(R.id.shopLayoutCharacter).setVisibility(View.INVISIBLE);
-            findViewById(R.id.shopLayoutEquipment).setVisibility(View.INVISIBLE);
-            findViewById(R.id.shopLayoutMiddle).setVisibility(View.INVISIBLE);
-            findViewById(R.id.shopLayoutShop).setVisibility(View.INVISIBLE);
-            findViewById(R.id.shopDeathText).setVisibility(View.VISIBLE);
-        } else {
-            setCharacterAvatar();
-            updatePlayerSkillViews();
-            updatePlayerEquipmentViews();
+        preparePage();
+    }
 
-            initializeShop();
+    private void preparePage(){
+        if (firstVisit){
+            nextClick(null);
+        } else {
+            if (playerCharacter.isDead()) {
+                findViewById(R.id.shopLayoutCharacter).setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutEquipment).setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutMiddle).setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutShop).setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopDeathText).setVisibility(View.VISIBLE);
+            } else {
+                setCharacterAvatar();
+                updatePlayerSkillViews();
+                updatePlayerEquipmentViews();
+
+                initializeShop();
+            }
         }
     }
 
@@ -210,7 +222,7 @@ public class ShopPage extends AppCompatActivity {
             findViewById(R.id.shopMagicRegen).setEnabled(false);
         else findViewById(R.id.shopMagicRegen).setEnabled(true);
 
-        // check enough gold for buyable items and spell
+        // check enough gold for buyable items and spell, and check if already have it
         TextView usableWarningText = (TextView) findViewById(R.id.shopWarningUsable);
         if (buyableUsableItem != null) {
             if (playerCharacter.getMoney() < buyableUsableItem.getPrice()) {
@@ -221,6 +233,7 @@ public class ShopPage extends AppCompatActivity {
             } else {
                 usableWarningText.setVisibility(View.INVISIBLE);
             }
+        // sold out
         } else {
             usableWarningText.setVisibility(View.VISIBLE);
             findViewById(R.id.shopLayoutUsableInner).setVisibility(View.INVISIBLE);
@@ -232,9 +245,17 @@ public class ShopPage extends AppCompatActivity {
                 equippableWarningText.setVisibility(View.VISIBLE);
                 equippableWarningText.setText("INSUFFICIENT GOLD");
                 findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
+            } else if (playerCharacter.alreadyHasEquipment(buyableEquippableItem)) {
+                findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#669966"));
+                equippableWarningText.setVisibility(View.VISIBLE);
+                equippableWarningText.setText("ALREADY OWNED");
+                findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
+
+            // otherwise buyable as intended
             } else {
                 equippableWarningText.setVisibility(View.INVISIBLE);
             }
+        // sold out
         } else {
             equippableWarningText.setVisibility(View.VISIBLE);
             findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
@@ -246,9 +267,17 @@ public class ShopPage extends AppCompatActivity {
                 spellWarningText.setVisibility(View.VISIBLE);
                 spellWarningText.setText("INSUFFICIENT GOLD");
                 findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
+            } else if (playerCharacter.getSpells().contains(buyableSpell.getId())) {
+                findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#669966"));
+                spellWarningText.setVisibility(View.VISIBLE);
+                spellWarningText.setText("ALREADY OWNED");
+                findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
+
+            // otherwise buyable as intended
             } else {
-                spellWarningText.setVisibility(View.INVISIBLE);
+                    spellWarningText.setVisibility(View.INVISIBLE);
             }
+        // sold out
         } else {
             spellWarningText.setVisibility(View.VISIBLE);
             findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
@@ -325,8 +354,7 @@ public class ShopPage extends AppCompatActivity {
     public void nextClick(View nextButton){
         Intent newPage = new Intent(this, PlayPage.class);
         newPage.putExtra(TitlePage.KEY_PLAYER, playerCharacter);
-//        newPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivityForResult(newPage, TitlePage.REQUEST_CODE_PLAY);
+        startActivityForResult(newPage, TitlePage.REQUEST_CODE_PLAY_PAGE);
     }
 
     //
@@ -354,18 +382,25 @@ public class ShopPage extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("YO THIS IS THE REQUEST CODE: " + requestCode);
         System.out.println("YO THIS IS THE RESULT CODE: " + resultCode);
-        if (requestCode == TitlePage.REQUEST_CODE_PLAY){
-            if (resultCode == TitlePage.RESULT_EXIT || resultCode == RESULT_OK) {
+
+        // can come here from PlayPage TODO or InfoPage
+        if (requestCode == TitlePage.REQUEST_CODE_PLAY_PAGE){
+            if (resultCode == TitlePage.RESULT_EXIT) {
                 setResult(resultCode);
                 finish();
             }
+            if (resultCode == RESULT_CANCELED){
+                if (firstVisit) {
+                    setResult(resultCode);
+                    finish();
+                }
+            }
+            if (resultCode == RESULT_OK) {
+                firstVisit = false;
+                playerCharacter = data.getExtras().getParcelable(TitlePage.KEY_PLAYER);
+                preparePage();
+            }
         }
-//        if (requestCode == TitlePage.REQUEST_CODE_SHOP){
-//            if (resultCode == TitlePage.RESULT_EXIT) {
-//                setResult(resultCode);
-//                finish();
-//            }
-//        }
     }
 
     //

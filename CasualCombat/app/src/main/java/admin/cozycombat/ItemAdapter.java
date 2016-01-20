@@ -32,7 +32,7 @@ class ItemAdapter extends ArrayAdapter<Integer> {
     //
     void updateUsableItems(PlayerCharacter playerCharacter){
         usableItems.clear();
-        for (Integer id : playerCharacter.getItems()) {
+        for (Integer id : playerCharacter.getUsableItems()) {
             usableItems.add((UsableItem) Item.findItemById(id));
         }
         this.notifyDataSetChanged();

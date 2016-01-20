@@ -13,12 +13,10 @@ import move.Move;
 
 public class PlayerCharacter extends Combatant implements Parcelable {
 
-    // TODO maybe implement a color and if you click on the avatar the color changes of the helmet
-
     private int level;
     private int levelPoints;
 
-    private ArrayList<Integer> items;
+    private ArrayList<Integer> usableItems;
 
     private EquippableItem weapon;
     private EquippableItem armor;
@@ -47,8 +45,8 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.spells = new HashSet<>();
         this.spells.add(Move.FIREBALL);
         this.spells.add(Move.HEAL);
-        this.items = new ArrayList<>();
-        this.items.add(Item.HERB);
+        this.usableItems = new ArrayList<>();
+        this.usableItems.add(Item.HERB);
         this.colorString = "#FFFFFFFF";
     }
 
@@ -102,7 +100,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
     }
 
     void addUsableItem(Item item){
-        items.add(item.getId());
+        usableItems.add(item.getId());
     }
 
     void equipItem(EquippableItem item){
@@ -138,7 +136,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
             this.boots = null;
         }
     }
-    // see prepareForSave/0, this restores the items from the temporary ints
+    // see prepareForSave/0, this restores the equippableItems from the temporary ints
     void restoreAfterSave(){
         if (this.weaponId == -1) this.weapon = null;
         else this.weapon = (EquippableItem) Item.findItemById(this.weaponId);
@@ -146,6 +144,21 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         else this.armor = (EquippableItem) Item.findItemById(this.armorId);
         if (this.bootsId == -1) this.boots = null;
         else this.boots = (EquippableItem) Item.findItemById(this.bootsId);
+    }
+
+    boolean alreadyHasEquipment(EquippableItem newItem){
+        switch(newItem.getType()){
+            case EquippableItem.TYPE_WEAPON:
+                if (this.getWeapon() == null) return false;
+                else return this.weapon.getId() == newItem.getId();
+            case EquippableItem.TYPE_ARMOR:
+                if (this.getArmor() == null) return false;
+                else return this.armor.getId() == newItem.getId();
+            case EquippableItem.TYPE_BOOTS:
+                if (this.getBoots() == null) return false;
+                else return this.boots.getId() == newItem.getId();
+            default: return false;
+        }
     }
 
     public EquippableItem getWeapon() { return this.weapon; }
@@ -208,7 +221,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.colorString= "#FF" + red + green + blue;
     }
 
-    public ArrayList<Integer> getItems() { return this.items; }
+    public ArrayList<Integer> getUsableItems() { return this.usableItems; }
 
     public PlayerCharacter copy(){
         PlayerCharacter copiedPlayerCharacter = new PlayerCharacter();
@@ -228,7 +241,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         copiedPlayerCharacter.name = this.name;
         copiedPlayerCharacter.colorString = this.colorString;
         copiedPlayerCharacter.spells = new HashSet<>(this.spells);
-        copiedPlayerCharacter.items = new ArrayList<>(this.items);
+        copiedPlayerCharacter.usableItems = new ArrayList<>(this.usableItems);
 
         if (this.weapon != null) copiedPlayerCharacter.weapon = this.weapon.copy();
         else copiedPlayerCharacter.weapon = null;
@@ -260,32 +273,32 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.speed = Integer.parseInt(contents[11]);
         this.levelPoints = Integer.parseInt(contents[12]);
 
-        int weaponId = Integer.parseInt(contents[13]);
-        int armorId = Integer.parseInt(contents[14]);
-        int bootsId = Integer.parseInt(contents[15]);
+        int tempWeaponId = Integer.parseInt(contents[13]);
+        int tempArmorId = Integer.parseInt(contents[14]);
+        int tempBootsId = Integer.parseInt(contents[15]);
 
-        if (weaponId != -1) this.weapon = (EquippableItem) Item.findItemById(weaponId);
-        if (armorId != -1) this.armor = (EquippableItem) Item.findItemById(armorId);
-        if (bootsId != -1) this.boots = (EquippableItem) Item.findItemById(bootsId);
+        if (tempWeaponId != -1) this.weapon = (EquippableItem) Item.findItemById(tempWeaponId);
+        if (tempArmorId != -1) this.armor = (EquippableItem) Item.findItemById(tempArmorId);
+        if (tempBootsId != -1) this.boots = (EquippableItem) Item.findItemById(tempBootsId);
 
         this.colorString = contents[16];
 
         ArrayList<Integer> readSpells = new ArrayList<>();
         in.readList(readSpells, null);
         this.spells = new HashSet<>(readSpells);
-        this.items = new ArrayList<>();
-        in.readList(items, null);
+        this.usableItems = new ArrayList<>();
+        in.readList(usableItems, null);
     }
 
     // standard Parcelable methods
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        int weaponId = -1;
-        if (this.weapon != null) weaponId = this.weapon.getId();
-        int armorId = -1;
-        if (this.armor != null) armorId = this.armor.getId();
-        int bootsId = -1;
-        if (this.boots != null) bootsId = this.boots.getId();
+        int tempWeaponId = -1;
+        if (this.weapon != null) tempWeaponId = this.weapon.getId();
+        int tempArmorId = -1;
+        if (this.armor != null) tempArmorId = this.armor.getId();
+        int tempBootsId = -1;
+        if (this.boots != null) tempBootsId = this.boots.getId();
         dest.writeStringArray(new String[]{
                 this.name,
                 String.valueOf(this.level),
@@ -300,13 +313,13 @@ public class PlayerCharacter extends Combatant implements Parcelable {
                 String.valueOf(this.resistance),
                 String.valueOf(this.speed),
                 String.valueOf(this.levelPoints),
-                String.valueOf(weaponId),
-                String.valueOf(armorId),
-                String.valueOf(bootsId),
+                String.valueOf(tempWeaponId),
+                String.valueOf(tempArmorId),
+                String.valueOf(tempBootsId),
                 this.colorString
         });
         dest.writeList(new ArrayList<>(this.spells));
-        dest.writeList(this.items);
+        dest.writeList(this.usableItems);
     }
     public static final Parcelable.Creator<PlayerCharacter> CREATOR = new Parcelable.Creator<PlayerCharacter>() {
         @Override
