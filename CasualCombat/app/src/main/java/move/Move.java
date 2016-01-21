@@ -17,9 +17,11 @@ public abstract class Move {
     public static final int BASIC_DEFEND     = 1;
     public static final int FIREBALL         = 2;
     public static final int HEAL             = 3;
-    public static final int SHOCKWAVE        = 4;
+    public static final int SHOCK = 4;
     public static final int TORNADO          = 5;
+    public static final int ARCANE_BLAST     = 6;
     public static final int ITEM_BOMB        = Item.BOMB;
+    public static final int ITEM_DART        = Item.DART;
     public static final int ITEM_HERB        = Item.HERB;
 
     // TODO maybe only one index for BOMB and ITEM_BOMB
@@ -30,9 +32,11 @@ public abstract class Move {
             case BASIC_DEFEND: return new BasicDefend();
             case FIREBALL: return new Fireball();
             case HEAL: return new Heal();
-            case SHOCKWAVE: return new Shockwave();
+            case SHOCK: return new Shock();
             case TORNADO: return new Tornado();
+            case ARCANE_BLAST: return new ArcaneBlast();
             case ITEM_BOMB: return new ItemBomb();
+            case ITEM_DART: return new ItemDart();
             case ITEM_HERB: return new ItemHerb();
             default: return null;
         }

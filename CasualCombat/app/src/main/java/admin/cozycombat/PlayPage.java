@@ -98,7 +98,6 @@ public class PlayPage extends AppCompatActivity {
         int topMargin = (int)(getResources().getDisplayMetrics().heightPixels / 16.0 * scale + 0.5f);
         int height = (int)(getResources().getDisplayMetrics().heightPixels / 7.0 * scale + 0.5f) * 3;
 
-        int test = (int) (22 * scale + 0.5f);
         RelativeLayout.LayoutParams spellParams = new RelativeLayout.LayoutParams(halfScreenWidth, height);
         spellParams.setMargins(24, topMargin, 24, 0);
         spellParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -201,7 +200,7 @@ public class PlayPage extends AppCompatActivity {
             params.setMargins(2,0,2,0);
             params.weight = equalWeight;
             foeTextView.setLayoutParams(params);
-            foeTextView.setText(foes.get(i).getName() + "\n" + foes.get(i).getHealth());
+            foeTextView.setText(foes.get(i).getName() + "\n" + foes.get(i).getHealth() + " HP");
             foeTextView.setBackgroundColor(Color.parseColor(foes.get(i).getColor()));
             foeTextView.setGravity(Gravity.CENTER);
             foeTextView.setTextColor(Color.parseColor("#FFFFFF"));
@@ -233,7 +232,6 @@ public class PlayPage extends AppCompatActivity {
     private void prepareLogView(){
 
         TextView logView = (TextView) findViewById(R.id.logText);
-//        logView.setLayoutParams(new LinearLayout.LayoutParams(logView.getWidth(), logView.getHeight() - logView.getLineHeight()));
         logView.getLayoutParams().height = logView.getHeight() - logView.getLineHeight();
         logView.setLayoutParams(logView.getLayoutParams());
         logView.setMovementMethod(new ScrollingMovementMethod());
@@ -369,7 +367,7 @@ public class PlayPage extends AppCompatActivity {
     private void updateHealthMagicDisplays(){
 
         for (int i = 0; i < foeTextViews.size(); i++){
-            foeTextViews.get(i).setText(game.getFoes().get(i).getName() + "\n" + game.getFoes().get(i).getHealth());
+            foeTextViews.get(i).setText(game.getFoes().get(i).getName() + "\n" + game.getFoes().get(i).getHealth() + " HP");
             if (game.getFoes().get(i).isDead()) foeTextViews.get(i).setBackgroundColor(Color.parseColor("#332222"));
         }
 

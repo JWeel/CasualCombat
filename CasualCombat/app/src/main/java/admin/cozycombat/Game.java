@@ -109,27 +109,13 @@ class Game {
                 encounter.add(Foe.KRAKEN);
                 possibleEncounters.add(encounter);
                 break;
-            default:
+            case 10: case 11: case 12: case 13: case 14:
                 encounter = new ArrayList<>();
                 encounter.add(Foe.WARG);
                 encounter.add(Foe.WARG);
                 encounter.add(Foe.WARG);
                 encounter.add(Foe.WARG);
                 encounter.add(Foe.WARG);
-                possibleEncounters.add(encounter);
-
-                encounter = new ArrayList<>();
-                encounter.add(Foe.GOBLIN);
-                encounter.add(Foe.GOBLIN);
-                encounter.add(Foe.GOBLIN);
-                encounter.add(Foe.GOBLIN);
-                possibleEncounters.add(encounter);
-
-                encounter = new ArrayList<>();
-                encounter.add(Foe.WARG);
-                encounter.add(Foe.GOBLIN);
-                encounter.add(Foe.WARG);
-                encounter.add(Foe.GOBLIN);
                 encounter.add(Foe.WARG);
                 possibleEncounters.add(encounter);
 
@@ -153,10 +139,104 @@ class Game {
                 encounter.add(Foe.ORC);
                 encounter.add(Foe.ORC);
                 encounter.add(Foe.ORC);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.OGRE);
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.GOBLIN);
                 possibleEncounters.add(encounter);
 
                 encounter = new ArrayList<>();
                 encounter.add(Foe.KRAKEN);
+                possibleEncounters.add(encounter);
+                break;
+            case 15: case 16: case 17: case 18:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.OGRE);
+                encounter.add(Foe.OGRE);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.DARK_MAGE);
+                encounter.add(Foe.DARK_MAGE);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.SPIDERBAT);
+                encounter.add(Foe.SPIDERBAT);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.SPIDERBAT);
+                encounter.add(Foe.OGRE);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.SPIDERBAT);
+                encounter.add(Foe.DARK_MAGE);
+                possibleEncounters.add(encounter);
+                break;
+            case 19:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.DRAGON);
+                possibleEncounters.add(encounter);
+                break;
+            default:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.OGRE);
+                encounter.add(Foe.OGRE);
+                encounter.add(Foe.OGRE);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.DARK_MAGE);
+                encounter.add(Foe.DARK_MAGE);
+                encounter.add(Foe.DARK_MAGE);
+                encounter.add(Foe.DARK_MAGE);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.SPIDERBAT);
+                encounter.add(Foe.SPIDERBAT);
+                encounter.add(Foe.SPIDERBAT);
+                encounter.add(Foe.SPIDERBAT);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.SPIDERBAT);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.OGRE);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.SPIDERBAT);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARLOCK);
+                encounter.add(Foe.DARK_MAGE);
+                encounter.add(Foe.WARLOCK);
+                encounter.add(Foe.DARK_MAGE);
+                encounter.add(Foe.WARLOCK);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.KRAKEN);
+                encounter.add(Foe.KRAKEN);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.DRAGON);
                 possibleEncounters.add(encounter);
         }
         ArrayList<Integer> randomEncounter = possibleEncounters.get(TitlePage.random.nextInt(possibleEncounters.size()));

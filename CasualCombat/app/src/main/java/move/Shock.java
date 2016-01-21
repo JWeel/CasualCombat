@@ -1,13 +1,13 @@
 package move;
 
-public class Shockwave extends Move {
+public class Shock extends Move {
 
-    Shockwave(){
-        this.id = Move.SHOCKWAVE;
+    Shock(){
+        this.id = Move.SHOCK;
         this.damage = 3;
         this.cost = 2;
         this.range = Move.RANGE_SINGLE;
-        this.name = "Shockwave";
+        this.name = "Shock";
         this.info = "Electrify a single opponent";
     }
 }

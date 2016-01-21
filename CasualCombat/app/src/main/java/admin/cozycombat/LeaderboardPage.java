@@ -16,6 +16,8 @@ public class LeaderboardPage extends AppCompatActivity {
     // TODO possibility for login online to share scores
     // maybe local and global
 
+    // TODO sort by level
+
     ArrayList<PlayerCharacter> storedPlayerCharacters;
 
     @Override

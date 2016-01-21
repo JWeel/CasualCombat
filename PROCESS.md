@@ -119,6 +119,8 @@ Day 13:
 * Fix correctly sending character back to shop from play
 * fix already own gear check if don't own gear
 * Add foe move pick ai
+* Design problem: how to implement foes picking moves
+* Design choice: each foe gets a list with indexes of moves. randomly picks from that list. list is updated as magic is used, removing access to moves that need magic.
 * Improve move log in combat (now says what is being used)
 * Fix on return to shop resupplied item being invisible
 * Redo the log in combat, it is now scrollable and no longer has limit (all combat history is now viewable)
@@ -127,11 +129,24 @@ Day 13:
 
 Day 14:
 * Start implement random encounter generation
+* Design problem: how to get random encounters
+* Design choice: use a large switch that checks levels and adds monster ids to arraylist based on level, then selects from there
 * Fix bug with not being able to spend level points after first time in shop
 * Fix wrong color shown when previously had insufficient gold but on later visit have enough
 * Fix wrong message with previously buyable but now sold out. also added new color for sold out
 * Add equipment view to title page
-*
+* Shop now first checks already own message before insufficient gold message
+* Fix bug where player could click next in shop before spending points, breaking game on new load
+* Added some new items and spells
+* Changed death screen click to LongClick
+* Can now save if buying items or spell after already had saved
+* Foe layout tweaks
+* Start implement random shop buyables
+* Design problem: how to get random buyables
+* Design choice: similar to random encounters (but with if instead of switch). three lists, one for each type of buyable
+* Add more foes
+* Slightly change dynamic layout in buyable part of shop, name (now at top) now displays even with sold out/insufficient gold/already owned
+* More layout tweaks
 
 Day 15:
 

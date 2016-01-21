@@ -7,7 +7,7 @@ import move.Move;
 public class Kraken extends Foe {
 
     public Kraken(){
-        this.maxHealth = 10;
+        this.maxHealth = 12;
         this.currentHealth = maxHealth;
         this.maxMagic = 6;
         this.currentMagic = maxMagic;
@@ -19,7 +19,7 @@ public class Kraken extends Foe {
         this.name = "Kraken";
         this.money = 3;
         this.spells = new HashSet<>();
-        spells.add(Move.SHOCKWAVE);
+        spells.add(Move.SHOCK);
 
         this.willDefend = false;
         this.color = "#002288";

@@ -20,7 +20,7 @@ public class Warlock extends Foe {
         this.money = 1;
         this.spells = new HashSet<>();
         spells.add(Move.FIREBALL);
-        spells.add(Move.SHOCKWAVE);
+        spells.add(Move.SHOCK);
 
         this.willDefend = false;
         this.color = "#771122";

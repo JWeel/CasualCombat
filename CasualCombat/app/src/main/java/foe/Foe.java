@@ -17,13 +17,16 @@ public abstract class Foe extends Combatant {
     public static final int ORC = 2;
     public static final int KRAKEN = 3;
     public static final int WARLOCK = 4;
+    public static final int DARK_MAGE = 5;
+    public static final int OGRE = 6;
+    public static final int SPIDERBAT = 7;
+    public static final int DRAGON = 8;
 
     protected ArrayList<Integer> usableMoveids;
 
     protected int id;
     protected String color;
 
-    // TODO if the foe uses defend, possibly needs to be put in choosing of move
     protected boolean willDefend;
     // TODO and maybe a prefersSpells for the ai to first cast spells until magic is out before resorting to attack/defend
 
@@ -44,6 +47,18 @@ public abstract class Foe extends Combatant {
                 break;
             case WARLOCK:
                 foe = new Warlock();
+                break;
+            case DARK_MAGE:
+                foe = new DarkMage();
+                break;
+            case OGRE:
+                foe = new Ogre();
+                break;
+            case SPIDERBAT:
+                foe = new Ogre();
+                break;
+            case DRAGON:
+                foe = new Dragon();
                 break;
             default: return null;
         }

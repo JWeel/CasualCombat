@@ -12,10 +12,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import item.EquippableItem;
 import item.Item;
@@ -59,6 +60,14 @@ public class ShopPage extends AppCompatActivity {
         Intent previousPage = getIntent();
         playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
 
+        findViewById(R.id.shopDeathText).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onBackPressed();
+                return true;
+            }
+        });
+
         preparePage();
     }
 
@@ -76,7 +85,11 @@ public class ShopPage extends AppCompatActivity {
                 setCharacterAvatar();
                 updatePlayerSkillViews();
                 updatePlayerEquipmentViews();
-                if (playerCharacter.getLevelPoints() > 0) setLevelUpButtonsVisibility(View.VISIBLE);
+                if (playerCharacter.getLevelPoints() > 0) {
+                    setLevelUpButtonsVisibility(View.VISIBLE);
+                    findViewById(R.id.nextButton).setEnabled(false);
+                    findViewById(R.id.saveButton).setEnabled(false);
+                }
 
                 initializeShop();
             }
@@ -183,17 +196,57 @@ public class ShopPage extends AppCompatActivity {
     //
     private void initializeShop(){
 
-        // TODO randomly get buyable items and spell
-        // TODO check for spell (and equippable item?) that playerCharacter does not already have them
-        buyableUsableItem = (UsableItem) Item.findItemById(Item.HERB);
-        buyableEquippableItem = (EquippableItem) Item.findItemById(Item.WOODEN_SWORD);
-        buyableSpell = Move.findMoveById(Move.SHOCKWAVE);
+        setRandomBuyables();
 
         displayBuyable(R.id.shopPriceUsable, R.id.shopNameUsable, R.id.shopInfoUsable, buyableUsableItem);
         displayBuyable(R.id.shopPriceEquippable, R.id.shopNameEquippable, R.id.shopInfoEquippable, buyableEquippableItem);
         displayBuyable(R.id.shopPriceSpell, R.id.shopNameSpell, R.id.shopInfoSpell, buyableSpell);
 
         updateShop();
+    }
+
+    //
+    private void setRandomBuyables(){
+
+        ArrayList<Integer> possibleUsableItems = new ArrayList<>();
+        possibleUsableItems.add(Item.BOMB);
+        possibleUsableItems.add(Item.HERB);
+        possibleUsableItems.add(Item.DART);
+
+        ArrayList<Integer> possibleEquippableItems = new ArrayList<>();
+        ArrayList<Integer> possibleSpells = new ArrayList<>();
+
+        int level = playerCharacter.getLevel();
+        if (level == 1){
+            possibleEquippableItems.add(Item.WOODEN_SWORD);
+            possibleSpells.add(Move.SHOCK);
+        } else if (level > 1 && level <= 9) {
+            possibleEquippableItems.add(Item.WOODEN_SWORD);
+            possibleEquippableItems.add(Item.METAL_ROD);
+            possibleEquippableItems.add(Item.MAIL_HAUBERK);
+            possibleEquippableItems.add(Item.LESSER_WARD);
+            possibleEquippableItems.add(Item.SANDLES);
+            possibleSpells.add(Move.SHOCK);
+            if (level > 6) possibleSpells.add(Move.TORNADO);
+        } else if (level > 9) {
+            possibleEquippableItems.add(Item.GLADIUS);
+            possibleEquippableItems.add(Item.FINE_SCEPTER);
+            possibleEquippableItems.add(Item.PLATE_COAT);
+            possibleEquippableItems.add(Item.GREATER_WARD);
+            possibleEquippableItems.add(Item.SWEET_KICKS);
+            possibleSpells.add(Move.SHOCK);
+            possibleSpells.add(Move.TORNADO);
+            possibleSpells.add(Move.ARCANE_BLAST);
+        }
+
+        int randomUsableItemId = possibleUsableItems.get(TitlePage.random.nextInt(possibleUsableItems.size()));
+        buyableUsableItem = (UsableItem) Item.findItemById(randomUsableItemId);
+
+        int randomEquippableItemId = possibleEquippableItems.get(TitlePage.random.nextInt(possibleEquippableItems.size()));
+        buyableEquippableItem = (EquippableItem) Item.findItemById(randomEquippableItemId);
+
+        int randomSpellid = possibleSpells.get(TitlePage.random.nextInt(possibleSpells.size()));
+        buyableSpell = Move.findMoveById(randomSpellid);
     }
 
     //
@@ -233,7 +286,7 @@ public class ShopPage extends AppCompatActivity {
                 findViewById(R.id.shopLayoutUsableInner).setVisibility(View.INVISIBLE);
             } else {
                 usableWarningText.setVisibility(View.INVISIBLE);
-                findViewById(R.id.shopLayoutUsable).setBackgroundColor(Color.parseColor("#AAAAAA"));
+                findViewById(R.id.shopLayoutUsable).setBackgroundColor(Color.parseColor("#999999"));
                 findViewById(R.id.shopLayoutUsableInner).setVisibility(View.VISIBLE);
             }
         // sold out
@@ -246,21 +299,22 @@ public class ShopPage extends AppCompatActivity {
 
         TextView equippableWarningText = (TextView) findViewById(R.id.shopWarningEquippable);
         if (buyableEquippableItem != null) {
-            if (playerCharacter.getMoney() < buyableEquippableItem.getPrice()) {
-                findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#996666"));
-                equippableWarningText.setVisibility(View.VISIBLE);
-                equippableWarningText.setText("INSUFFICIENT GOLD");
-                findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
-            } else if (playerCharacter.alreadyHasEquipment(buyableEquippableItem)) {
+            if (playerCharacter.alreadyHasEquipment(buyableEquippableItem)) {
                 findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#669966"));
                 equippableWarningText.setVisibility(View.VISIBLE);
                 equippableWarningText.setText("ALREADY OWNED");
                 findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
 
+            } else if (playerCharacter.getMoney() < buyableEquippableItem.getPrice()) {
+                findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#996666"));
+                equippableWarningText.setVisibility(View.VISIBLE);
+                equippableWarningText.setText("INSUFFICIENT GOLD");
+                findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
+
             // otherwise buyable as intended
             } else {
                 equippableWarningText.setVisibility(View.INVISIBLE);
-                findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#AAAAAA"));
+                findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#999999"));
                 findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.VISIBLE);
             }
         // sold out
@@ -273,21 +327,22 @@ public class ShopPage extends AppCompatActivity {
 
         TextView spellWarningText = (TextView) findViewById(R.id.shopWarningSpell);
         if (buyableSpell != null) {
-            if (playerCharacter.getMoney() < buyableSpell.getPrice()) {
-                findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#996666"));
-                spellWarningText.setVisibility(View.VISIBLE);
-                spellWarningText.setText("INSUFFICIENT GOLD");
-                findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
-            } else if (playerCharacter.getSpells().contains(buyableSpell.getId())) {
+            if (playerCharacter.getSpells().contains(buyableSpell.getId())) {
                 findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#669966"));
                 spellWarningText.setVisibility(View.VISIBLE);
                 spellWarningText.setText("ALREADY OWNED");
                 findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
 
+            } else if (playerCharacter.getMoney() < buyableSpell.getPrice()) {
+                findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#996666"));
+                spellWarningText.setVisibility(View.VISIBLE);
+                spellWarningText.setText("INSUFFICIENT GOLD");
+                findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
+
             // otherwise buyable as intended
             } else {
                 spellWarningText.setVisibility(View.INVISIBLE);
-                findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#AAAAAA"));
+                findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#999999"));
                 findViewById(R.id.shopLayoutSpellInner).setVisibility(View.VISIBLE);
             }
         // sold out
@@ -327,6 +382,7 @@ public class ShopPage extends AppCompatActivity {
             }
         }
         updateShop();
+        if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
     //
@@ -341,6 +397,7 @@ public class ShopPage extends AppCompatActivity {
             }
         }
         updateShop();
+        if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
     //
@@ -353,6 +410,7 @@ public class ShopPage extends AppCompatActivity {
             }
         }
         updateShop();
+        if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
     //
@@ -367,15 +425,9 @@ public class ShopPage extends AppCompatActivity {
 
     //
     public void nextClick(View nextButton){
-        System.err.println("LEVEL POINTS LEAVE SHOP " + playerCharacter.getLevelPoints());
         Intent newPage = new Intent(this, PlayPage.class);
         newPage.putExtra(TitlePage.KEY_PLAYER, playerCharacter);
         startActivityForResult(newPage, TitlePage.REQUEST_CODE_PLAY_PAGE);
-    }
-
-    //
-    public void titleClick(View deathText){
-        onBackPressed();
     }
 
     //
@@ -395,8 +447,6 @@ public class ShopPage extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("YO THIS IS THE REQUEST CODE: " + requestCode);
-        System.out.println("YO THIS IS THE RESULT CODE: " + resultCode);
 
         // can come here from PlayPage TODO or InfoPage
         if (requestCode == TitlePage.REQUEST_CODE_PLAY_PAGE){
@@ -413,7 +463,6 @@ public class ShopPage extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 firstVisit = false;
                 playerCharacter = data.getExtras().getParcelable(TitlePage.KEY_PLAYER);
-                System.err.println("LEVEL POINTS RETURN TO SHOP " + playerCharacter.getLevelPoints());
                 preparePage();
             }
         }

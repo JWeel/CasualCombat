@@ -41,7 +41,7 @@ public class TitlePage extends AppCompatActivity {
     static final int RESULT_EXIT = 2; // standard result codes are -1, 0 and 1
 
     // TODO
-    // major features still tbi
+    // major features still tbi:
     // select random buyable stuff for shop (based on level?)
     // information page (how to play, what do icons mean, maybe info about spells but prolly not needed)
 
@@ -53,7 +53,8 @@ public class TitlePage extends AppCompatActivity {
 
     // TODO maybe rename Game to Combat
 
-    // possible bug with not levelpoints being zero? they are somehow higher than 0
+    // TODO find some way to display the cost of magic for insufficient magic spells ?
+
 
     private ArrayList<PlayerCharacter> storedPlayerCharacters;
     private PlayerCharacter playerCharacter;
