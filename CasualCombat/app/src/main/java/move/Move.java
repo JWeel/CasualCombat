@@ -18,6 +18,7 @@ public abstract class Move {
     public static final int FIREBALL         = 2;
     public static final int HEAL             = 3;
     public static final int SHOCKWAVE        = 4;
+    public static final int TORNADO          = 5;
     public static final int ITEM_BOMB        = Item.BOMB;
     public static final int ITEM_HERB        = Item.HERB;
 
@@ -30,6 +31,7 @@ public abstract class Move {
             case FIREBALL: return new Fireball();
             case HEAL: return new Heal();
             case SHOCKWAVE: return new Shockwave();
+            case TORNADO: return new Tornado();
             case ITEM_BOMB: return new ItemBomb();
             case ITEM_HERB: return new ItemHerb();
             default: return null;

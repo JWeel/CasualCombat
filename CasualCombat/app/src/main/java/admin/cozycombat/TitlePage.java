@@ -42,7 +42,6 @@ public class TitlePage extends AppCompatActivity {
 
     // TODO
     // major features still tbi
-    // select random foe for combat (based on level?)
     // select random buyable stuff for shop (based on level?)
     // information page (how to play, what do icons mean, maybe info about spells but prolly not needed)
 
@@ -52,9 +51,9 @@ public class TitlePage extends AppCompatActivity {
 
     // TODO see if removing the intent filter stuff from manifest does anything (week 4)
 
-    // TODO add the equipment to the titlepage character view
+    // TODO maybe rename Game to Combat
 
-    // TODO maybe make the log view in combat be a scrollable list somehow
+    // possible bug with not levelpoints being zero? they are somehow higher than 0
 
     private ArrayList<PlayerCharacter> storedPlayerCharacters;
     private PlayerCharacter playerCharacter;
@@ -108,6 +107,7 @@ public class TitlePage extends AppCompatActivity {
         playerCharacter = loadedCharacter.copy();
 
         updatePlayerSkillViews();
+        updatePlayerEquipmentViews();
         setPlayerVisibility(View.VISIBLE);
         setLevelUpButtonsVisibility(View.INVISIBLE);
         setLoadedPlayerListVisibility(View.INVISIBLE);
@@ -161,6 +161,7 @@ public class TitlePage extends AppCompatActivity {
             nameChangeClick(null);
 
             updatePlayerSkillViews();
+            updatePlayerEquipmentViews();
             setPlayerVisibility(View.VISIBLE);
             setLevelUpButtonsVisibility(View.VISIBLE);
 
@@ -303,6 +304,24 @@ public class TitlePage extends AppCompatActivity {
     }
 
     //
+    private void updatePlayerEquipmentViews(){
+        if (playerCharacter.getWeapon() == null)
+            ((TextView) findViewById(R.id.titleCharWeapon)).setText("Weapon missing");
+        else
+            ((TextView) findViewById(R.id.titleCharWeapon)).setText(playerCharacter.getWeapon().getName() + "\n" + playerCharacter.getWeapon().getStatBonusAsString());
+
+        if (playerCharacter.getArmor() == null)
+            ((TextView) findViewById(R.id.titleCharArmor)).setText("Armor missing");
+        else
+            ((TextView) findViewById(R.id.titleCharArmor)).setText(playerCharacter.getArmor().getName() + "\n" + playerCharacter.getArmor().getStatBonusAsString());
+
+        if (playerCharacter.getBoots() == null)
+            ((TextView) findViewById(R.id.titleCharBoots)).setText("Boots missing");
+        else
+            ((TextView) findViewById(R.id.titleCharBoots)).setText(playerCharacter.getBoots().getName() + "\n" + playerCharacter.getBoots().getStatBonusAsString());
+    }
+
+    //
     private void setLevelUpButtonsVisibility(int visibility){
         findViewById(R.id.titleCharNameChangeButton).setVisibility(visibility);
         findViewById(R.id.titleCharHealthAdd).setVisibility(visibility);
@@ -396,6 +415,7 @@ public class TitlePage extends AppCompatActivity {
                     prepareStoredPlayerList();
                     reloadPlayerCharacter();
                     updatePlayerSkillViews();
+                    updatePlayerEquipmentViews();
                     setCharacterAvatar();
                 }
                 break;

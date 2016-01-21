@@ -7,7 +7,7 @@ import move.Move;
 public class Kraken extends Foe {
 
     public Kraken(){
-        this.maxHealth = 9;
+        this.maxHealth = 10;
         this.currentHealth = maxHealth;
         this.maxMagic = 6;
         this.currentMagic = maxMagic;

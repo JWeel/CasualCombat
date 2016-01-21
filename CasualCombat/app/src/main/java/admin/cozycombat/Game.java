@@ -25,24 +25,144 @@ class Game {
 
         playerCharacter = pc;
 
-        // TODO base foes on pc level
-        foes = new ArrayList<>();
-//        foes.add(Foe.findFoeByID(Foe.GOBLIN));
-//        foes.add(Foe.findFoeByID(Foe.GOBLIN));
-//        foes.add(Foe.findFoeByID(Foe.GOBLIN));
-//        foes.add(Foe.findFoeByID(Foe.WARG));
-//        foes.add(Foe.findFoeByID(Foe.WARG));
-//        foes.add(Foe.findFoeByID(Foe.ORC));
-        foes.add(Foe.findFoeByID(Foe.KRAKEN));
-//        foes.add(Foe.findFoeByID(Foe.WARLOCK));
-//        foes.add(Foe.findFoeByID(Foe.WARLOCK));
-//        foes.add(Foe.findFoeByID(Foe.WARLOCK));
-        // rename foes if types occur more than once
+        foes = getEncounter();
         Foe.renameFoesByCount(foes);
 
 
         log = new LinkedList<>();
         roundCount = 0;
+    }
+
+    //
+    private ArrayList<Foe> getEncounter(){
+
+        ArrayList<ArrayList<Integer>> possibleEncounters = new ArrayList<>();
+        ArrayList<Integer> encounter;
+
+        switch(playerCharacter.getLevel()){
+            case 0:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.GOBLIN);
+                possibleEncounters.add(encounter);
+                break;
+            case 1: case 2: case 3: case 4:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.WARG);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.GOBLIN);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.GOBLIN);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARLOCK);
+                possibleEncounters.add(encounter);
+                break;
+            case 5: case 6: case 7: case 8:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.WARG);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.GOBLIN);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.WARG);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARLOCK);
+                encounter.add(Foe.WARLOCK);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.WARG);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                possibleEncounters.add(encounter);
+                break;
+            case 9:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.KRAKEN);
+                possibleEncounters.add(encounter);
+                break;
+            default:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.WARG);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.GOBLIN);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.GOBLIN);
+                encounter.add(Foe.WARG);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARLOCK);
+                encounter.add(Foe.WARLOCK);
+                encounter.add(Foe.WARLOCK);
+                encounter.add(Foe.WARLOCK);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.WARG);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.WARG);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                encounter.add(Foe.ORC);
+                possibleEncounters.add(encounter);
+
+                encounter = new ArrayList<>();
+                encounter.add(Foe.KRAKEN);
+                possibleEncounters.add(encounter);
+        }
+        ArrayList<Integer> randomEncounter = possibleEncounters.get(TitlePage.random.nextInt(possibleEncounters.size()));
+        ArrayList<Foe> encounterFoes = new ArrayList<>();
+        for (int i = 0; i < randomEncounter.size(); i++) encounterFoes.add(Foe.findFoeByID(randomEncounter.get(i)));
+        return encounterFoes;
     }
 
 
@@ -145,6 +265,7 @@ class Game {
                 playerCharacter.addLevelPoints(AWARDED_LEVEL_POINTS);
                 log(playerCharacter.getName() + " received " + AWARDED_LEVEL_POINTS + " level up point!");
                 log(" ");
+                System.err.println("LEVEL POINTS NOW " + playerCharacter.getLevelPoints());
             }
 
         } // otherwise check if round can be started by checking if player has a move

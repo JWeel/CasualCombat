@@ -125,8 +125,13 @@ Day 13:
 * Foes now can no longer cast spells if they don't have enough magic for it
 * Fix when coming back from leaderboard to title and not have any character view
 
-
 Day 14:
+* Start implement random encounter generation
+* Fix bug with not being able to spend level points after first time in shop
+* Fix wrong color shown when previously had insufficient gold but on later visit have enough
+* Fix wrong message with previously buyable but now sold out. also added new color for sold out
+* Add equipment view to title page
+*
 
 Day 15:
 

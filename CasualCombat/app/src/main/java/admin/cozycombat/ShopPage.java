@@ -76,6 +76,7 @@ public class ShopPage extends AppCompatActivity {
                 setCharacterAvatar();
                 updatePlayerSkillViews();
                 updatePlayerEquipmentViews();
+                if (playerCharacter.getLevelPoints() > 0) setLevelUpButtonsVisibility(View.VISIBLE);
 
                 initializeShop();
             }
@@ -232,13 +233,17 @@ public class ShopPage extends AppCompatActivity {
                 findViewById(R.id.shopLayoutUsableInner).setVisibility(View.INVISIBLE);
             } else {
                 usableWarningText.setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutUsable).setBackgroundColor(Color.parseColor("#AAAAAA"));
                 findViewById(R.id.shopLayoutUsableInner).setVisibility(View.VISIBLE);
             }
         // sold out
         } else {
             usableWarningText.setVisibility(View.VISIBLE);
+            usableWarningText.setText("SOLD OUT");
+            findViewById(R.id.shopLayoutUsable).setBackgroundColor(Color.parseColor("#666666"));
             findViewById(R.id.shopLayoutUsableInner).setVisibility(View.INVISIBLE);
         }
+
         TextView equippableWarningText = (TextView) findViewById(R.id.shopWarningEquippable);
         if (buyableEquippableItem != null) {
             if (playerCharacter.getMoney() < buyableEquippableItem.getPrice()) {
@@ -255,13 +260,17 @@ public class ShopPage extends AppCompatActivity {
             // otherwise buyable as intended
             } else {
                 equippableWarningText.setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#AAAAAA"));
                 findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.VISIBLE);
             }
         // sold out
         } else {
             equippableWarningText.setVisibility(View.VISIBLE);
+            equippableWarningText.setText("SOLD OUT");
+            findViewById(R.id.shopLayoutEquippable).setBackgroundColor(Color.parseColor("#666666"));
             findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
         }
+
         TextView spellWarningText = (TextView) findViewById(R.id.shopWarningSpell);
         if (buyableSpell != null) {
             if (playerCharacter.getMoney() < buyableSpell.getPrice()) {
@@ -278,11 +287,14 @@ public class ShopPage extends AppCompatActivity {
             // otherwise buyable as intended
             } else {
                 spellWarningText.setVisibility(View.INVISIBLE);
+                findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#AAAAAA"));
                 findViewById(R.id.shopLayoutSpellInner).setVisibility(View.VISIBLE);
             }
         // sold out
         } else {
             spellWarningText.setVisibility(View.VISIBLE);
+            spellWarningText.setText("SOLD OUT");
+            findViewById(R.id.shopLayoutSpell).setBackgroundColor(Color.parseColor("#666666"));
             findViewById(R.id.shopLayoutSpellInner).setVisibility(View.INVISIBLE);
         }
     }
@@ -355,6 +367,7 @@ public class ShopPage extends AppCompatActivity {
 
     //
     public void nextClick(View nextButton){
+        System.err.println("LEVEL POINTS LEAVE SHOP " + playerCharacter.getLevelPoints());
         Intent newPage = new Intent(this, PlayPage.class);
         newPage.putExtra(TitlePage.KEY_PLAYER, playerCharacter);
         startActivityForResult(newPage, TitlePage.REQUEST_CODE_PLAY_PAGE);
@@ -400,6 +413,7 @@ public class ShopPage extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 firstVisit = false;
                 playerCharacter = data.getExtras().getParcelable(TitlePage.KEY_PLAYER);
+                System.err.println("LEVEL POINTS RETURN TO SHOP " + playerCharacter.getLevelPoints());
                 preparePage();
             }
         }

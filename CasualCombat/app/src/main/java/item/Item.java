@@ -2,6 +2,7 @@ package item;
 
 public abstract class Item {
     public static final int WOODEN_SWORD = 0;
+    public static final int METAL_ROD = 1;
     public static final int HAUBERK = 10;
     public static final int SANDLE = 20;
 
@@ -22,6 +23,7 @@ public abstract class Item {
     public static Item findItemById(int id){
         switch(id){
             case WOODEN_SWORD: return new WoodenSword();
+            case METAL_ROD: return new MetalRod();
             case BOMB: return new Bomb();
             case HERB: return new Herb();
             default: return null;
