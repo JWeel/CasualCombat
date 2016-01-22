@@ -7,14 +7,14 @@ import move.Move;
 public class DarkMage extends Foe {
 
     public DarkMage(){
-        this.maxHealth = 7;
+        this.maxHealth = 6;
         this.currentHealth = maxHealth;
         this.maxMagic = 30;
         this.currentMagic = maxMagic;
         this.strength = 2;
         this.willpower = 5;
         this.defense = 2;
-        this.resistance = 5;
+        this.resistance = 4;
         this.speed = 5;
         this.name = "Dark Mage";
         this.money = 1;

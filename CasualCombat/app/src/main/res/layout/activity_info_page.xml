@@ -1,0 +1,341 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="9dp"
+    tools:context="admin.cozycombat.InfoPage"
+    android:background="#538799"
+    >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical"
+        >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome to the help page.\n\nIf you don't know what to do, read this!"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help1"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is the main screen.\nPress the New button to create a new character."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help2"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Here you enter a name for your character.\nYou will not be able to leave this dialog until you have a name."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help3"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is the new character. Press the blue buttons to spend 10 available points on character stats.\nSTR is strength, for melee attacks.\nWIL is willpower, for spells.\nDEF is defense, for melee defense.\nRES is resistance, for spell defense.\nSPD is speed.\nThe green bar is health, and the purple bar is magic (used to cast spells).\nTry to create a well-balanced character."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help4"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is the combat screen.\nNotice the enemy at the top of the screen, and available actions at the bottom."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help5"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="When the Attack button is pressed, the other move buttons are disabled.\nTouching the enemy sets that enemy as the target of the attack."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help6"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is the log. It fills with messages as combat progresses.\nTouch it when asked to advance the combat."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help7"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="After winning in combat, you will enter the shop.\nNotice the two big disabled buttons Save Progress and Next Battle."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help8"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Before being able to save or continue, press one of the familiar blue buttons to level up a skill."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help9"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You can spend 1 gold to fully restore health or magic. Gold drops from most enemies (animals do not drop gold). Try not to spend all your gold at once."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help10"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Once you have spent your level up points, the Save Progress and Next Battle buttons become enabled again. Consider saving your progress before continuing your adventure."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help12"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Once you have enough gold, you can buy equipment."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help13"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Equipment provides a passive stat bonus during combat."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help11"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Once you wrap up your business in the shop, new battles with new foes await!"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help14"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You can also cast spells during combat. Notice the icons on the lower right of each spell."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help15"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="These four icons represent the range of the spell.\nA single stripe signifies that the spell hits one target.\nWith three stripes, the spell hits its main target fully, but also deals damage to a neighbour on each side (though not as much).\nFive stripes means two neighbours on each side (damage lessens the further the neighbour is from the target).\nThe plus signifies that the spell targets the caster themself."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help16"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Items can also be used during combat. They behave simlar to spells, except they cost no magic to use. However, once the item is used, it disappears from the inventory!"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help17"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is the leaderboard screen, where you can delete characters."
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/help18"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dip"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I wonder what happens when you touch the character's avatar on the title screen?"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dip"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

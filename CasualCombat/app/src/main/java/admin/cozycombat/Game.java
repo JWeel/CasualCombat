@@ -184,6 +184,26 @@ class Game {
                 encounter.add(Foe.DRAGON);
                 possibleEncounters.add(encounter);
                 break;
+            case 27:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.KRAKEN);
+                encounter.add(Foe.KRAKEN);
+                encounter.add(Foe.KRAKEN);
+                encounter.add(Foe.KRAKEN);
+                encounter.add(Foe.KRAKEN);
+                possibleEncounters.add(encounter);
+                break;
+            case 28:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.DRAGON);
+                encounter.add(Foe.DRAGON);
+                possibleEncounters.add(encounter);
+                break;
+            case 29:
+                encounter = new ArrayList<>();
+                encounter.add(Foe.ANTIHERO);
+                possibleEncounters.add(encounter);
+                break;
             default:
                 encounter = new ArrayList<>();
                 encounter.add(Foe.OGRE);

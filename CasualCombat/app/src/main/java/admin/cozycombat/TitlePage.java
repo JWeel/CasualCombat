@@ -1,5 +1,6 @@
 package admin.cozycombat;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
@@ -41,15 +44,9 @@ public class TitlePage extends AppCompatActivity {
     static final int RESULT_EXIT = 2; // standard result codes are -1, 0 and 1
 
     // TODO
-    // major features still tbi:
-    // select random buyable stuff for shop (based on level?)
-    // information page (how to play, what do icons mean, maybe info about spells but prolly not needed)
-
     // possibly improve the player screen buttons margins to be dynamically perfectly sized based on width. (screenWidth - 5 * 30) / 6 ?
-    // consider putting health/maxhealth in the textview(s)
-    // TODO check for max stat (over 99, either make it not go higher in playerCharacter (is easier) or remove the buttons (not easy because then another check needed)
 
-    // TODO see if removing the intent filter stuff from manifest does anything (week 4)
+    // TODO check for max stat (over 99, either make it not go higher in playerCharacter (is easier) or remove the buttons (not easy because then another check needed)
 
     // TODO maybe rename Game to Combat
 
@@ -84,6 +81,13 @@ public class TitlePage extends AppCompatActivity {
             pc.restoreAfterSave();
             storedPlayerCharacters.add(pc);
         }
+        // sort by level in descending order
+        Collections.sort(storedPlayerCharacters, new Comparator<PlayerCharacter>() {
+            @Override
+            public int compare(PlayerCharacter pc1, PlayerCharacter pc2) {
+                return pc1.getName().compareToIgnoreCase(pc2.getName());
+            }
+        });
 
         PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.listCharName, storedPlayerCharacters);
         ListView storedPlayerListView = (ListView) findViewById(R.id.titlePlayerList);
@@ -423,25 +427,21 @@ public class TitlePage extends AppCompatActivity {
         }
     }
 
+    //
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.help) {
+            Intent newPage = new Intent(this, InfoPage.class);
+            startActivity(newPage);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu title) {
         // Inflate the title; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_title_page, title);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

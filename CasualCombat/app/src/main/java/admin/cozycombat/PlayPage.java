@@ -1,5 +1,7 @@
 package admin.cozycombat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -52,7 +54,7 @@ public class PlayPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_page);
 
-        System.err.println("LISTEN UP I CAME FROM : " + this.getCallingActivity());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent previousPage = getIntent();
         PlayerCharacter playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
@@ -390,11 +392,47 @@ public class PlayPage extends AppCompatActivity {
             findViewById(R.id.listItems).setVisibility(View.INVISIBLE);
             enableMoveButtons();
         } else {
-            setResult(RESULT_CANCELED);
-            finish();
-            // TODO maybe a dialog like in shop
-            //
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("You are about to leave this page.\nUnsaved progress will be lost.");
+            builder.setPositiveButton("Leave combat", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
+            });
+            builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // do nothing -> dismisses dialog
+                }
+            });
+            builder.setNegativeButton("Exit app", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    setResult(TitlePage.RESULT_EXIT);
+                    finish();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
+    }
+
+    //
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        if (item.getItemId() == R.id.help) {
+            Intent newPage = new Intent(this, InfoPage.class);
+            startActivity(newPage);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -402,20 +440,5 @@ public class PlayPage extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_play_page, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activwaity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

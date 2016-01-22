@@ -43,7 +43,7 @@ public abstract class Item {
             case SANDLES: return new Sandles();
             case SWEET_KICKS: return new SweetKicks();
             case BOMB: return new Bomb();
-            case DART: return new Bomb();
+            case DART: return new Dart();
             case HERB: return new Herb();
             default: return null;
         }

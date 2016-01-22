@@ -66,6 +66,6 @@ public abstract class Combatant implements Comparable<Combatant> {
     // sort in descending order (highest first)
     @Override
     public int compareTo(@NonNull Combatant c){
-        return c.getSpeed() - getSpeed();
+        return c.getSpeed() - this.getSpeed();
     }
 }

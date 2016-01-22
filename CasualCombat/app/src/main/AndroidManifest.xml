@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="admin.cozycombat"
-    >
+    package="admin.cozycombat" >
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/avatar"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".TitlePage"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,20 +20,21 @@
         <activity
             android:name=".PlayPage"
             android:label="@string/title_activity_play_page"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ShopPage"
             android:label="@string/title_activity_shop_page"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="LeaderboardPage"
+            android:name=".LeaderboardPage"
             android:label="@string/title_activity_leaderboard_page"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".InfoPage"
+            android:label="@string/title_activity_info_page" >
         </activity>
     </application>
 

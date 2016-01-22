@@ -149,6 +149,14 @@ Day 14:
 * More layout tweaks
 
 Day 15:
+* Sort in leaderboard by level and in title screen by name
+* Change display names of pages
+* Add back button and back dialog to play page
+* Added another foe (possible final boss? game does not end after beating him though, infinite playability!)
+* Design problem: How to add info screen (fragment or regular activity?)
+* Design choice: regular activity, since it is not interactive it can just be cancelled to return to wherever it was started from
+* Add new info/help page
+* Change menu layout for all pages, adding link to new info page (help page)
 
 Day 16:
 

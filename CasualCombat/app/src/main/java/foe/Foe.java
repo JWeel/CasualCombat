@@ -21,6 +21,7 @@ public abstract class Foe extends Combatant {
     public static final int OGRE = 6;
     public static final int SPIDERBAT = 7;
     public static final int DRAGON = 8;
+    public static final int ANTIHERO = 9;
 
     protected ArrayList<Integer> usableMoveids;
 
@@ -59,6 +60,9 @@ public abstract class Foe extends Combatant {
                 break;
             case DRAGON:
                 foe = new Dragon();
+                break;
+            case ANTIHERO:
+                foe = new Antihero();
                 break;
             default: return null;
         }

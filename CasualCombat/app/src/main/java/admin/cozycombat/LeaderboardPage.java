@@ -1,5 +1,6 @@
 package admin.cozycombat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,14 +10,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 
 public class LeaderboardPage extends AppCompatActivity {
 
     // TODO possibility for login online to share scores
     // maybe local and global
-
-    // TODO sort by level
 
     ArrayList<PlayerCharacter> storedPlayerCharacters;
 
@@ -41,6 +42,13 @@ public class LeaderboardPage extends AppCompatActivity {
             pc.restoreAfterSave();
             storedPlayerCharacters.add(pc);
         }
+        // sort by level in descending order
+        Collections.sort(storedPlayerCharacters, new Comparator<PlayerCharacter>() {
+            @Override
+            public int compare(PlayerCharacter pc1, PlayerCharacter pc2) {
+                return pc2.getLevel() - pc1.getLevel();
+            }
+        });
 
         final PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.listCharName, storedPlayerCharacters);
         ListView storedPlayerListView = (ListView) findViewById(R.id.leaderboardPlayerList);
@@ -76,13 +84,18 @@ public class LeaderboardPage extends AppCompatActivity {
             onBackPressed();
             return true;
         }
+        if (item.getItemId() == R.id.help) {
+            Intent newPage = new Intent(this, InfoPage.class);
+            startActivity(newPage);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_leaderboard_page, menu);
+        //getMenuInflater().inflate(R.menu.menu_leaderboard_page, menu);
         return true;
     }
 }

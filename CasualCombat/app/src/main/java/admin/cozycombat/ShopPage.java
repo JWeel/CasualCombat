@@ -51,8 +51,6 @@ public class ShopPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_page);
 
-        System.err.println("LISTEN UP I CAME FROM : " + this.getCallingActivity());
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firstVisit = true;
@@ -76,6 +74,7 @@ public class ShopPage extends AppCompatActivity {
             nextClick(null);
         } else {
             if (playerCharacter.isDead()) {
+                setTitle("Defeat");
                 findViewById(R.id.shopLayoutCharacter).setVisibility(View.INVISIBLE);
                 findViewById(R.id.shopLayoutEquipment).setVisibility(View.INVISIBLE);
                 findViewById(R.id.shopLayoutMiddle).setVisibility(View.INVISIBLE);
@@ -480,7 +479,7 @@ public class ShopPage extends AppCompatActivity {
             builder.setPositiveButton("Return to title screen", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    setResult(RESULT_OK, null);
+                    setResult(RESULT_OK);
                     finish();
                 }
             });
@@ -508,6 +507,11 @@ public class ShopPage extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
+            return true;
+        }
+        if (item.getItemId() == R.id.help) {
+            Intent newPage = new Intent(this, InfoPage.class);
+            startActivity(newPage);
             return true;
         }
         return super.onOptionsItemSelected(item);
