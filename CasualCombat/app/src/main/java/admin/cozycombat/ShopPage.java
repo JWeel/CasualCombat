@@ -25,17 +25,11 @@ import move.Move;
 
 public class ShopPage extends AppCompatActivity {
 
-    // TODO
-    // save button greys out (and disabled) after being pressed.
-    // maybe too expensive buttons also greyed out.
-    // after new purchase save button is enabled again.
-    // never show weaker gear, since gear is replaced by what is bought
-
-    // maybe the three columns of buyable things corresponds to spells/items/gear
-    // so for each 2 are buyable after each fight
-
     private static final int RESTORE_HEALTH_PRICE = 1;
     private static final int RESTORE_MAGIC_PRICE = 1;
+    private static final int MAX_BUYABLE_USABLE_STOCK = 5;
+
+    private int currentBuyableUsableStock;
 
     private PlayerCharacter playerCharacter;
 
@@ -196,6 +190,7 @@ public class ShopPage extends AppCompatActivity {
     private void initializeShop(){
 
         setRandomBuyables();
+        currentBuyableUsableStock = MAX_BUYABLE_USABLE_STOCK;
 
         displayBuyable(R.id.shopPriceUsable, R.id.shopNameUsable, R.id.shopInfoUsable, buyableUsableItem);
         displayBuyable(R.id.shopPriceEquippable, R.id.shopNameEquippable, R.id.shopInfoEquippable, buyableEquippableItem);
@@ -376,8 +371,11 @@ public class ShopPage extends AppCompatActivity {
         if (buyableUsableItem != null) {
             if (playerCharacter.getMoney() >= buyableUsableItem.getPrice()){
                 playerCharacter.subtractMoney(buyableUsableItem.getPrice());
-                playerCharacter.addUsableItem(buyableUsableItem);
-                buyableUsableItem = null;
+                UsableItem boughtItem = buyableUsableItem;
+                playerCharacter.addUsableItem(boughtItem);
+                currentBuyableUsableStock--;
+                if (currentBuyableUsableStock == 0) buyableUsableItem = null;
+                else buyableUsableItem = (UsableItem) Item.findItemById(boughtItem.getId());
             }
         }
         updateShop();

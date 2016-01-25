@@ -56,7 +56,7 @@ public abstract class Foe extends Combatant {
                 foe = new Ogre();
                 break;
             case SPIDERBAT:
-                foe = new Ogre();
+                foe = new Spiderbat();
                 break;
             case DRAGON:
                 foe = new Dragon();

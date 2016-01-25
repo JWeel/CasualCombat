@@ -208,7 +208,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Once you have enough gold, you can buy equipment."
+                android:text="Once you have enough gold, you can buy equipment.\nOnly one piece of equipment is available at every visit to the shop.\nSimilarly, only one spell is.\nThe usable items, however, come in batches. You can buy up to five of them, if you have the gold."
                 android:textColor="#FFFFFF"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"

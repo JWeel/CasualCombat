@@ -159,6 +159,10 @@ Day 15:
 * Change menu layout for all pages, adding link to new info page (help page)
 
 Day 16:
+* Fix bug where spiderbat never show up
+* Fix app name
+* Change buyable item system- now 5 buyable
+* Slightly change final boss stats
 
 Day 17:
 

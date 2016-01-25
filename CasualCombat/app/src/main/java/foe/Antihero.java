@@ -11,10 +11,10 @@ public class Antihero extends Foe {
         this.currentHealth = maxHealth;
         this.maxMagic = 50;
         this.currentMagic = maxMagic;
-        this.strength = 15;
-        this.willpower = 10;
-        this.defense = 10;
-        this.resistance = 10;
+        this.strength = 11;
+        this.willpower = 7;
+        this.defense = 6;
+        this.resistance = 5;
         this.speed = 10;
         this.name = "Antihero";
         this.money = 1;

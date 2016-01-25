@@ -6,7 +6,7 @@ public class FineScepter extends EquippableItem {
         this.id = Item.FINE_SCEPTER;
         this.type = EquippableItem.TYPE_WEAPON;
         this.bonusStrength = 0;
-        this.bonusWillpower = 3;
+        this.bonusWillpower = 4;
         this.bonusDefense = 0;
         this.bonusResistance = 0;
         this.bonusSpeed = 0;

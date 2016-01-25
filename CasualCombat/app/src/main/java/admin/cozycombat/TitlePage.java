@@ -1,6 +1,5 @@
 package admin.cozycombat;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,6 +51,7 @@ public class TitlePage extends AppCompatActivity {
 
     // TODO find some way to display the cost of magic for insufficient magic spells ?
 
+    // TODO buyable usable infinite stock
 
     private ArrayList<PlayerCharacter> storedPlayerCharacters;
     private PlayerCharacter playerCharacter;
