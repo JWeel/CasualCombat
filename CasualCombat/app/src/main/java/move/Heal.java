@@ -1,5 +1,9 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package move;
 
+// spell that can restore health
 public class Heal extends Move {
 
     Heal(){

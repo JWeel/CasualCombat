@@ -1,4 +1,7 @@
-package admin.cozycombat;
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
+package nl.mprog.casualcombat;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;

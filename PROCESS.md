@@ -163,6 +163,7 @@ Day 16:
 * Fix app name
 * Change buyable item system- now 5 buyable
 * Slightly change final boss stats
+* Change some info page text
 
 Day 17:
 

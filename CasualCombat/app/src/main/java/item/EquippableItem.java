@@ -1,5 +1,9 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package item;
 
+// equippable items give passive skill bonus to a player character
 public abstract class EquippableItem extends Item {
 
     public static final int TYPE_WEAPON = 0;
@@ -22,7 +26,7 @@ public abstract class EquippableItem extends Item {
     public int getBonusResistance() { return this.bonusResistance; }
     public int getBonusSpeed() { return this.bonusSpeed; }
 
-    //
+    // creates a string representation of the EquippableItem's skill bonus
     public String getStatBonusAsString(){
         switch(this.type){
             case TYPE_WEAPON:
@@ -37,7 +41,7 @@ public abstract class EquippableItem extends Item {
         }
     }
 
-    //
+    // override basic info to also supply skill bonus
     @Override
     public String getInfo() {
         switch(this.type){
@@ -51,9 +55,7 @@ public abstract class EquippableItem extends Item {
         }
     }
 
-    @Override
-    public boolean isEquippable() { return true; }
-
+    // basic copy constructor
     public EquippableItem copy(){
         EquippableItem copiedItem = (EquippableItem) findItemById(this.id);
         copiedItem.type = this.type;

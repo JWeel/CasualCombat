@@ -1,7 +1,11 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package foe;
 
 import java.util.HashSet;
 
+// fast foe that does not drop gold
 public class Warg extends Foe {
 
     public Warg(){

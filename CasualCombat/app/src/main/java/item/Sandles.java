@@ -1,5 +1,9 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package item;
 
+// first tier boots
 public class Sandles extends EquippableItem {
 
     public Sandles(){

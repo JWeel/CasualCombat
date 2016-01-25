@@ -1,4 +1,7 @@
-package admin.cozycombat;
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
+package nl.mprog.casualcombat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -39,19 +42,10 @@ public class TitlePage extends AppCompatActivity {
     static final int REQUEST_CODE_LEADERBOARD_PAGE = 0;
     static final int REQUEST_CODE_SHOP_PAGE = 1;
     static final int REQUEST_CODE_PLAY_PAGE = 2;
-    static final int REQUEST_CODE_INFO_PAGE = 3;
-    static final int RESULT_EXIT = 2; // standard result codes are -1, 0 and 1
-
-    // TODO
-    // possibly improve the player screen buttons margins to be dynamically perfectly sized based on width. (screenWidth - 5 * 30) / 6 ?
-
-    // TODO check for max stat (over 99, either make it not go higher in playerCharacter (is easier) or remove the buttons (not easy because then another check needed)
+    static final int RESULT_EXIT = 2; // predefined result codes are -1, 0 and 1
 
     // TODO maybe rename Game to Combat
 
-    // TODO find some way to display the cost of magic for insufficient magic spells ?
-
-    // TODO buyable usable infinite stock
 
     private ArrayList<PlayerCharacter> storedPlayerCharacters;
     private PlayerCharacter playerCharacter;

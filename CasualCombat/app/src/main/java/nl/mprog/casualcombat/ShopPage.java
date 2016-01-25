@@ -1,4 +1,7 @@
-package admin.cozycombat;
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
+package nl.mprog.casualcombat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

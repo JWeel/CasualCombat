@@ -1,9 +1,13 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package foe;
 
 import java.util.HashSet;
 
 import move.Move;
 
+// final boss, though game can be continued after defeating it
 public class Antihero extends Foe {
 
     public Antihero(){
@@ -13,8 +17,8 @@ public class Antihero extends Foe {
         this.currentMagic = maxMagic;
         this.strength = 11;
         this.willpower = 7;
-        this.defense = 6;
-        this.resistance = 5;
+        this.defense = 8;
+        this.resistance = 6;
         this.speed = 10;
         this.name = "Antihero";
         this.money = 1;

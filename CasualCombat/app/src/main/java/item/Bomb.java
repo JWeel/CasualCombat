@@ -1,7 +1,11 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package item;
 
 import move.Move;
 
+// usable item that hits multiple foes
 public class Bomb extends UsableItem {
 
     public Bomb(){

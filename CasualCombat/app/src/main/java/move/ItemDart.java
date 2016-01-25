@@ -1,5 +1,9 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package move;
 
+// used by Dart item, hits one target
 public class ItemDart extends Move {
 
     ItemDart(){

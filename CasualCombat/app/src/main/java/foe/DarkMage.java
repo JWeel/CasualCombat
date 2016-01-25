@@ -1,9 +1,13 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package foe;
 
 import java.util.HashSet;
 
 import move.Move;
 
+// higher tier spell-using foe
 public class DarkMage extends Foe {
 
     public DarkMage(){

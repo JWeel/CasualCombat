@@ -1,4 +1,7 @@
-package admin.cozycombat;
+// from https://github.com/fsilvestremorais/android-complex-preferences
+// it automatically converts objects to json for shared preference storage
+
+package nl.mprog.casualcombat;
 
 import java.lang.reflect.Type;
 import android.content.Context;
@@ -7,8 +10,6 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-// from https://github.com/fsilvestremorais/android-complex-preferences
-// it automatically converts objects go json for shared preference storage
 public class ComplexPreferences {
 
 	private static ComplexPreferences complexPreferences;

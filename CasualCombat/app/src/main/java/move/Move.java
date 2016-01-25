@@ -1,8 +1,14 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package move;
 
 import item.Item;
 
+// moves are used by combatants in combat. various predefined subclasses tweak the move's effect
 public abstract class Move {
+
+    public static final int PRICE_SPELL = 3; // all spells cost 3 gold
 
     public static final int NO_TARGET = -2;
     public static final int TARGET_SELF = -1;
@@ -12,20 +18,18 @@ public abstract class Move {
     public static final int RANGE_CLOSE = 2;
     public static final int RANGE_FAR = 3;
 
-    // structure is id, damage, cost, strength, willpower, defense, resistance, speed, range
-    public static final int BASIC_ATTACK     = 0;
-    public static final int BASIC_DEFEND     = 1;
-    public static final int FIREBALL         = 2;
-    public static final int HEAL             = 3;
-    public static final int SHOCK = 4;
-    public static final int TORNADO          = 5;
-    public static final int ARCANE_BLAST     = 6;
-    public static final int ITEM_BOMB        = Item.BOMB;
-    public static final int ITEM_DART        = Item.DART;
-    public static final int ITEM_HERB        = Item.HERB;
+    public static final int BASIC_ATTACK    = 0;
+    public static final int BASIC_DEFEND    = 1;
+    public static final int FIREBALL        = 2;
+    public static final int HEAL            = 3;
+    public static final int SHOCK           = 4;
+    public static final int TORNADO         = 5;
+    public static final int ARCANE_BLAST    = 6;
+    public static final int ITEM_BOMB       = Item.BOMB;
+    public static final int ITEM_DART       = Item.DART;
+    public static final int ITEM_HERB       = Item.HERB;
 
-    // TODO maybe only one index for BOMB and ITEM_BOMB
-
+    // returns an instance of the corresponding move. when adding new moves, also add them here
     public static Move findMoveById(int id){
         switch(id){
             case BASIC_ATTACK: return new BasicAttack();
@@ -72,8 +76,7 @@ public abstract class Move {
     public String getName(){ return this.name; }
     public String getInfo(){ return this.info; }
 
-    // could implement prices for individual spells, but for now the price remains constant
-    public int getPrice() { return 3; }
+    public int getPrice() { return PRICE_SPELL; }
 
     @Override
     public String toString(){

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="9dp"
-    tools:context="admin.cozycombat.InfoPage"
+    tools:context="nl.mprog.casualcombat.InfoPage"
     android:background="#538799"
     >
 
@@ -208,7 +208,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Once you have enough gold, you can buy equipment.\nOnly one piece of equipment is available at every visit to the shop.\nSimilarly, only one spell is.\nThe usable items, however, come in batches. You can buy up to five of them, if you have the gold."
+                android:text="Once you have enough gold, you can buy equipment.\nOnly one piece of equipment is available per visit to the shop.\nSimilarly, only one spell is available.\nThe usable items, however, come in batches. You can buy up to five of them, if you have the gold."
                 android:textColor="#FFFFFF"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.0"
 
     defaultConfig {
-        applicationId "admin.readpub"
+        applicationId "nl.mprog.casualcombat"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

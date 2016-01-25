@@ -1,4 +1,4 @@
-package admin.cozycombat;
+package nl.mprog.casualcombat;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

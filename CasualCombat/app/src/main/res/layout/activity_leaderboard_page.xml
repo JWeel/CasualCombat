@@ -7,7 +7,7 @@
     android:paddingRight="8dip"
     android:paddingTop="8dip"
     android:paddingBottom="8dip"
-    tools:context=".LeaderboardPage"
+    tools:context="nl.mprog.LeaderboardPage"
     android:background="#115566"
     >
 

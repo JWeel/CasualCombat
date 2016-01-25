@@ -1,9 +1,13 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package foe;
 
 import java.util.HashSet;
 
 import move.Move;
 
+// first boss, appears later as random foe
 public class Kraken extends Foe {
 
     public Kraken(){

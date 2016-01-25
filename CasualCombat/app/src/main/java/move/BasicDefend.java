@@ -1,5 +1,9 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package move;
 
+// basic defense that temporarily double defensive stats when used
 public class BasicDefend extends Move {
 
     BasicDefend(){

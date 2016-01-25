@@ -1,5 +1,9 @@
+// UNIVERSITEIT VAN AMSTERDAM - MINOR PROGRAMMEREN - PROGRAMMEERPROJECT
+// CasualCombat - created by Joseph Weel, 10321624, josefweel@gmail.com
+
 package item;
 
+// items exist as two types - equippable and usable, and are held by player character in combat
 public abstract class Item {
 
     public static final int WOODEN_SWORD = 0;
@@ -27,9 +31,7 @@ public abstract class Item {
     public int getPrice(){ return this.price; }
     public String getName() { return this.name; }
 
-    public abstract String getInfo();
-    public abstract boolean isEquippable();
-
+    // returns an instance of the corresponding item. when adding new items, also add them here
     public static Item findItemById(int id){
         switch(id){
             case WOODEN_SWORD: return new WoodenSword();
@@ -48,4 +50,6 @@ public abstract class Item {
             default: return null;
         }
     }
+
+    public abstract String getInfo();
 }
