@@ -18,13 +18,25 @@ public abstract class EquippableItem extends Item {
     protected int bonusResistance;
     protected int bonusSpeed;
 
-    public int getType() { return this.type; }
+    public int getType() {
+        return this.type;
+    }
 
-    public int getBonusStrength() { return this.bonusStrength; }
-    public int getBonusWillpower() { return this.bonusWillpower; }
-    public int getBonusDefense() { return this.bonusDefense; }
-    public int getBonusResistance() { return this.bonusResistance; }
-    public int getBonusSpeed() { return this.bonusSpeed; }
+    public int getBonusStrength() {
+        return this.bonusStrength;
+    }
+    public int getBonusWillpower() {
+        return this.bonusWillpower;
+    }
+    public int getBonusDefense() {
+        return this.bonusDefense;
+    }
+    public int getBonusResistance() {
+        return this.bonusResistance;
+    }
+    public int getBonusSpeed() {
+        return this.bonusSpeed;
+    }
 
     // creates a string representation of the EquippableItem's skill bonus
     public String getStatBonusAsString(){

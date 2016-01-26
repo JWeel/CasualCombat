@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+// this adapter is used to display player characters nicely
 class PlayerCharacterAdapter extends ArrayAdapter<PlayerCharacter> {
 
     private ArrayList<PlayerCharacter> players;
@@ -35,7 +36,6 @@ class PlayerCharacterAdapter extends ArrayAdapter<PlayerCharacter> {
         ImageView avatar = (ImageView) listItem.findViewById(R.id.listCharIcon);
         Drawable d = ContextCompat.getDrawable(listItem.getContext(), R.drawable.avatar);
         d.mutate().setColorFilter(Color.parseColor(playerCharacter.getColorString()), PorterDuff.Mode.MULTIPLY);
-//        d.setColorFilter(Color.parseColor("#ffff0000"), PorterDuff.Mode.MULTIPLY);
         avatar.setImageDrawable(d);
 
         TextView name = (TextView) listItem.findViewById(R.id.listCharName);

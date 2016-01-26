@@ -27,9 +27,15 @@ public abstract class Item {
     protected int price;
     protected String name;
 
-    public int getId(){ return this.id; }
-    public int getPrice(){ return this.price; }
-    public String getName() { return this.name; }
+    public int getId(){
+        return this.id;
+    }
+    public int getPrice(){
+        return this.price;
+    }
+    public String getName() {
+        return this.name;
+    }
 
     // returns an instance of the corresponding item. when adding new items, also add them here
     public static Item findItemById(int id){

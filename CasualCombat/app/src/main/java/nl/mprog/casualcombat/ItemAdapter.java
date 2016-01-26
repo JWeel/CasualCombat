@@ -15,7 +15,10 @@ import item.Item;
 import item.UsableItem;
 import move.Move;
 
+// this adapter is used to display usable items nicely
 class ItemAdapter extends ArrayAdapter<Integer> {
+
+    // the player character stores only the ids of the items, the actual items are stored here
     private ArrayList<UsableItem> usableItems;
 
     public ItemAdapter(Context context, int resource, int textViewResourceId, ArrayList<Integer> moveIds){
@@ -27,18 +30,17 @@ class ItemAdapter extends ArrayAdapter<Integer> {
         }
     }
 
-    //
-    UsableItem getListItem(int position){
-        return usableItems.get(position);
-    }
-
-    //
+    // updates the item list (called after an item was used and removed from the id list)
     void updateUsableItems(PlayerCharacter playerCharacter){
         usableItems.clear();
         for (Integer id : playerCharacter.getUsableItems()) {
             usableItems.add((UsableItem) Item.findItemById(id));
         }
         this.notifyDataSetChanged();
+    }
+
+    UsableItem getListItem(int position){
+        return usableItems.get(position);
     }
 
     @Override

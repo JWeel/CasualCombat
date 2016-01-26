@@ -34,6 +34,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
+// this is the main page, where a user can load or create characters and proceed to combat
 public class TitlePage extends AppCompatActivity {
 
     static final String KEY_PREFS = "CASUALCOMBATPREFS";
@@ -44,13 +45,10 @@ public class TitlePage extends AppCompatActivity {
     static final int REQUEST_CODE_PLAY_PAGE = 2;
     static final int RESULT_EXIT = 2; // predefined result codes are -1, 0 and 1
 
-    // TODO maybe rename Game to Combat
-
+    public static Random random;
 
     private ArrayList<PlayerCharacter> storedPlayerCharacters;
     private PlayerCharacter playerCharacter;
-
-    public static Random random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +56,12 @@ public class TitlePage extends AppCompatActivity {
         setContentView(R.layout.activity_title_page);
 
         random = new Random();
-
         prepareStoredPlayerList();
         setPlayerVisibility(View.INVISIBLE);
         setLevelUpButtonsVisibility(View.INVISIBLE);
     }
 
-    //
+    // prepares the list view and its adapter that correspond to player characters stored in shared preferences
     private void prepareStoredPlayerList(){
         storedPlayerCharacters = new ArrayList<>();
         SharedPreferences prefs = getSharedPreferences(KEY_PREFS, MODE_PRIVATE);
@@ -95,12 +92,12 @@ public class TitlePage extends AppCompatActivity {
         setLoadedPlayerListVisibility(View.INVISIBLE);
     }
 
-    //
+    // displays or hides the stored player list
     private void setLoadedPlayerListVisibility(int visibility){
         findViewById(R.id.titleLayoutList).setVisibility(visibility);
     }
 
-    //
+    // loads a player character from the list of stored players
     private void loadPlayerCharacter(int position){
         PlayerCharacter loadedCharacter = storedPlayerCharacters.get(position);
         playerCharacter = loadedCharacter.copy();
@@ -116,27 +113,19 @@ public class TitlePage extends AppCompatActivity {
         findViewById(R.id.readyButton).setEnabled(true);
     }
 
-    //
-    private void reloadPlayerCharacter(){
-        String currentPlayerCharacterName = playerCharacter.getName();
-        for (PlayerCharacter storedPlayerCharacter : storedPlayerCharacters){
-            if (storedPlayerCharacter.getName().equals(currentPlayerCharacterName)) {
-                playerCharacter = storedPlayerCharacter;
-                break;
-            }
-        }
-    }
-
-    //
+    // sets visibility of views that show the current player character
     private void setPlayerVisibility(int visibility){
         findViewById(R.id.titleLayoutCharacter).setVisibility(visibility);
         findViewById(R.id.titleCancelButton).setVisibility(visibility);
     }
 
-    //
+    // when pressing this button, either a new character is created, or ShopPage is started
     public void readyClick(View readyButton){
 
+        // if character is ready, ShopPage is started
         if (playerCharacter != null && playerCharacter.finishedLevelUp()) {
+
+            // first save the player to preferences if they are new
             if (!existsInList(playerCharacter.getName())) {
                 playerCharacter.prepareForSave();
                 ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, KEY_PREFS, MODE_PRIVATE);;
@@ -147,10 +136,10 @@ public class TitlePage extends AppCompatActivity {
 
             Intent newPage = new Intent(this, ShopPage.class);
             newPage.putExtra(KEY_PLAYER, playerCharacter);
-//            newPage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(newPage, REQUEST_CODE_SHOP_PAGE);
-        } else {
-
+        }
+        // otherwise, prepare creation of new character
+        else {
             ((Button) readyButton).setText("Start");
             readyButton.setEnabled(false);
 
@@ -163,11 +152,10 @@ public class TitlePage extends AppCompatActivity {
             updatePlayerEquipmentViews();
             setPlayerVisibility(View.VISIBLE);
             setLevelUpButtonsVisibility(View.VISIBLE);
-
         }
     }
 
-    //
+    // returns true if player name exists in current list of stored player characters
     private boolean existsInList(String newName){
         for (PlayerCharacter pc : storedPlayerCharacters){
             if (pc.getName().equals(newName)) return true;
@@ -175,7 +163,7 @@ public class TitlePage extends AppCompatActivity {
         return false;
     }
 
-    //
+    // returns true if player name exists in shared preferences
     private boolean existsInStorage(String newName){
         Map<String, ?> sharedPrefsPlayerCharacters = getSharedPreferences(KEY_PREFS, MODE_PRIVATE).getAll();
         for (String key : sharedPrefsPlayerCharacters.keySet()) {
@@ -184,7 +172,7 @@ public class TitlePage extends AppCompatActivity {
         return false;
     }
 
-    //
+    // creates a non-cancelable dialog in which a name can be entered for the player character
     public void nameChangeClick(View nameButton){
 
         // http://stackoverflow.com/questions/10903754/input-text-dialog-android
@@ -226,28 +214,16 @@ public class TitlePage extends AppCompatActivity {
                 }
             }
         });
-
-//        dialogEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-//                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
     }
 
-    //
+    // sets the name of a player character and updates the corresponding view
     private void renamePlayerCharacter(String newName){
         playerCharacter.setName(newName);
         ((TextView) findViewById(R.id.titleCharName)).setText(playerCharacter.getName());
     }
 
-    //
+    // called when pressing a level up button. skill that is being leveled up depends on button
     public void addClick(View addButton){
-
         switch(addButton.getId()){
             case R.id.titleCharHealthAdd:
                 playerCharacter.addHealth();
@@ -275,13 +251,14 @@ public class TitlePage extends AppCompatActivity {
         playerCharacter.subtractLevelPoint();
         updatePlayerSkillViews();
 
+        // once user has finished leveling up their player character, the game can be started
         if (playerCharacter.finishedLevelUp()) {
             findViewById(R.id.readyButton).setEnabled(true);
             setLevelUpButtonsVisibility(View.INVISIBLE);
         }
     }
 
-    //
+    // updates the views that show the status of the player character
     private void updatePlayerSkillViews(){
         ((ProgressBar) findViewById(R.id.titleCharHealth)).setMax(playerCharacter.getMaxHealth());
         ((ProgressBar) findViewById(R.id.titleCharHealth)).setProgress(playerCharacter.getHealth());
@@ -302,7 +279,7 @@ public class TitlePage extends AppCompatActivity {
         ((TextView) findViewById(R.id.titleCharPoints)).setText("Points left to spend: " + playerCharacter.getLevelPoints());
     }
 
-    //
+    // updates the views that correspond to the equipment of the player character
     private void updatePlayerEquipmentViews(){
         if (playerCharacter.getWeapon() == null)
             ((TextView) findViewById(R.id.titleCharWeapon)).setText("Weapon missing");
@@ -320,7 +297,7 @@ public class TitlePage extends AppCompatActivity {
             ((TextView) findViewById(R.id.titleCharBoots)).setText(playerCharacter.getBoots().getName() + "\n" + playerCharacter.getBoots().getStatBonusAsString());
     }
 
-    //
+    // shows or hides the level up buttons
     private void setLevelUpButtonsVisibility(int visibility){
         findViewById(R.id.titleCharNameChangeButton).setVisibility(visibility);
         findViewById(R.id.titleCharHealthAdd).setVisibility(visibility);
@@ -333,12 +310,11 @@ public class TitlePage extends AppCompatActivity {
         findViewById(R.id.titleCharPoints).setVisibility(visibility);
     }
 
-    //
+    // shows the list of player characters, or hides it if it is already shown
     public void loadClick(View loadButton){
-
         if (findViewById(R.id.titleLayoutList).getVisibility() == View.VISIBLE){
 
-            // only show player if one was being created
+            // only show player views if one was already shown, which is when button says start
             if (((Button) findViewById(R.id.readyButton)).getText().equals("Start")) setPlayerVisibility(View.VISIBLE);
 
             setLoadedPlayerListVisibility(View.INVISIBLE);
@@ -347,53 +323,59 @@ public class TitlePage extends AppCompatActivity {
         } else {
             setPlayerVisibility(View.INVISIBLE);
             setLoadedPlayerListVisibility(View.VISIBLE);
-
             findViewById(R.id.readyButton).setEnabled(false);
 
+            // display empty list message if applicable
             if (storedPlayerCharacters.isEmpty()) findViewById(R.id.titlePlayerListEmpty).setVisibility(View.VISIBLE);
             else findViewById(R.id.titlePlayerListEmpty).setVisibility(View.INVISIBLE);
-
         }
     }
 
-    //
+    // removes the current player character and hides the corresponding views
     public void cancelClick(View cancelButton){
-
         playerCharacter = null;
         ((Button) findViewById(R.id.readyButton)).setText("New");
         findViewById(R.id.readyButton).setEnabled(true);
-
         setPlayerVisibility(View.INVISIBLE);
     }
 
-    //
+    // loads the leaderboard page
     public void leaderboardClick(View leaderButton){
         Intent newPage = new Intent(this, LeaderboardPage.class);
         startActivityForResult(newPage, REQUEST_CODE_LEADERBOARD_PAGE);
     }
 
-    //
+    // sets the color of the player character's avatar image
     private void setCharacterAvatar(){
         ImageView avatar = (ImageView) findViewById(R.id.titleCharIcon);
         Drawable d = ContextCompat.getDrawable(getBaseContext(), R.drawable.avatar);
-//        System.out.println(playerCharacter.getColorString());
         d.mutate().setColorFilter(Color.parseColor(playerCharacter.getColorString()), PorterDuff.Mode.MULTIPLY);
         avatar.setImageDrawable(d);
     }
 
-    //
+    // randomly changes the player character's avatar color
     public void secretClick(View characterAvatar){
         playerCharacter.changeColorString();
         setCharacterAvatar();
     }
 
+    // called when returning to this page from other pages
+    // loads player character from list, using name of current character (-> "reloads" the character)
+    private void reloadPlayerCharacter(){
+        String currentPlayerCharacterName = playerCharacter.getName();
+        for (PlayerCharacter storedPlayerCharacter : storedPlayerCharacters){
+            if (storedPlayerCharacter.getName().equals(currentPlayerCharacterName)) {
+                playerCharacter = storedPlayerCharacter;
+                break;
+            }
+        }
+    }
+
+    // when returning to this page from leaderboard, update list (players may have been deleted)
+    // when returning from shop, either refresh views, or close app completely
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("YO THIS IS THE REQUEST CODE: " + requestCode);
-        System.out.println("YO THIS IS THE RESULT CODE: " + resultCode);
-
-        System.err.println("LISTEN UP I CAME FROM : " + this.getCallingActivity());
         switch(requestCode){
             case REQUEST_CODE_LEADERBOARD_PAGE:
                 if (playerCharacter != null) {
@@ -421,7 +403,22 @@ public class TitlePage extends AppCompatActivity {
         }
     }
 
-    //
+    // pressing back when loading removes the list. otherwise exit the app
+    @Override
+    public void onBackPressed(){
+        if (findViewById(R.id.titleLayoutList).getVisibility() == View.VISIBLE){
+
+            // only show player views if one was already shown, which is when button says start
+            if (((Button) findViewById(R.id.readyButton)).getText().equals("Start")) setPlayerVisibility(View.VISIBLE);
+
+            setLoadedPlayerListVisibility(View.INVISIBLE);
+            findViewById(R.id.readyButton).setEnabled(true);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    // support for action bar back press button, and button to go to information page
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.help) {
@@ -432,9 +429,9 @@ public class TitlePage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // add back press button and button to go to information page to the top action bar
     @Override
     public boolean onCreateOptionsMenu(Menu title) {
-        // Inflate the title; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_title_page, title);
         return true;
     }

@@ -26,6 +26,7 @@ import item.Item;
 import item.UsableItem;
 import move.Move;
 
+// on this page a user can save and level up their player character, and spend their earned gold
 public class ShopPage extends AppCompatActivity {
 
     private static final int RESTORE_HEALTH_PRICE = 1;
@@ -36,9 +37,11 @@ public class ShopPage extends AppCompatActivity {
 
     private PlayerCharacter playerCharacter;
 
+    // this boolean is flagged true if the user is starting a new game session
+    // the activity stack is TitlePage -> ShopPage -> PlayPage , and on a new session ShopPage is ignored
     private boolean firstVisit;
 
-    //
+    // whenever the shop is visited, new usable items, equippable items and spells become available
     private UsableItem buyableUsableItem;
     private EquippableItem buyableEquippableItem;
     private Move buyableSpell;
@@ -47,7 +50,6 @@ public class ShopPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_page);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firstVisit = true;
@@ -55,6 +57,7 @@ public class ShopPage extends AppCompatActivity {
         Intent previousPage = getIntent();
         playerCharacter = previousPage.getParcelableExtra(TitlePage.KEY_PLAYER);
 
+        // long clicking the death text view sends the user back to the title screen
         findViewById(R.id.shopDeathText).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -66,10 +69,15 @@ public class ShopPage extends AppCompatActivity {
         preparePage();
     }
 
+    // sets up views. can initialize buyable items and spell if player character is alive
     private void preparePage(){
+
+        // if new session, the shop is ignored and user proceeds to PlayPage right away
         if (firstVisit){
             nextClick(null);
-        } else {
+        }
+        // otherwise, check for player death to display shop or death message
+        else {
             if (playerCharacter.isDead()) {
                 setTitle("Defeat");
                 findViewById(R.id.shopLayoutCharacter).setVisibility(View.INVISIBLE);
@@ -77,7 +85,9 @@ public class ShopPage extends AppCompatActivity {
                 findViewById(R.id.shopLayoutMiddle).setVisibility(View.INVISIBLE);
                 findViewById(R.id.shopLayoutShop).setVisibility(View.INVISIBLE);
                 findViewById(R.id.shopDeathText).setVisibility(View.VISIBLE);
-            } else {
+            }
+            // if player character survived combat, shop can be initialized
+            else {
                 setCharacterAvatar();
                 updatePlayerSkillViews();
                 updatePlayerEquipmentViews();
@@ -92,9 +102,8 @@ public class ShopPage extends AppCompatActivity {
         }
     }
 
-    //
+    // called when pressing a level up button. skill that is being leveled up depends on button
     public void addClick(View addButton){
-
         switch(addButton.getId()){
             case R.id.shopCharHealthAdd:
                 playerCharacter.addHealth();
@@ -122,6 +131,7 @@ public class ShopPage extends AppCompatActivity {
         playerCharacter.subtractLevelPoint();
         updatePlayerSkillViews();
 
+        // once user has finished leveling up their player character, the game can be saved and continued
         if (playerCharacter.finishedLevelUp()) {
             findViewById(R.id.saveButton).setEnabled(true);
             findViewById(R.id.nextButton).setEnabled(true);
@@ -129,7 +139,7 @@ public class ShopPage extends AppCompatActivity {
         }
     }
 
-    //
+    // updates the views that show the status of the player character
     private void updatePlayerSkillViews(){
         updatePlayerBars();
 
@@ -146,7 +156,7 @@ public class ShopPage extends AppCompatActivity {
         ((TextView) findViewById(R.id.shopCharPoints)).setText("Points left to spend: " + playerCharacter.getLevelPoints());
     }
 
-    //
+    // updates the progress bars that correspond with the health and magic of the player character
     private void updatePlayerBars(){
         ProgressBar shopCharHealth = (ProgressBar) findViewById(R.id.shopCharHealth);
         shopCharHealth.setMax(playerCharacter.getMaxHealth());
@@ -159,7 +169,7 @@ public class ShopPage extends AppCompatActivity {
         ((TextView) findViewById(R.id.shopCharMagicText)).setText("" + playerCharacter.getMagic() + "/" + playerCharacter.getMaxMagic());
     }
 
-    //
+    // updates the views that correspond to the equipment of the player character
     private void updatePlayerEquipmentViews(){
         if (playerCharacter.getWeapon() == null)
             ((TextView) findViewById(R.id.shopCharWeapon)).setText("Weapon missing");
@@ -177,7 +187,7 @@ public class ShopPage extends AppCompatActivity {
             ((TextView) findViewById(R.id.shopCharBoots)).setText(playerCharacter.getBoots().getName() + "\n" + playerCharacter.getBoots().getStatBonusAsString());
     }
 
-    //
+    // shows or hides the level up buttons
     private void setLevelUpButtonsVisibility(int visibility){
         findViewById(R.id.shopCharHealthAdd).setVisibility(visibility);
         findViewById(R.id.shopCharMagicAdd).setVisibility(visibility);
@@ -189,9 +199,8 @@ public class ShopPage extends AppCompatActivity {
         findViewById(R.id.shopCharPoints).setVisibility(visibility);
     }
 
-    //
+    // randomly gets buyable items and spells, and displays them on the views
     private void initializeShop(){
-
         setRandomBuyables();
         currentBuyableUsableStock = MAX_BUYABLE_USABLE_STOCK;
 
@@ -202,14 +211,16 @@ public class ShopPage extends AppCompatActivity {
         updateShop();
     }
 
-    //
+    // randomly chooses buyable items and spells from a predefined list of possibilities based on player character level
     private void setRandomBuyables(){
 
+        // possible usable items are the same for every level
         ArrayList<Integer> possibleUsableItems = new ArrayList<>();
         possibleUsableItems.add(Item.BOMB);
         possibleUsableItems.add(Item.HERB);
         possibleUsableItems.add(Item.DART);
 
+        // possibilities for equippable items and spells depend on level
         ArrayList<Integer> possibleEquippableItems = new ArrayList<>();
         ArrayList<Integer> possibleSpells = new ArrayList<>();
 
@@ -246,21 +257,21 @@ public class ShopPage extends AppCompatActivity {
         buyableSpell = Move.findMoveById(randomSpellid);
     }
 
-    //
+    // displays information of a buyable item
     private void displayBuyable(int priceId, int nameId, int infoId, Item item){
         ((TextView) findViewById(priceId)).setText("" + item.getPrice() + "G");
         ((TextView) findViewById(nameId)).setText(item.getName());
         ((TextView) findViewById(infoId)).setText(item.getInfo());
     }
 
-    //
+    // displays information of a buyable spell
     private void displayBuyable(int priceId, int nameId, int infoId, Move spell){
         ((TextView) findViewById(priceId)).setText("" + spell.getPrice() + "G");
         ((TextView) findViewById(nameId)).setText(spell.getName());
         ((TextView) findViewById(infoId)).setText(spell.getInfo());
     }
 
-    //
+    // changes enabeled status and visibility of buttons based on player character gold
     private void updateShop(){
         // set character gold view
         ((TextView) findViewById(R.id.shopCharMoney)).setText("Current gold: " + playerCharacter.getMoney());
@@ -273,7 +284,7 @@ public class ShopPage extends AppCompatActivity {
             findViewById(R.id.shopMagicRegen).setEnabled(false);
         else findViewById(R.id.shopMagicRegen).setEnabled(true);
 
-        // check enough gold for buyable items and spell, and check if already have it
+        // check enough gold for buyable items, and check if already have it
         TextView usableWarningText = (TextView) findViewById(R.id.shopWarningUsable);
         if (buyableUsableItem != null) {
             if (playerCharacter.getMoney() < buyableUsableItem.getPrice()) {
@@ -294,6 +305,7 @@ public class ShopPage extends AppCompatActivity {
             findViewById(R.id.shopLayoutUsableInner).setVisibility(View.INVISIBLE);
         }
 
+        // check enough gold for buyable equipment, and check if already have it
         TextView equippableWarningText = (TextView) findViewById(R.id.shopWarningEquippable);
         if (buyableEquippableItem != null) {
             if (playerCharacter.alreadyHasEquipment(buyableEquippableItem)) {
@@ -322,6 +334,7 @@ public class ShopPage extends AppCompatActivity {
             findViewById(R.id.shopLayoutEquippableInner).setVisibility(View.INVISIBLE);
         }
 
+        // check enough gold for buyable spell, and check if already have it
         TextView spellWarningText = (TextView) findViewById(R.id.shopWarningSpell);
         if (buyableSpell != null) {
             if (playerCharacter.getSpells().contains(buyableSpell.getId())) {
@@ -351,41 +364,46 @@ public class ShopPage extends AppCompatActivity {
         }
     }
 
-    //
+    // when pressed, gold is spent to fully restore player character health
     public void restoreHealthClick(View restoreHealthButton){
         playerCharacter.restoreHealthFully();
         playerCharacter.subtractMoney(RESTORE_HEALTH_PRICE);
         updatePlayerBars();
         updateShop();
+        // save button can be re-enabled if applicable
         if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
-    //
+    // when pressed, gold is spent to fully restore player character magic
     public void restoreMagicClick(View restoreMagicButton){
         playerCharacter.restoreMagicFully();
         playerCharacter.subtractMoney(RESTORE_MAGIC_PRICE);
         updatePlayerBars();
         updateShop();
+        // save button can be re-enabled if applicable
         if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
-    //
+    // when pressed, gold is spent to place buyable item in player character inventory
     public void usableClick(View usableView){
         if (buyableUsableItem != null) {
             if (playerCharacter.getMoney() >= buyableUsableItem.getPrice()){
                 playerCharacter.subtractMoney(buyableUsableItem.getPrice());
                 UsableItem boughtItem = buyableUsableItem;
                 playerCharacter.addUsableItem(boughtItem);
+
+                // buyable item is only set to null (sold out) once stock is 0
                 currentBuyableUsableStock--;
                 if (currentBuyableUsableStock == 0) buyableUsableItem = null;
                 else buyableUsableItem = (UsableItem) Item.findItemById(boughtItem.getId());
             }
         }
         updateShop();
+        // save button can be re-enabled if applicable
         if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
-    //
+    // when pressed, gold is spent to to have player character equip item
     public void equippableClick(View equippableView){
         if (buyableEquippableItem != null) {
             if (playerCharacter.getMoney() >= buyableEquippableItem.getPrice()){
@@ -397,10 +415,11 @@ public class ShopPage extends AppCompatActivity {
             }
         }
         updateShop();
+        // save button can be re-enabled if applicable
         if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
-    //
+    // when pressed, gold is spent to place spell in player character's list of known spells
     public void spellClick(View spellView){
         if (buyableSpell != null) {
             if (playerCharacter.getMoney() >= buyableSpell.getPrice()){
@@ -410,10 +429,11 @@ public class ShopPage extends AppCompatActivity {
             }
         }
         updateShop();
+        // save button can be re-enabled if applicable
         if (findViewById(R.id.nextButton).isEnabled()) findViewById(R.id.saveButton).setEnabled(true);
     }
 
-    //
+    // when pressed, the player character is stored in the shared preferences
     public void saveClick(View saveButton){
         playerCharacter.prepareForSave();
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, TitlePage.KEY_PREFS, MODE_PRIVATE);;
@@ -423,14 +443,14 @@ public class ShopPage extends AppCompatActivity {
         playerCharacter.restoreAfterSave();
     }
 
-    //
+    // when pressed, a new PlayPage is created where new Combat starts
     public void nextClick(View nextButton){
         Intent newPage = new Intent(this, PlayPage.class);
         newPage.putExtra(TitlePage.KEY_PLAYER, playerCharacter);
         startActivityForResult(newPage, TitlePage.REQUEST_CODE_PLAY_PAGE);
     }
 
-    //
+    // sets the color of the player character's avatar image
     private void setCharacterAvatar(){
         ImageView avatar = (ImageView) findViewById(R.id.shopCharIcon);
         Drawable d = ContextCompat.getDrawable(getBaseContext(), R.drawable.avatar);
@@ -438,28 +458,29 @@ public class ShopPage extends AppCompatActivity {
         avatar.setImageDrawable(d);
     }
 
-    //
+    // randomly changes the player character's avatar color
     public void secretClick(View characterAvatar){
         playerCharacter.changeColorString();
         setCharacterAvatar();
     }
 
+    // when returning to this page, either return further to TitlePage, or reset the shop
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // can come here from PlayPage TODO or InfoPage
         if (requestCode == TitlePage.REQUEST_CODE_PLAY_PAGE){
             if (resultCode == TitlePage.RESULT_EXIT) {
                 setResult(resultCode);
                 finish();
             }
             if (resultCode == RESULT_CANCELED){
+                // if new session, this activity is ignored
                 if (firstVisit) {
                     setResult(resultCode);
                     finish();
                 }
             }
+            // if OK, that means combat ended and the shop is reset
             if (resultCode == RESULT_OK) {
                 firstVisit = false;
                 playerCharacter = data.getExtras().getParcelable(TitlePage.KEY_PLAYER);
@@ -468,7 +489,7 @@ public class ShopPage extends AppCompatActivity {
         }
     }
 
-    //
+    // unless the character is dead, a dialog pops up to warn user to save
     @Override
     public void onBackPressed() {
         if (playerCharacter.isDead()){
@@ -503,7 +524,7 @@ public class ShopPage extends AppCompatActivity {
         }
     }
 
-    //
+    // support for action bar back press button, and button to go to information page
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -518,9 +539,9 @@ public class ShopPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // add back press button and button to go to information page to the top action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_shop_page, menu);
         return true;
     }

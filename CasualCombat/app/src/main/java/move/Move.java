@@ -5,7 +5,7 @@ package move;
 
 import item.Item;
 
-// moves are used by combatants in combat. various predefined subclasses tweak the move's effect
+// moves are used by combatants in combat. various predefined subclasses tweak its effect (damage, range)
 public abstract class Move {
 
     public static final int PRICE_SPELL = 3; // all spells cost 3 gold
@@ -54,11 +54,19 @@ public abstract class Move {
     protected String name;
     protected String info;
 
-    public boolean isSpell(){ return (this.id > BASIC_DEFEND && this.id < ITEM_BOMB); }
-    public boolean isItemMove() { return this.id >= ITEM_BOMB; }
+    public boolean isSpell(){
+        return (this.id > BASIC_DEFEND && this.id < ITEM_BOMB);
+    }
+    public boolean isItemMove(){
+        return this.id >= ITEM_BOMB;
+    }
 
-    public void setTarget(int t) { this.target = t; }
-    public int getTarget() { return this.target; }
+    public void setTarget(int t){
+        this.target = t;
+    }
+    public int getTarget(){
+        return this.target;
+    }
 
     public int getId() {
         return this.id;
@@ -73,10 +81,16 @@ public abstract class Move {
         return this.range;
     }
 
-    public String getName(){ return this.name; }
-    public String getInfo(){ return this.info; }
+    public String getName(){
+        return this.name;
+    }
+    public String getInfo(){
+        return this.info;
+    }
 
-    public int getPrice() { return PRICE_SPELL; }
+    public int getPrice() {
+        return PRICE_SPELL;
+    }
 
     @Override
     public String toString(){

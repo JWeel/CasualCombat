@@ -11,8 +11,12 @@ public abstract class UsableItem extends Item {
     protected Move itemMove;
     protected String info;
 
-    public Move getItemMove() { return this.itemMove; }
+    public Move getItemMove() {
+        return this.itemMove;
+    }
 
     @Override
-    public String getInfo() { return this.info; }
+    public String getInfo() {
+        return this.info;
+    }
 }

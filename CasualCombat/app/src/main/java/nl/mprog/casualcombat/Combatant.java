@@ -9,17 +9,21 @@ import java.util.HashSet;
 
 import move.Move;
 
+// combatants fight using various moves to defeat other combatants, their prowess depending on "skills" (int variables)
 public abstract class Combatant implements Comparable<Combatant> {
 
     protected int maxHealth;
     protected int maxMagic;
     protected int currentHealth;
     protected int currentMagic;
+
+    // the five skills/stats. also referred to as : STR=strength, WIL=willpower, DEF=defense, RES=resistance, SPD=speed
     protected int strength;
     protected int willpower;
     protected int defense;
     protected int resistance;
     protected int speed;
+
     protected int money;
     protected String name;
     protected Move move;
@@ -41,16 +45,19 @@ public abstract class Combatant implements Comparable<Combatant> {
 
     public abstract boolean isFoe();
 
+    // changes health, making sure not to go under 0 or over max
     public void modifyHealth(int damage){
         this.currentHealth -= damage;
         if (this.currentHealth < 0) this.currentHealth = 0;
         if (this.currentHealth > this.maxHealth) this.currentHealth = this.maxHealth;
     }
+    // changes magic, making sure not to go under 0 or over max
     public void modifyMagic(int cost){
         this.currentMagic -= cost;
         if (this.currentMagic < 0) this.currentMagic = 0;
         if (this.currentMagic > this.maxMagic) this.currentMagic = this.maxMagic;
     }
+
     public void restoreHealthFully(){
         this.currentHealth = this.maxHealth;
     }
@@ -61,14 +68,20 @@ public abstract class Combatant implements Comparable<Combatant> {
     public void setName(String s){
         this.name = s;
     }
-    public void setMove(Move m){ this.move = m; }
+    public void setMove(Move m){
+        this.move = m;
+    }
 
-    public boolean isDead() { return this.currentHealth == 0; }
-    public boolean isDefending(){ return this.move.getId() == Move.BASIC_DEFEND; }
+    public boolean isDead() {
+        return this.currentHealth == 0;
+    }
+    public boolean isDefending(){
+        return this.move.getId() == Move.BASIC_DEFEND;
+    }
 
     // sort in descending order (highest first)
     @Override
     public int compareTo(@NonNull Combatant c){
-        return c.getSpeed() - this.getSpeed();
+        return c.speed - this.speed;
     }
 }

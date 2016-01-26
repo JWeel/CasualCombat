@@ -17,25 +17,22 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 
+// this page contains all stored player characters. they can be deleted here as well.
 public class LeaderboardPage extends AppCompatActivity {
 
-    // TODO possibility for login online to share scores
-    // maybe local and global
-
-    ArrayList<PlayerCharacter> storedPlayerCharacters;
+    private ArrayList<PlayerCharacter> storedPlayerCharacters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard_page);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         prepareStoredPlayerList();
         handleListTextVisibility();
     }
 
-    //
+    // gets the player characters stored in the shared preferences
     private void prepareStoredPlayerList(){
         storedPlayerCharacters = new ArrayList<>();
         Map<String, ?> keys = getSharedPreferences(TitlePage.KEY_PREFS, MODE_PRIVATE).getAll();
@@ -53,6 +50,7 @@ public class LeaderboardPage extends AppCompatActivity {
             }
         });
 
+        // set up the adapter for the ListView
         final PlayerCharacterAdapter adapter = new PlayerCharacterAdapter(this, R.layout.player_character_list, R.id.listCharName, storedPlayerCharacters);
         ListView storedPlayerListView = (ListView) findViewById(R.id.leaderboardPlayerList);
         storedPlayerListView.setAdapter(adapter);
@@ -68,7 +66,7 @@ public class LeaderboardPage extends AppCompatActivity {
         });
     }
 
-    //
+    // if player list is empty, shows message saying so. otherwise shows message explaining how to delete players
     private void handleListTextVisibility(){
         if (storedPlayerCharacters.isEmpty()) {
             findViewById(R.id.leaderboardPlayerListEmpty).setVisibility(View.VISIBLE);
@@ -80,7 +78,7 @@ public class LeaderboardPage extends AppCompatActivity {
         }
     }
 
-    //
+    // support for action bar back press button, and button to go to information page
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -95,10 +93,10 @@ public class LeaderboardPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // add back press button and button to go to information page to the top action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_leaderboard_page, menu);
+        getMenuInflater().inflate(R.menu.menu_leaderboard_page, menu);
         return true;
     }
 }

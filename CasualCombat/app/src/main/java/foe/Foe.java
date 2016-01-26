@@ -106,8 +106,12 @@ public abstract class Foe extends Combatant {
         else this.move.setTarget(0);
     }
 
-    public String getColor(){ return this.color; }
-    public int getId(){ return this.id; }
+    public String getColor(){
+        return this.color;
+    }
+    public int getId(){
+        return this.id;
+    }
 
     // changes names of foes of which there are more than one
     public static void renameFoesByCount(ArrayList<Foe> foes){
@@ -131,5 +135,7 @@ public abstract class Foe extends Combatant {
     }
 
     @Override
-    public boolean isFoe(){ return true; }
+    public boolean isFoe(){
+        return true;
+    }
 }

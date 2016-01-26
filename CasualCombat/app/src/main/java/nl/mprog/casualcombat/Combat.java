@@ -10,37 +10,36 @@ import java.util.LinkedList;
 import foe.Foe;
 import move.Move;
 
-class Game {
+// this class handles the interactions of combatants. they use moves on each other until defeat
+class Combat {
 
     private static final int AWARDED_LEVEL_POINTS = 1;
 
     private ArrayList<Combatant> combatants;
-
-    private PlayerCharacter playerCharacter;
     private ArrayList<Foe> foes;
+    private PlayerCharacter playerCharacter;
 
     private LinkedList<String> log;
 
+    // keeps track of amount of progressed rounds
     private int roundCount;
 
-    Game(PlayerCharacter pc){
-
+    Combat(PlayerCharacter pc){
         playerCharacter = pc;
-
         foes = getEncounter();
         Foe.renameFoesByCount(foes);
-
 
         log = new LinkedList<>();
         roundCount = 0;
     }
 
-    //
+    // randomly returns a list of foes that the player character will face in this combat
     private ArrayList<Foe> getEncounter(){
 
         ArrayList<ArrayList<Integer>> possibleEncounters = new ArrayList<>();
         ArrayList<Integer> encounter;
 
+        // possible lists of foes are predefined by level
         switch(playerCharacter.getLevel()){
             case 0:
                 encounter = new ArrayList<>();
@@ -267,24 +266,13 @@ class Game {
         return encounterFoes;
     }
 
-
-    //
+    // advances the combat
     void advance(){
-        // check if stuff in log
+        // no need to advance is stuff is still in log
         if (!log.isEmpty()) return;
 
         // if combatants list is made then round has started
         if (roundInProgress()) {
-
-//            // TODO maybe this is unnecessary ?
-//            // check for death
-//            for (int i = 0; i < combatants.size(); i++){
-//                if (combatants.get(i).isDead()){
-//                    log("" + combatants.get(i).getName() + " is defeated!");
-//                    combatants.remove(i);
-//                    return;
-//                }
-//            }
 
             // list is sorted by speed. first in list is up next
             Combatant attacker = combatants.get(0);
@@ -293,7 +281,6 @@ class Game {
                 if (!attacker.isDefending()){
 
                     if (attacker.getMove().getRange() == Move.RANGE_SELF){
-                        // SELF
                         int healAmount = attacker.getMove().getDamage();
                         if (healAmount != 0) {
                             attacker.modifyHealth(healAmount);
@@ -311,13 +298,13 @@ class Game {
             if (!attacker.isFoe()) {
                 if (!attacker.isDefending()){
 
+                    // remove used item
                     if (attacker.getMove().isItemMove()){
                         ((PlayerCharacter) attacker).getUsableItems().remove((Integer) attacker.getMove().getId());
                     }
 
                     // moves can affect: self, 1 target, 3 targets (close), or 5 targets (far)
                     if (attacker.getMove().getRange() == Move.RANGE_SELF) {
-                        // SELF
                         int healAmount = attacker.getMove().getDamage();
                         if (healAmount != 0) {
                             attacker.modifyHealth(healAmount);
@@ -327,8 +314,8 @@ class Game {
                         if (attacker.getMove().getCost() < 0)
                             log(attacker.getName() + " uses " + attacker.getMove().getName() + " and restores " + Math.abs(attacker.getMove().getCost()) + " magic!");
 
+                    // single target
                     } else if (attacker.getMove().getRange() == Move.RANGE_SINGLE || foes.size() == 1) {
-
                         Combatant target = foes.get(attacker.getMove().getTarget());
                         damage(attacker, target, 1.0f);
 
@@ -350,13 +337,14 @@ class Game {
                     log(attacker.getName() + " is defending!");
                 }
             }
+            // remove whoever just went, if none left prepare player character for next round
             combatants.remove(0);
             if (combatants.isEmpty()) {
                 combatants = null;
                 playerCharacter.setMove(null);
             }
 
-            //
+            // is player wins, reward loot and level up points
             if (!playerCharacter.isDead() && foesDefeated()){
                 int loot = 0;
                 for (Foe foe : foes) loot += foe.getMoney();
@@ -367,19 +355,18 @@ class Game {
                 playerCharacter.addLevelPoints(AWARDED_LEVEL_POINTS);
                 log(playerCharacter.getName() + " received " + AWARDED_LEVEL_POINTS + " level up point!");
                 log(" ");
-                System.err.println("LEVEL POINTS NOW " + playerCharacter.getLevelPoints());
             }
 
         } // otherwise check if round can be started by checking if player has a move
         else if (playerCharacter.isReady()){
 
-            // get moves for all foes
+            // set moves for all foes
             for (int i = 0; i < foes.size(); i++){
                 if (foes.get(i).isDead()) continue;
                 foes.get(i).updateUsableMoveIds();
                 foes.get(i).setRandomMove();
             }
-            // sort combatants by speed
+            // create list of combatants and sort by speed
             combatants = new ArrayList<>();
             combatants.add(playerCharacter);
             for (Foe foe : foes) {
@@ -391,18 +378,22 @@ class Game {
         }
     }
 
-    //
+    // attacking combatant lowers health point of defending combatant
     private void damage(Combatant attacker, Combatant defender, float distanceModifier){
+        // formula: damage = Move base damage + attacker stat - defender stat
         int damage = attacker.getMove().getDamage();
         if (attacker.getMove().isSpell()) damage += attacker.getWillpower();
         else if (!attacker.getMove().isItemMove()) damage += attacker.getStrength();
+        // item moves ignore all stats
 
+        // distance modifier is applied to damage
         damage = (int) (((float) damage) * distanceModifier);
 
         int defense = 0;
         if (attacker.getMove().isSpell()) defense = defender.getResistance();
         else if (!attacker.getMove().isItemMove()) defense += defender.getDefense();
 
+        // if defender is defending, defender stat is doubled
         if (defender.isDefending()) defense *= 2;
 
         damage = (damage - defense);
@@ -419,14 +410,17 @@ class Game {
         }
     }
 
-    //
+    // sets the move of the player character
     void pickMove(Move m){
         playerCharacter.setMove(m);
     }
 
-    //
-    void pickTarget(int t) { playerCharacter.getMove().setTarget(t); }
+    // sets the target of the move of the player character
+    void pickTarget(int t) {
+        playerCharacter.getMove().setTarget(t);
+    }
 
+    // adds a message to the log, which the PlayPage can get and display
     private void log(String s){
         log.add(s);
     }
@@ -436,30 +430,28 @@ class Game {
         return combatants != null || !log.isEmpty();
     }
 
-    //
+    // returns true if all foes are dead
     boolean foesDefeated(){
         for (Foe foe : foes) if (!foe.isDead()) return false;
         return true;
     }
 
-    //
+    // returns true if either the player or all foes are dead
     boolean gameOver(){
         if (!log.isEmpty()) return false;
         if (playerCharacter.isDead()) return true;
         return foesDefeated();
     }
 
-    // pops the current log message
+    // pops the current log message from the queue (linked list)
     String pop() {
         if (log.isEmpty()) return "";
         else return log.removeFirst();
     }
 
-    //
     PlayerCharacter getPlayerCharacter(){
         return playerCharacter;
     }
-
     ArrayList<Foe> getFoes(){
         return foes;
     }

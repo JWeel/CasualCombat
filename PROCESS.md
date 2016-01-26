@@ -164,8 +164,13 @@ Day 16:
 * Change buyable item system- now 5 buyable
 * Slightly change final boss stats
 * Change some info page text
+* Change folder structure (so it is now nl.mprog)
+* Begin commenting
+* Game class is now Combat class
 
 Day 17:
+* Finish commenting
+* Add back press to title page (to cancel list load)
 
 Day 18:
 

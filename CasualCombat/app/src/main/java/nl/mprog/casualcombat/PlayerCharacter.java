@@ -13,6 +13,7 @@ import item.EquippableItem;
 import item.Item;
 import move.Move;
 
+// this is a combatant that is controlled by the user. it has some extra features, such as items and leveling
 public class PlayerCharacter extends Combatant implements Parcelable {
 
     private int level;
@@ -105,6 +106,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         usableItems.add(item.getId());
     }
 
+    // sets a passed item into one of the equipment slots
     void equipItem(EquippableItem item){
         switch(item.getType()){
             case EquippableItem.TYPE_WEAPON:
@@ -163,15 +165,26 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         }
     }
 
-    public EquippableItem getWeapon() { return this.weapon; }
-    public EquippableItem getArmor() { return this.armor; }
-    public EquippableItem getBoots() { return this.boots; }
+    public EquippableItem getWeapon() {
+        return this.weapon;
+    }
+    public EquippableItem getArmor() {
+        return this.armor;
+    }
+    public EquippableItem getBoots() {
+        return this.boots;
+    }
 
-    public int getLevel() { return this.level; }
+    public int getLevel() {
+        return this.level;
+    }
 
     @Override
-    public boolean isFoe(){ return false; }
+    public boolean isFoe(){
+        return false;
+    }
 
+    // these basic getter methods also take equipment bonuses into account
     @Override
     public int getStrength(){
         int weaponBonus = 0;
@@ -213,8 +226,15 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         return this.speed + speedBonus;
     }
 
-    public String getColorString(){ return this.colorString; }
+    public ArrayList<Integer> getUsableItems() {
+        return this.usableItems;
+    }
 
+    public String getColorString(){
+        return this.colorString;
+    }
+
+    // picks a random color by taking random numbers between 0 and 255 for red, green and blue
     public void changeColorString(){
         String red = String.format("%02X", TitlePage.random.nextInt(0xFF));
         String green = String.format("%02X", TitlePage.random.nextInt(0xFF));
@@ -222,8 +242,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         this.colorString= "#FF" + red + green + blue;
     }
 
-    public ArrayList<Integer> getUsableItems() { return this.usableItems; }
-
+    // basic copy constructor
     public PlayerCharacter copy(){
         PlayerCharacter copiedPlayerCharacter = new PlayerCharacter();
 

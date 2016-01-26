@@ -14,7 +14,10 @@ import java.util.ArrayList;
 
 import move.Move;
 
+// this adapter is used to display spells nicely
 class SpellAdapter extends ArrayAdapter<Integer> {
+
+    // the player character stores only the ids of the spells, the actual spells are stored here
     private ArrayList<Move> usableSpells;
 
     public SpellAdapter(Context context, int resource, int textViewResourceId, ArrayList<Integer> moveIds){
@@ -26,12 +29,7 @@ class SpellAdapter extends ArrayAdapter<Integer> {
         }
     }
 
-    //
-    Move getListMove(int position){
-        return usableSpells.get(position);
-    }
-
-    //
+    // updates the item list, setting spells that cost too much magic to null
     void updateUsableSpells(PlayerCharacter playerCharacter){
         usableSpells.clear();
         for (Integer spellId : playerCharacter.getSpells()){
@@ -42,11 +40,16 @@ class SpellAdapter extends ArrayAdapter<Integer> {
         this.notifyDataSetChanged();
     }
 
+    Move getListMove(int position){
+        return usableSpells.get(position);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         View listItem = super.getView(position, convertView, parent);
 
         Move move = usableSpells.get(position);
+        // if move is null, that means there is not enough magic to cast it
         if (move == null){
             ((TextView) listItem.findViewById(R.id.listSpellInfo)).setText("INSUFFICIENT MAGIC");
             listItem.setBackgroundColor(Color.parseColor("#BB7788"));
@@ -55,7 +58,9 @@ class SpellAdapter extends ArrayAdapter<Integer> {
             listItem.findViewById(R.id.listSpellCost).setVisibility(View.INVISIBLE);
             listItem.findViewById(R.id.listSpellRange).setVisibility(View.INVISIBLE);
 
-        } else {
+        }
+        // if not null, just display information about the spell
+        else {
             listItem.findViewById(R.id.listSpellName).setVisibility(View.VISIBLE);
             listItem.findViewById(R.id.listSpellCost).setVisibility(View.VISIBLE);
             listItem.findViewById(R.id.listSpellRange).setVisibility(View.VISIBLE);
