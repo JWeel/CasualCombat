@@ -1,10 +1,8 @@
-#### Programmeer Project
+# Programmeer Project
 
 <sub>Joseph Weel, 10321624, Universiteit van Amsterdam</sub>
 
 # Casual Combat
-
-<hr />
 
 An app for a turn based combat game.
 
