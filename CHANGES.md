@@ -2,7 +2,7 @@
 
 <sub>Joseph Weel, 10321624, Universiteit van Amsterdam</sub>
 
-# Process Book
+# Changelog
 
 Day 1:
 * Make up idea for app, write proposal
@@ -171,8 +171,13 @@ Day 16:
 Day 17:
 * Finish commenting
 * Add back press to title page (to cancel list load)
+* Make actual PROCESS.md
+* Start on new README.md
+* Start REPORT.md
 
 Day 18:
+* Very minor commenting tweaks
+
 
 Day 19:
 

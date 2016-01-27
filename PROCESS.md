@@ -113,7 +113,8 @@ Today I finished commenting, and I added a back press to the TitlePage (to cance
 
 I then started working on the report files.
 
-Day 18:
+#### Day 18:
+Some very minor comment tweaking. Afterwards I continued with the report files.
 
 Day 19:
 

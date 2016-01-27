@@ -26,6 +26,8 @@ class Combat {
 
     Combat(PlayerCharacter pc){
         playerCharacter = pc;
+
+        // set up some random foes, and rename duplicates
         foes = getEncounter();
         Foe.renameFoesByCount(foes);
 
