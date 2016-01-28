@@ -18,7 +18,7 @@ public class InfoPage extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    //
+    // support for action bar back press button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -28,9 +28,9 @@ public class InfoPage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // add back press button and button to go to information page to the top action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_info_page, menu);
         return true;
     }

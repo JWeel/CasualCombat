@@ -10,6 +10,7 @@ public abstract class EquippableItem extends Item {
     public static final int TYPE_ARMOR = 1;
     public static final int TYPE_BOOTS = 2;
 
+    // a PlayerCharacter can only equip one item per type
     protected int type;
 
     protected int bonusStrength;

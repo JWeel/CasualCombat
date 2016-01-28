@@ -50,7 +50,9 @@ public abstract class Move {
     protected int damage;
     protected int cost;
     protected int range;
+
     protected int target = NO_TARGET;
+
     protected String name;
     protected String info;
 

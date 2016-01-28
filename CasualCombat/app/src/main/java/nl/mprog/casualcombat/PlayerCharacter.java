@@ -150,6 +150,7 @@ public class PlayerCharacter extends Combatant implements Parcelable {
         else this.boots = (EquippableItem) Item.findItemById(this.bootsId);
     }
 
+    // returns true if the player character already has a similar item equipped
     boolean alreadyHasEquipment(EquippableItem newItem){
         switch(newItem.getType()){
             case EquippableItem.TYPE_WEAPON:
