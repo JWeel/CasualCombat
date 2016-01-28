@@ -49,7 +49,7 @@ I Implemented the loading and saving system for PlayerCharacters (and a matching
 The biggest issue was implementing this ComplexPreferences library. There is very little documentation on it, aside from the Git repository from which it can be downloaded. Installations instructions were also missing. Luckily, once it was implemented, it worked on the first try.
 
 #### Day 9:
-I added the LeaderboardPage where player characters can be deleted from SharedPreferences. I also began on adding the actual game mechanics (damage based on stats and distance). I improved the log system (more strings), and added a dynamic naming system for Foes.
+I added the LeaderboardPage where player characters can be deleted from SharedPreferences. I also began on adding the actual game mechanics (damage based on stats and distance). I improved the log system (the Game's log was now just a single string instead of a queue of strings), and added a dynamic naming system for Foes.
 
 Though it wasn't really that big of an issue, I had to think of the formula for damage. It became: Move damage + (attacker *strength*) - (defender *defense*). If the Move is a spell, *willpower* and *resistance* are used instead. If the defender is using the Defend move, their defensive stat is temporarily multiplied.
 
@@ -106,7 +106,7 @@ At this point my app was feature complete.
 #### Day 16:
 Since my app was pretty much complete, there was not much to change today. Some very small tweaks and bug-fixes (nothing app-breaking), and I renamed the Game class to Combat. I then started the fun part of projects called commenting! (Luckily I had already commented a lot while writing code)
 
-The biggest issue today was, unfortunately, trying to rename the packages to *nl.mprog.package*. Nothing seemed to work, and even google didn't know what to do with my errors. Eventually I just settled on making an entirely new project, and copy pasting all the code from the original project. Luckily the app still works!
+The biggest issue today was, unfortunately, trying to rename the packages to *nl.mprog.casualcombat*. Nothing seemed to work, and even google didn't know what to do with my errors. Eventually I just settled on making an entirely new project, and copy pasting all the code from the original project. Luckily the app still works!
 
 #### Day 17:
 Today I finished commenting, and I added a back press to the TitlePage (to cancel list load).
@@ -116,6 +116,8 @@ I then started working on the report files.
 #### Day 18:
 Some very minor comment tweaking. Afterwards I continued with the report files.
 
-Day 19:
+#### Day 19:
+I tweaked the size of some buttons in the ShopPage, and then worked on finalizing my report and the other document files.
 
-Day 20:
+#### Day 20:
+Today I give my presentation.

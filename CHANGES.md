@@ -177,8 +177,12 @@ Day 17:
 
 Day 18:
 * Very minor commenting tweaks
-
+* More REPORT.md
 
 Day 19:
+* Finish REPORT.md
+* Tweak size of save and next buttons in shop
+* Publish final version to GIT
 
 Day 20:
+* Final Presentation

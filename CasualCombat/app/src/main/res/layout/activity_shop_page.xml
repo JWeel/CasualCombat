@@ -410,15 +410,15 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="55dip"
-        android:padding="6dip"
+        android:padding="2dip"
         android:id="@+id/shopLayoutMiddle"
         >
         <Button
             android:text="Save Progress"
-            android:layout_width="180dip"
+            android:layout_width="175dip"
             android:layout_height="50dip"
             android:textColor="#459785"
-            android:textSize="20sp"
+            android:textSize="19sp"
             android:gravity="center"
             android:layout_alignParentBottom="true"
             android:onClick="saveClick"
@@ -427,10 +427,10 @@
             />
         <Button
             android:text="Next Battle"
-            android:layout_width="180dip"
+            android:layout_width="175dip"
             android:layout_height="50dip"
             android:textColor="#459785"
-            android:textSize="20sp"
+            android:textSize="19sp"
             android:gravity="center"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
